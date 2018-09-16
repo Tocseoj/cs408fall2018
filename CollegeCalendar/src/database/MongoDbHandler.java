@@ -60,8 +60,8 @@ public class MongoDbHandler {
 		// need to check if a user already exists with the given user name
 		Document oldUser = getUserByUsername(username);
 		if (oldUser != null) {
-			System.out.println("User already exists");
-			return;
+//			System.out.println("User already exists");
+			throw new java.lang.Error("User already exists");
 		}
 		
 		
