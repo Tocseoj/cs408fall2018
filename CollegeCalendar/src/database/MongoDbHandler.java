@@ -8,6 +8,8 @@ import org.bson.Document;
 
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
+import static com.mongodb.client.model.Filters.*;
+
 import com.mongodb.client.MongoDatabase;
 
 import javax.crypto.Cipher;
@@ -41,7 +43,9 @@ public class MongoDbHandler {
 		
 		handler.insertUser("testUser", "testPassword");
 		
-		handler.getAllUsers();
+//		handler.getAllUsers();
+		
+//		handler.getUserByUsername("testUser");
 	}
 	
 	
@@ -53,6 +57,14 @@ public class MongoDbHandler {
 	 * @param password the password of the new user
 	 */
 	void insertUser(String username, String password) {
+		// need to check if a user already exists with the given user name
+		Document oldUser = getUserByUsername(username);
+		if (oldUser != null) {
+			System.out.println("User already exists");
+			return;
+		}
+		
+		
 		MongoCollection<Document> collection = database.getCollection("users");
 		Document newUser = new Document("username", username)
 				.append("password", password);
@@ -64,9 +76,20 @@ public class MongoDbHandler {
 	/*
 	 * Get all the users currently in the database
 	 */
-	void getAllUsers() {
+	MongoCollection<Document> getAllUsers() {
 		MongoCollection<Document> collection = database.getCollection("users");
-		collection.find().forEach(printBlock);
+		return collection;
+	}
+	
+	
+	/*
+	 * Queries the database to get a user by user name
+	 */
+	Document getUserByUsername(String username) {
+		MongoCollection<Document> collection = database.getCollection("users");
+		Document user = collection.find(eq("username", username)).first();
+		
+		return user;
 	}
 	
 	
