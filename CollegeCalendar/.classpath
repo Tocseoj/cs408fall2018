@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="C:/Users/Abhi Gupta/Documents/Development/cs408fall2018-master/cs408fall2018/CollegeCalendar/libs/mongodb-driver-3.8.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Abhi Gupta/Documents/Development/cs408fall2018-master/cs408fall2018/CollegeCalendar/libs/mongodb-driver-core-3.8.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Abhi Gupta/Documents/Development/cs408fall2018-master/cs408fall2018/CollegeCalendar/libs/mongodb-driver-sync-3.8.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Abhi Gupta/Documents/Development/cs408fall2018-master/cs408fall2018/CollegeCalendar/libs/jbcrypt-0.3m.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
