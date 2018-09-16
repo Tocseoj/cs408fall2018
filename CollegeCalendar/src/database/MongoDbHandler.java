@@ -19,5 +19,8 @@ public class MongoDbHandler {
 		
 		List<String> dbNames = mongoClient.getDatabaseNames();
 		System.out.println(dbNames);
+		
+		
+		mongoClient.close();
 	}
 }
