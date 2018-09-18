@@ -148,6 +148,24 @@ public class MongoDbHandler {
 	}
 	
 	/*
+	 * Inserts a new meeting associated with a username in the database
+	 * @param meetingName the name of the meeting
+	 * @param date the date of the meeting
+	 * @param startTime the time the meeting starts
+	 * @param endTime	the time the meeting ends
+	 * @param username	the user adding the meeting
+	 */
+	void insertMeeting(String meetingName, String date, String startTime, String endTime, String username) {
+		MongoCollection<Document> collection = database.getCollection("meetings");
+		Document newMeeting = new Document("meetingName", meetingName)
+				.append("date", date)
+				.append("startTime", startTime)
+				.append("endTime", endTime)
+				.append("user", username);
+		collection.insertOne(newMeeting);
+	}
+	
+	/*
 	 * Checks whether the user with the given username and password exists in the database.
 	 * Should be used when a user is attempting to login
 	 * @param username the username to check in the database
