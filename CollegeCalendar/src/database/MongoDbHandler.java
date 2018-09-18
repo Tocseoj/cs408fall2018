@@ -1,18 +1,8 @@
 package database;
 
 
-import java.util.Arrays;
-import java.util.List;
+import static com.mongodb.client.model.Filters.eq;
 
-import org.bson.Document;
-
-import com.mongodb.*;
-import com.mongodb.client.MongoCollection;
-import static com.mongodb.client.model.Filters.*;
-
-import com.mongodb.client.MongoDatabase;
-
-import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.AlgorithmParameters;
@@ -21,14 +11,20 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.bson.Document;
+
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 
 
@@ -47,8 +43,9 @@ public class MongoDbHandler {
 	
 	
 	public MongoDbHandler() {
-		mongoClient = new MongoClient("localhost", 27017);
-		database = mongoClient.getDatabase("408testdb");
+		MongoClientURI uri  = new MongoClientURI("mongodb://tester:tester1@ds135441.mlab.com:35441/408calendar");
+		mongoClient = new MongoClient(uri);
+        database = mongoClient.getDatabase(uri.getDatabase());
 	}
 	
 	
@@ -58,7 +55,7 @@ public class MongoDbHandler {
 	public static void main(String[] args) throws Exception {
 		
 		MongoDbHandler handler = new MongoDbHandler();
-		
+		//talk to abhi about what a database is?
 		
 		boolean result = handler.isValidUser("testUser", "testPassword");
 		if (result) {
