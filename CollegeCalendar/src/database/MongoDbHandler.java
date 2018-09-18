@@ -185,7 +185,7 @@ public class MongoDbHandler {
 				.append("endTime", endTime)
 				.append("priorityLevel", priorityLevel)
 				.append("user", username);
-		collection.insertOne(newExam);
+		collection.insertOne(newExam); 
 	}
 	
 	/*
