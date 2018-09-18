@@ -136,10 +136,11 @@ public class MongoDbHandler {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	void insertClass(String className, String startDate, String endDate, String building, String room, String teacherName, String priorityLevel, String username) {
+	void insertClass(String className, String days, String startDate, String endDate, String building, String room, String teacherName, String priorityLevel, String username) {
 		MongoCollection<Document> collection = database.getCollection("classes");
 		Document newClass = new Document("className", className)
 				.append("startDate", startDate)
+				.append("days", days)
 				.append("endDate", endDate)
 				.append("building", building)
 				.append("room", room)
