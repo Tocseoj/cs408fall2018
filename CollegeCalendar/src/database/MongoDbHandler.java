@@ -9,9 +9,7 @@ import org.bson.Document;
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.*;
-
 import com.mongodb.client.MongoDatabase;
-
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -20,7 +18,6 @@ import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -106,25 +103,25 @@ public class MongoDbHandler {
 		collection.insertOne(newUser);
 	}
 	
-	/*
-	 * Inserts an event into the database, using the given username as a field in the db to link the event to its owner
-	 */
-	void insertHomework(String name, String dueDate, String className, String priorityLevel, String username) {
-		if (name.equals("") || username.equals("")) {
-			System.out.println("invalid arguments");
-			return;
-		}
-		
-		MongoCollection<Document> collection = database.getCollection("homeworks");
-		Document newHomework = new Document("name", name)
-				.append("dueDate", dueDate)
-				.append("className", className)
-				.append("priorityLevel", priorityLevel)
-				.append("user", username);
-		
-		collection.insertOne(newHomework);
-		
-	}
+//	/*
+//	 * Inserts an event into the database, using the given username as a field in the db to link the event to its owner
+//	 */
+//	void insertHomework(String name, String dueDate, String className, String priorityLevel, String username) {
+//		if (name.equals("") || username.equals("")) {
+//			System.out.println("invalid arguments");
+//			return;
+//		}
+//		
+//		MongoCollection<Document> collection = database.getCollection("homeworks");
+//		Document newHomework = new Document("name", name)
+//				.append("dueDate", dueDate)
+//				.append("className", className)
+//				.append("priorityLevel", priorityLevel)
+//				.append("user", username);
+//		
+//		collection.insertOne(newHomework);
+//		
+//	}
 	
 	/*
 	 * Inserts a class associated with a username in the database
