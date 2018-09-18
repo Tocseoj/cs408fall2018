@@ -147,7 +147,10 @@ public class MongoDbHandler {
 		}		
 	}
 	
-	
+	/*
+	 * Decrypts a given string using the key that was computed previously
+	 * @return the decrypted string
+	 */
 	private String decrypt(String string, SecretKeySpec key) throws GeneralSecurityException, IOException{
 		String iv = string.split(":")[0];
         String property = string.split(":")[1];
@@ -162,7 +165,10 @@ public class MongoDbHandler {
 		return Base64.getDecoder().decode(property);
 	}
 
-
+	/*
+	 * Encrypts a given string given the key that was computed earlier
+	 * @return the encrypted string
+	 */
 	private String encrypt(String property, SecretKeySpec key) throws GeneralSecurityException, UnsupportedEncodingException {
 		Cipher pbeCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         pbeCipher.init(Cipher.ENCRYPT_MODE, key);
