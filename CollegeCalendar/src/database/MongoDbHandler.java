@@ -166,6 +166,25 @@ public class MongoDbHandler {
 	}
 	
 	/*
+	 * Inserts a new exam into the database
+	 * @param examName	the name of the exam
+	 * @param date		the date of the exam
+	 * @param startTime	the time the exam starts
+	 * @param endTime	the time the exam ends
+	 * @param username	the user adding the exam
+	 *
+	 */
+	void insertExam(String examName, String date, String startTime, String endTime, String username) {
+		MongoCollection<Document> collection = database.getCollection("exams");
+		Document newExam = new Document("examName", examName)
+				.append("date", date)
+				.append("startTime", startTime)
+				.append("endTime", endTime)
+				.append("user", username);
+		collection.insertOne(newExam);
+	}
+	
+	/*
 	 * Checks whether the user with the given username and password exists in the database.
 	 * Should be used when a user is attempting to login
 	 * @param username the username to check in the database
