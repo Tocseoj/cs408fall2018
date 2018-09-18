@@ -59,7 +59,6 @@ public class MongoDbHandler {
 		
 		MongoDbHandler handler = new MongoDbHandler();
 		
-//		handler.insertUser("testUser", "testPassword");
 		
 		boolean result = handler.isValidUser("testUser", "testPassword");
 		if (result) {
@@ -106,6 +105,13 @@ public class MongoDbHandler {
 		collection.insertOne(newUser);
 	}
 	
+	/*
+	 * Checks whether the user with the given username and password exists in the database
+	 * @param username the username to check in the database
+	 * @param password the password to check in the database
+	 * @return true 	if the user exists in the database
+	 * 		   false	if the user does not exist in the database
+	 */
 	boolean isValidUser(String username, String password) throws GeneralSecurityException, IOException {
 		// get the user from the database with the given username
 		Document user = getUserByUsername(username);
@@ -129,7 +135,8 @@ public class MongoDbHandler {
 		int iterationCount = 400;
 		
 		int keyLength = 128;
-		SecretKeySpec key = createSecretKey("testing_password".toCharArray(), salt, iterationCount, keyLength);
+		// testing_password is used for encryption, secure this later
+		SecretKeySpec key = createSecretKey("testing_password".toCharArray(), salt, iterationCount, keyLength); 
 		String decryptedPassword = decrypt(db_password, key);
 		
 		if (password.equals(decryptedPassword)) {
