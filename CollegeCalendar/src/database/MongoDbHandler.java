@@ -109,7 +109,7 @@ public class MongoDbHandler {
 	/*
 	 * Inserts an event into the database, using the given username as a field in the db to link the event to its owner
 	 */
-	void insertHomework(String name, String dueDate, String className, String username) {
+	void insertHomework(String name, String dueDate, String className, String priorityLevel, String username) {
 		if (name.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
@@ -119,6 +119,7 @@ public class MongoDbHandler {
 		Document newHomework = new Document("name", name)
 				.append("dueDate", dueDate)
 				.append("className", className)
+				.append("priorityLevel", priorityLevel)
 				.append("user", username);
 		
 		collection.insertOne(newHomework);
@@ -135,7 +136,7 @@ public class MongoDbHandler {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	void insertClass(String className, String startDate, String endDate, String building, String room, String teacherName, String username) {
+	void insertClass(String className, String startDate, String endDate, String building, String room, String teacherName, String priorityLevel, String username) {
 		MongoCollection<Document> collection = database.getCollection("classes");
 		Document newClass = new Document("className", className)
 				.append("startDate", startDate)
@@ -143,6 +144,7 @@ public class MongoDbHandler {
 				.append("building", building)
 				.append("room", room)
 				.append("teacherName", teacherName)
+				.append("priorityLevel", priorityLevel)
 				.append("user", username);
 		collection.insertOne(newClass);
 	}
@@ -155,12 +157,13 @@ public class MongoDbHandler {
 	 * @param endTime	the time the meeting ends
 	 * @param username	the user adding the meeting
 	 */
-	void insertMeeting(String meetingName, String date, String startTime, String endTime, String username) {
+	void insertMeeting(String meetingName, String date, String startTime, String endTime, String priorityLevel, String username) {
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		Document newMeeting = new Document("meetingName", meetingName)
 				.append("date", date)
 				.append("startTime", startTime)
 				.append("endTime", endTime)
+				.append("priorityLevel", priorityLevel)
 				.append("user", username);
 		collection.insertOne(newMeeting);
 	}
@@ -174,12 +177,13 @@ public class MongoDbHandler {
 	 * @param username	the user adding the exam
 	 *
 	 */
-	void insertExam(String examName, String date, String startTime, String endTime, String username) {
+	void insertExam(String examName, String date, String startTime, String endTime, String priorityLevel, String username) {
 		MongoCollection<Document> collection = database.getCollection("exams");
 		Document newExam = new Document("examName", examName)
 				.append("date", date)
 				.append("startTime", startTime)
 				.append("endTime", endTime)
+				.append("priorityLevel", priorityLevel)
 				.append("user", username);
 		collection.insertOne(newExam);
 	}
