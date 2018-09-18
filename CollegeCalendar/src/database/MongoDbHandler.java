@@ -100,13 +100,34 @@ public class MongoDbHandler {
 		
 		MongoCollection<Document> collection = database.getCollection("users");
 		Document newUser = new Document("username", username)
-				.append("password", encryptedPassword);
+				.append("password", encryptedPassword)
+				.append("wantsNotifications", "no");
 		
 		collection.insertOne(newUser);
 	}
 	
 	/*
-	 * Checks whether the user with the given username and password exists in the database
+	 * Inserts an event into the database, using the given username as a field in the db to link the event to its owner
+	 */
+	void insertHomework(String name, String dueDate, String className, String username) {
+		if (name.equals("") || username.equals("")) {
+			System.out.println("invalid arguments");
+			return;
+		}
+		
+		MongoCollection<Document> collection = database.getCollection("homeworks");
+		Document newHomework = new Document("name", name)
+				.append("dueDate", dueDate)
+				.append("className", className)
+				.append("user", username);
+		
+		collection.insertOne(newHomework);
+		
+	}
+	
+	/*
+	 * Checks whether the user with the given username and password exists in the database.
+	 * Should be used when a user is attempting to login
 	 * @param username the username to check in the database
 	 * @param password the password to check in the database
 	 * @return true 	if the user exists in the database
