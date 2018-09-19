@@ -53,7 +53,7 @@ public class DbUserHandler {
 	 * @param username the username of the new user
 	 * @param password the password of the new user
 	 */
-	void insertUser(String username, String password) throws Exception {
+	void insertUser(String username, String password, String semesterStart, String semesterEnd, String color) throws Exception {
 		// need to check if a user already exists with the given user name
 		Document oldUser = getUserByUsername(username);
 		if (oldUser != null) {
@@ -77,7 +77,9 @@ public class DbUserHandler {
 		MongoCollection<Document> collection = database.getCollection("users");
 		Document newUser = new Document("username", username)
 				.append("password", encryptedPassword)
-				.append("wantsNotifications", "no");
+				.append("semesterStart", semesterStart)
+				.append("semesterEnd", semesterEnd)
+				.append("color", color);
 		
 		collection.insertOne(newUser);
 	}
@@ -124,6 +126,24 @@ public class DbUserHandler {
 		else {
 			return false;
 		}		
+	}
+	
+	/*
+	 * Updates the user given by the specified username
+	 */
+	void updateUser(String username, String password, String semesterStart, String semesterEnd, String color) {
+		if (username.equals("")) {
+			System.out.println("invalid arguments");
+			return;
+		}
+		
+		MongoCollection<Document> collection = database.getCollection("users");
+		Document updatedUser = new Document("username", username)
+				.append("password", password)
+				.append("semesterStart", semesterStart)
+				.append("semesterEnd", semesterEnd)
+				.append("color", color);
+		collection.updateOne(eq("username", username), new Document("$set", updatedUser));
 	}
 	
 	/*
