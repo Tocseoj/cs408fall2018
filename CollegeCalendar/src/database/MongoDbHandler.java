@@ -55,8 +55,14 @@ public class MongoDbHandler {
 	public static void main(String[] args) throws Exception {
 		
 		MongoDbHandler handler = new MongoDbHandler();
-		//talk to abhi about what a database is?
 		
+		ClassDBO cdbo = new ClassDBO(database);
+		
+		String test = "test";
+		//cdbo.insertClasses(test,test,test,test,test,test,test);
+		//cdbo.deleteClassEvent("5ba18a42e0fec8158f661f89");
+		cdbo.getClassEvent("5ba18a42e0fec8158f661f89");
+
 		boolean result = handler.isValidUser("testUser", "testPassword");
 		if (result) {
 			System.out.println("Successful login");
