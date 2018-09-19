@@ -81,6 +81,7 @@ public class DbMeetingHandler {
 	 */
 	void updateMeeting(String meetingName, String date, String startTime, String endTime, String repeats, int priorityLevel, String username,
 			ObjectId id) {
+		
 		if (meetingName.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;

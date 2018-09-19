@@ -61,7 +61,7 @@ public class DbHomeworkHandler {
 	 * 
 	 * @param repeats	either Daily, Weekly, or Monthly
 	 */
-	void insertHomework(String name, String dueDate, String repeats, String className, int priorityLevel, String username) {
+	void insertHomework(String name, String dueDate, String repeats, String status, String className, int priorityLevel, String username) {
 		if (name.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
@@ -76,6 +76,7 @@ public class DbHomeworkHandler {
 		Document newHomework = new Document("name", name)
 				.append("dueDate", dueDate)
 				.append("repeats", repeats)
+				.append("status", status)
 				.append("className", className)
 				.append("priorityLevel", priorityLevel)
 				.append("user", username);
@@ -87,7 +88,7 @@ public class DbHomeworkHandler {
 	/*
 	 * Updates an existing homework with the given fields.
 	 */
-	void updateHomework(String name, String dueDate, String className, String repeats, String priorityLevel, String username, ObjectId id) {
+	void updateHomework(String name, String dueDate, String className, String repeats, String status, String priorityLevel, String username, ObjectId id) {
 		if (name.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
@@ -103,6 +104,7 @@ public class DbHomeworkHandler {
 				.append("dueDate", dueDate)
 				.append("className", className)
 				.append("repeats", repeats)
+				.append("status", status)
 				.append("priorityLevel", priorityLevel)
 				.append("user", username);
 		collection.updateOne(eq("_id", id), new Document("$set", updatedHomework));
