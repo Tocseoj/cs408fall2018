@@ -58,7 +58,7 @@ public class MongoDbHandler {
 		
 		ClassDBO cdbo = new ClassDBO(database);
 		
-		String test = "test";
+		//String test = "test";
 		//cdbo.insertClasses(test,test,test,test,test,test,test);
 		//cdbo.deleteClassEvent("5ba18a42e0fec8158f661f89");
 		cdbo.getClassEvent("5ba18a42e0fec8158f661f89");

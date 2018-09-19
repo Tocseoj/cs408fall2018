@@ -8,25 +8,20 @@ import org.bson.types.ObjectId;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-/**
- * 
- * @author Gus :)
- *
- */
-public class ClassDBO {
 
+public class GenericDBO {
 	private MongoDatabase database;
 
 	/**
-	 * Constructor for object to interact with class events
+	 * Constructor for object to interact with event events
 	 * @param database 
 	 */
-	public ClassDBO(MongoDatabase database) {
+	public GenericDBO(MongoDatabase database) {
 		this.database = database;
 	}
 
 	/**
-	 * Inserts a class associated with a username in the database
+	 * Inserts an event associated with a username in the database
 	 * @param className the name of the class to add
 	 * @param startDate the starting date of the class
 	 * @param endDate the ending date of the class
@@ -35,8 +30,8 @@ public class ClassDBO {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	void insertClassEvent(String className, String startDate, String endDate, String building, String room, String teacherName, String username) {
-		MongoCollection<Document> collection = database.getCollection("classes");
+	void insertEvent(String className, String startDate, String endDate, String building, String room, String teacherName, String username) {
+		MongoCollection<Document> collection = database.getCollection("events");
 		Document newClass = new Document("className", className)
 				.append("startDate", startDate)
 				.append("endDate", endDate)
@@ -48,7 +43,7 @@ public class ClassDBO {
 	}
 	
 	/**
-	 * Updates class defined by id with all the given fields
+	 * Updates event defined by id with all the given fields
 	 * 
 	 * @param name
 	 * @param dueDate
@@ -57,13 +52,13 @@ public class ClassDBO {
 	 * @param username
 	 * @param id
 	 */
-	void updateClassEvent(String name, String dueDate, String className, String priorityLevel, String username, ObjectId id) {
+	void updateEvent(String name, String dueDate, String className, String priorityLevel, String username, ObjectId id) {
 		if (name.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
 		}
 
-		MongoCollection<Document> collection = database.getCollection("classes");
+		MongoCollection<Document> collection = database.getCollection("events");
 		Document updatedHomework = new Document("name", name)
 				.append("dueDate", dueDate)
 				.append("className", className)
@@ -73,42 +68,41 @@ public class ClassDBO {
 	}
 
 	/**
-	 * Get single class by ID
+	 * Get single event by ID
 	 * @param id
 	 * @return
 	 */
-	Document getClassEvent(String id) {
+	Document getEvent(String id) {
 		ObjectId oid= new ObjectId(id);
-		MongoCollection<Document> collection = database.getCollection("classes");
+		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("_id", oid);
 		Document dbObj = collection.find(findQuery).first();
 		return dbObj;
 	}
 
 	/**
-	 * Get all events of type class
+	 * Get all events of type event
 	 * 
 	 * @param user
 	 * @return iterator of all events
 	 */
-	MongoCursor<Document> getAllClasses(String user){
-		MongoCollection<Document> collection = database.getCollection("classes");
+	MongoCursor<Document> getAllEvents(String user){
+		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("user", user);
 		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
 		return dbObj;
 	}
 
 	/**
-	 * Delete class event by ID
+	 * Delete event event by ID
 	 * 
 	 * @param id
 	 */
-	void deleteClassEvent(String id) {
+	void deleteEvent(String id) {
 		ObjectId oid= new ObjectId(id);
-		MongoCollection<Document> collection = database.getCollection("classes");
+		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("_id", oid);
 		Document dbObj = collection.find(findQuery).first();
 		collection.deleteOne(dbObj);
 	}
-
 }
