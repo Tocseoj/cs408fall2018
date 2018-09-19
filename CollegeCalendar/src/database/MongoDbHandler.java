@@ -1,8 +1,7 @@
 package database;
 
 
-import java.util.Arrays;
-import java.util.List;
+import static com.mongodb.client.model.Filters.eq;
 
 import org.bson.Document;
 
@@ -11,6 +10,7 @@ import com.mongodb.client.MongoCollection;
 import static com.mongodb.client.model.Filters.*;
 import com.mongodb.client.MongoDatabase;
 import javax.crypto.spec.SecretKeySpec;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.AlgorithmParameters;
@@ -18,20 +18,29 @@ import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
+
 import javax.crypto.BadPaddingException;
+
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.bson.Document;
+
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
 
 
 /**
  * 
- * @author Abhi Gupta
+ * @author Abhi Gupta + Gus :)
  *
  */
 
@@ -44,8 +53,9 @@ public class MongoDbHandler {
 	
 	
 	public MongoDbHandler() {
-		mongoClient = new MongoClient("localhost", 27017);
-		database = mongoClient.getDatabase("408testdb");
+		MongoClientURI uri  = new MongoClientURI("mongodb://tester:tester1@ds135441.mlab.com:35441/408calendar");
+		mongoClient = new MongoClient(uri);
+        database = mongoClient.getDatabase(uri.getDatabase());
 	}
 	
 	
@@ -56,7 +66,9 @@ public class MongoDbHandler {
 		
 		MongoDbHandler handler = new MongoDbHandler();
 		
+		ClassDBO cdbo = new ClassDBO(database);
 		
+
 //		boolean result = handler.isValidUser("testUser", "testPassword");
 //		if (result) {
 //			System.out.println("Successful login");
@@ -64,6 +76,11 @@ public class MongoDbHandler {
 //		else {
 //			System.out.println("Unsuccessful login");
 //		}
+
+		//String test = "test";
+		//cdbo.insertClasses(test,test,test,test,test,test,test);
+		//cdbo.deleteClassEvent("5ba18a42e0fec8158f661f89");
+		//cdbo.getClassEvent("5ba18a42e0fec8158f661f89");
 	}
 	
 	
@@ -102,34 +119,6 @@ public class MongoDbHandler {
 //		
 //		collection.insertOne(newUser);
 //	}
-	
-
-	
-	/*
-	 * Inserts a class associated with a username in the database
-	 * @param className the name of the class to add
-	 * @param startDate the starting date of the class
-	 * @param endDate the ending date of the class
-	 * @param building the building the class is in
-	 * @param room the room the class is in
-	 * @param teacherName the name of the teacher for the class
-	 * @param username the user that is adding the class
-	 */
-	void insertClass(String className, String days, String startDate, String endDate, String building, String room, String teacherName, String priorityLevel, String username) {
-		MongoCollection<Document> collection = database.getCollection("classes");
-		Document newClass = new Document("className", className)
-				.append("startDate", startDate)
-				.append("days", days)
-				.append("endDate", endDate)
-				.append("building", building)
-				.append("room", room)
-				.append("teacherName", teacherName)
-				.append("priorityLevel", priorityLevel)
-				.append("user", username);
-		collection.insertOne(newClass);
-	}
-	
-
 	
 	/*
 	 * Inserts a new exam into the database
