@@ -8,7 +8,11 @@ import org.bson.types.ObjectId;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-
+/**
+ * 
+ * @author Gus :)
+ *
+ */
 public class ExamDBO {
 	private MongoDatabase database;
 
