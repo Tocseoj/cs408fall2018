@@ -147,24 +147,24 @@ public class MongoDbHandler {
 		collection.insertOne(newClass);
 	}
 	
-	/*
-	 * Inserts a new meeting associated with a username in the database
-	 * @param meetingName the name of the meeting
-	 * @param date the date of the meeting
-	 * @param startTime the time the meeting starts
-	 * @param endTime	the time the meeting ends
-	 * @param username	the user adding the meeting
-	 */
-	void insertMeeting(String meetingName, String date, String startTime, String endTime, String priorityLevel, String username) {
-		MongoCollection<Document> collection = database.getCollection("meetings");
-		Document newMeeting = new Document("meetingName", meetingName)
-				.append("date", date)
-				.append("startTime", startTime)
-				.append("endTime", endTime)
-				.append("priorityLevel", priorityLevel)
-				.append("user", username);
-		collection.insertOne(newMeeting);
-	}
+//	/*
+//	 * Inserts a new meeting associated with a username in the database
+//	 * @param meetingName the name of the meeting
+//	 * @param date the date of the meeting
+//	 * @param startTime the time the meeting starts
+//	 * @param endTime	the time the meeting ends
+//	 * @param username	the user adding the meeting
+//	 */
+//	void insertMeeting(String meetingName, String date, String startTime, String endTime, String priorityLevel, String username) {
+//		MongoCollection<Document> collection = database.getCollection("meetings");
+//		Document newMeeting = new Document("meetingName", meetingName)
+//				.append("date", date)
+//				.append("startTime", startTime)
+//				.append("endTime", endTime)
+//				.append("priorityLevel", priorityLevel)
+//				.append("user", username);
+//		collection.insertOne(newMeeting);
+//	}
 	
 	/*
 	 * Inserts a new exam into the database

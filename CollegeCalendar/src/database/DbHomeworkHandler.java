@@ -61,7 +61,7 @@ public class DbHomeworkHandler {
 	 * 
 	 * @param repeats	either Daily, Weekly, or Monthly
 	 */
-	void insertHomework(String name, String dueDate, String repeats, String className, String priorityLevel, String username) {
+	void insertHomework(String name, String dueDate, String repeats, String className, int priorityLevel, String username) {
 		if (name.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
