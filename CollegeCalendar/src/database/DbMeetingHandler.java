@@ -37,7 +37,7 @@ public class DbMeetingHandler {
 	
 	public DbMeetingHandler(MongoClient mongoClient) {
 		this.mongoClient = mongoClient;
-		database = mongoClient.getDatabase("408testdb");
+		database = mongoClient.getDatabase("408calendar");
 	}
 	
 	
@@ -46,13 +46,10 @@ public class DbMeetingHandler {
 	 * Main method for DbMeetingHandler
 	 */
 	public static void main(String[] args) {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbMeetingHandler dbmh = new DbMeetingHandler(mongoClient2);
 		
-		ObjectId oid = new ObjectId("5ba1916518f6315f7ca7cd6b");
-		
-		dbmh.deleteMeeting(oid);
-		dbmh.getMeetingsByUsername("testUser");
+		dbmh.insertMeeting("testMeeting", "9/21/2018", "9:30", "10:30", "Weekly", 10, "testUser");
 	}
 	
 	
