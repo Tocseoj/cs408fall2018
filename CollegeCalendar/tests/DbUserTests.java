@@ -41,7 +41,8 @@ public class DbUserTests {
 	 */
 	@Test
 	public void testInsertUser() throws Exception {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
+//		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
 		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
 		
 		
@@ -59,7 +60,7 @@ public class DbUserTests {
 	 */
 	@Test
 	public void testDeleteUser() throws Exception {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
 		
 		dbuh.insertUser("testing_database_user", "password", "9/1/2018", "12/18/2018", "black");
@@ -75,7 +76,7 @@ public class DbUserTests {
 	 */
 	@Test
 	public void testGetAllUsers() throws Exception {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
 		
 		MongoCollection<Document> collection = dbuh.getAllUsers();
@@ -88,7 +89,7 @@ public class DbUserTests {
 	 */
 	@Test
 	public void testEncryption() throws Exception {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
 		// insert the user used for testing
 		dbuh.insertUser("testing_database_user", "password", "9/1/2018", "12/18/2018", "black");
@@ -112,7 +113,7 @@ public class DbUserTests {
 	 */
 	@Test
 	public void testUpdateUser() throws Exception {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
 		
 		// insert the user used for testing
@@ -120,7 +121,7 @@ public class DbUserTests {
 		dbuh.updateUser("testing_database_user", "password", "9/1/2018", "12/12/2018", "green");
 		// get the user from the database
 		Document insertedUser = dbuh.getUserByUsername("testing_database_user");
-		String changed_color = insertedUser.get("color", String.class);
+		String changed_color = insertedUser.get("color", String.class);  
 		
 		boolean isNotChanged = "black".equals(changed_color);
 		
