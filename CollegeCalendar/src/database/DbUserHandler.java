@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
@@ -53,7 +54,7 @@ public class DbUserHandler {
 	 * @param username the username of the new user
 	 * @param password the password of the new user
 	 */
-	void insertUser(String username, String password, String semesterStart, String semesterEnd, String color) throws Exception {
+	public void insertUser(String username, String password, String semesterStart, String semesterEnd, String color) throws Exception {
 		// need to check if a user already exists with the given user name
 		Document oldUser = getUserByUsername(username);
 		if (oldUser != null) {
@@ -195,7 +196,7 @@ public class DbUserHandler {
 	/*
 	 * Get all the users currently in the database
 	 */
-	MongoCollection<Document> getAllUsers() {
+	public MongoCollection<Document> getAllUsers() {
 		MongoCollection<Document> collection = database.getCollection("users");
 		return collection;
 	}
@@ -204,7 +205,7 @@ public class DbUserHandler {
 	/*
 	 * Queries the database to get a user by user name
 	 */
-	Document getUserByUsername(String username) {
+	public Document getUserByUsername(String username) {
 		MongoCollection<Document> collection = database.getCollection("users");
 		Document user = collection.find(eq("username", username)).first();
 		
@@ -212,7 +213,24 @@ public class DbUserHandler {
 	}
 	
 	
+	/*
+	 * Deletes the user specified by the given id
+	 * @param id oid of the user
+	 */
+	public void deleteUserById(ObjectId id) {
+		MongoCollection<Document> collection = database.getCollection("users");
+		collection.deleteOne(eq("_id", id));
+	}
 	
+	/*
+	 * Deletes the user given by the username
+	 * 
+	 * @param <str> username of the user to delete
+	 */
+	public void deleteUserByUsername(String username) {
+		MongoCollection<Document> collection = database.getCollection("users");
+		collection.deleteOne(eq("username", username));
+	}
 	
 	
 	
