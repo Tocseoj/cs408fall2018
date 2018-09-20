@@ -44,7 +44,7 @@ public class DbMeetingTests {
 	 */
 	@Test
 	public void testInsertMeeting() throws Exception{
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbMeetingHandler dbmh = new DbMeetingHandler(mongoClient2);
 		
 		dbmh.insertMeeting("test", "9/19/2018", "9:30", "10:30", "Weekly", 10, "testing_database_user");
@@ -65,7 +65,7 @@ public class DbMeetingTests {
 	 */
 	@Test
 	public void testDeleteMeeting() throws Exception {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbMeetingHandler dbmh = new DbMeetingHandler(mongoClient2);
 		
 		dbmh.insertMeeting("test", "9/19/2018", "9:30", "10:30", "Weekly", 10, "testing_database_user");
@@ -86,7 +86,7 @@ public class DbMeetingTests {
 	 */
 	@Test
 	public void testUpdateMeeting() throws Exception {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbMeetingHandler dbmh = new DbMeetingHandler(mongoClient2);
 		
 		dbmh.insertMeeting("test", "9/19/2018", "9:30", "10:30", "Weekly", 10, "testing_database_user");
@@ -124,7 +124,7 @@ public class DbMeetingTests {
 	 */
 	@Test
 	public void testGetMeetingsByUsername() {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbMeetingHandler dbmh = new DbMeetingHandler(mongoClient2);
 		
 		dbmh.insertMeeting("test", "9/19/2018", "9:30", "10:30", "Weekly", 10, "testing_database_user");
