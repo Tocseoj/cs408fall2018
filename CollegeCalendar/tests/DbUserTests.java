@@ -1,6 +1,9 @@
 import database.DbUserHandler;
+import junit.framework.Assert;
+
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.*;
 //import org.junit.Assert;
 
@@ -68,7 +71,7 @@ public class DbUserTests {
 	}
 	
 	/*
-	 * 
+	 * Tests whether the database successfully returns a list of all the users currently registered 
 	 */
 	@Test
 	public void testGetAllUsers() throws Exception {
@@ -78,6 +81,29 @@ public class DbUserTests {
 		MongoCollection<Document> collection = dbuh.getAllUsers();
 		
 		assertNotNull(collection);
+	}
+	
+	/*
+	 * Tests whether the passwords in the database are encrypted
+	 */
+	@Test
+	public void testEncryption() throws Exception {
+		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
+		
+		dbuh.insertUser("testing_database_user", "password", "9/1/2018", "12/18/2018", "black");
+		Document insertedUser = dbuh.getUserByUsername("testing_database_user");
+		String db_password = insertedUser.get("password", String.class);
+//		System.out.println(insertedUser.get("password", String.class));
+		
+		dbuh.deleteUserByUsername("testing_database_user");
+		
+		boolean isNotEncrypted = "password".equals(db_password);
+		System.out.println(isNotEncrypted);
+		
+		Assert.assertFalse(isNotEncrypted);
+		
+		
 	}
 	
 	
