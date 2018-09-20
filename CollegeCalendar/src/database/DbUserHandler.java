@@ -132,7 +132,7 @@ public class DbUserHandler {
 	/*
 	 * Updates the user given by the specified username
 	 */
-	void updateUser(String username, String password, String semesterStart, String semesterEnd, String color) {
+	public void updateUser(String username, String password, String semesterStart, String semesterEnd, String color) {
 		if (username.equals("")) {
 			System.out.println("invalid arguments");
 			return;

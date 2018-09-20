@@ -90,20 +90,47 @@ public class DbUserTests {
 	public void testEncryption() throws Exception {
 		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
 		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
-		
+		// insert the user used for testing
 		dbuh.insertUser("testing_database_user", "password", "9/1/2018", "12/18/2018", "black");
 		Document insertedUser = dbuh.getUserByUsername("testing_database_user");
 		String db_password = insertedUser.get("password", String.class);
-//		System.out.println(insertedUser.get("password", String.class));
 		
+		
+		// delete the user in the database used for testing
 		dbuh.deleteUserByUsername("testing_database_user");
 		
+		// if the boolean is true, then the password is not encrypted, so the test should fail
 		boolean isNotEncrypted = "password".equals(db_password);
-		System.out.println(isNotEncrypted);
 		
+		// assertion to check the status of the boolean
 		Assert.assertFalse(isNotEncrypted);
+	}
+	
+	
+	/*
+	 * Tests whether a user can be successfully updated
+	 */
+	@Test
+	public void testUpdateUser() throws Exception {
+		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
+		
+		// insert the user used for testing
+		dbuh.insertUser("testing_database_user", "password", "9/1/2018", "12/18/2018", "black");
+		dbuh.updateUser("testing_database_user", "password", "9/1/2018", "12/12/2018", "green");
+		// get the user from the database
+		Document insertedUser = dbuh.getUserByUsername("testing_database_user");
+		String changed_color = insertedUser.get("color", String.class);
+		
+		boolean isNotChanged = "black".equals(changed_color);
+		
+		System.out.println(isNotChanged);
+		
+		// delete the user used for testing, leaving the db untouched
+		dbuh.deleteUserByUsername("testing_database_user");
 		
 		
+		Assert.assertFalse(isNotChanged);
 	}
 	
 	
