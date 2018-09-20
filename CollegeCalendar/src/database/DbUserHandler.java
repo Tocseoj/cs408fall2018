@@ -37,13 +37,16 @@ public class DbUserHandler {
 	
 	public DbUserHandler(MongoClient mongoClient) {
 		this.mongoClient = mongoClient;
-		database = mongoClient.getDatabase("408testdb");
+		database = mongoClient.getDatabase("408calendar");
 	}
 	
 	
 	public static void main(String[] args) {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
+		
+		dbuh.getAllUsers();
+//		System.out.println(x);
 		
 	}
 	
