@@ -1,9 +1,18 @@
 package gui;
 
+import org.bson.Document;
+
+import com.mongodb.client.MongoCursor;
+
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -48,8 +57,36 @@ public class MainGUI extends Application{
 		rect3.setArcHeight(20.0);
 		BorderPane.setAlignment(rect3, Pos.TOP_CENTER);
 		
+		VBox buttonGroup = new VBox();
+		
+		Button storeDataButton = new Button("Store in Database");
+		buttonGroup.getChildren().add(storeDataButton);
+		Button getDataButton = new Button("Get All Events");
+		buttonGroup.getChildren().add(getDataButton);
+		
+		
+		MongoCursor<Document> allEvents;
+		
+		
+		//Eventhandler<MouseEvent>
+		storeDataButton.setOnAction(new EventHandler<ActionEvent> () {
+			public void handle(ActionEvent e) {
+				System.out.println("Storing");
+			}
+		});
+		
+		getDataButton.setOnAction(new EventHandler<ActionEvent> () {
+			public void handle(ActionEvent e) {
+				System.out.println("Getting");
+			}
+		});
+		
+		
+		
+		
+		
 		//root.getChildren().add(rect);
-		root.setCenter(rect);
+		root.setCenter(buttonGroup);
 		root.setTop(rect2);
 		root.setBottom(rect3);
 		
