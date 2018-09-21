@@ -15,9 +15,10 @@ public class EventGO {
 	private LocalTime time;
 	private Duration duration;
 	private int priority;
-	private Boolean[] array = new Boolean[7];
+	private Boolean[] repeatDays = new Boolean[8];
 	private LocalDate endRepeat;
 	private Duration notificationOffset;
+	private Boolean completed;
 	
 	public EventGO(String id, String title) {
 		this.id = id;
@@ -26,8 +27,10 @@ public class EventGO {
 		this.time = LocalTime.of(0, 0);
 		this.duration = Duration.ofHours(0);
 		this.priority = 0;
+		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
 		this.endRepeat = this.date;
 		this.notificationOffset = Duration.ofMinutes(10);
+		this.completed = false;
 	}
 	
 	public EventGO(String id, String title, LocalDate date) {
@@ -37,8 +40,10 @@ public class EventGO {
 		this.time = LocalTime.of(0, 0);
 		this.duration = Duration.ofHours(0);
 		this.priority = 0;
+		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
 		this.endRepeat = this.date;
 		this.notificationOffset = Duration.ofMinutes(10);
+		this.completed = false;
 	}
 	
 	public EventGO(String id, String title, LocalDate date, LocalTime time, Duration duration) {
@@ -48,8 +53,10 @@ public class EventGO {
 		this.time = time;
 		this.duration = duration;
 		this.priority = 0;
+		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
 		this.endRepeat = this.date;
 		this.notificationOffset = Duration.ofMinutes(10);
+		this.completed = false;
 	}
 	
 	public EventGO(String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, LocalDate endRepeat, Duration notificationOffset) {
@@ -59,8 +66,10 @@ public class EventGO {
 		this.time = time;
 		this.duration = duration;
 		this.priority = priority;
+		this.repeatDays = repeatDays;
 		this.endRepeat = endRepeat;
 		this.notificationOffset = notificationOffset;
+		this.completed = false;
 	}
 	
 	public String getID() {
@@ -81,5 +90,12 @@ public class EventGO {
 	
 	public Duration getDuration() {
 		return duration;
+	}
+	
+	public Boolean getCompleted() {
+		return completed;
+	}
+	public void setCompleted(Boolean val) {
+		completed = val;
 	}
 }
