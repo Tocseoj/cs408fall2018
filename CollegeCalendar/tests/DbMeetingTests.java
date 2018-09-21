@@ -104,7 +104,7 @@ public class DbMeetingTests {
 //		ObjectId id = insertedMeeting.get("_id", ObjectId.class);
 //		System.out.println(id);
 		
-		dbmh.deleteMeetingsByUsername("testing_database_user");
+		dbmh.deleteMeetingByUsername("testing_database_user");
 		
 		assertNotNull(insertedMeetings);
 	}
