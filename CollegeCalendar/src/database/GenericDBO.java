@@ -34,15 +34,18 @@ public class GenericDBO {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	public void insertEvent(String className, String startDate, String endDate, String building, String room, String eventName, String username) {
+	public String insertEvent(String className, String startDate, String endDate, String building, String room, String eventName, String username) {
 		MongoCollection<Document> collection = database.getCollection("events");
+		ObjectId oid = new ObjectId();
 		Document newClass = new Document("eventName", className)
 				.append("startDate", startDate)
 				.append("endDate", endDate)
 				.append("building", building)
 				.append("room", room)
-				.append("user", username);
+				.append("user", username)
+				.append("_id", oid);
 		collection.insertOne(newClass);
+		return oid.toString();
 	}
 	
 	/**

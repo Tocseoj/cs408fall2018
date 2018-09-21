@@ -125,6 +125,16 @@ public class Controller {
 		}
 		return al;
 	}
+	
+	public GenericGO addEvent(String name, String date, String time, String duration) {
+		
+		return null;
+	}
+	
+	public ClassGO addEvent(ClassGO cgo) {
+		return null;
+	}
+	
 	public String getMeetingName(MeetingGO mgo) {
 		Document d = mdb.getMeetingById(mgo.getID());
 		String name = (String)d.get(MEETING_NAME_KEY);
