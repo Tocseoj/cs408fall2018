@@ -5,6 +5,8 @@ import static com.mongodb.client.model.Filters.eq;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -16,14 +18,16 @@ import com.mongodb.client.MongoDatabase;
 public class ClassDBO {
 
 	private MongoDatabase database;
+	private MongoClient mongoClient;
 
 	/**
 	 * Constructor for object to interact with class events
 	 * @param database 
 	 */
 	public ClassDBO(MongoDatabase database) {
-		this.database = database;
-	}
+		MongoClientURI uri  = new MongoClientURI("mongodb://tester:tester1@ds135441.mlab.com:35441/408calendar");
+		this.mongoClient = new MongoClient(uri);
+        this.database = mongoClient.getDatabase(uri.getDatabase());	}
 
 	/**
 	 * Inserts a class associated with a username in the database

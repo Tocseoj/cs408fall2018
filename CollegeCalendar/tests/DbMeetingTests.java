@@ -1,40 +1,15 @@
-import database.DbUserHandler;
-import database.DbMeetingHandler;
-import junit.framework.Assert;
-
-import org.junit.Test;
-
-import static org.junit.Assert.*;
 //import org.junit.Assert;
-
-import java.util.Arrays;
-import java.util.List;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.junit.Test;
 
-import com.mongodb.*;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 
-import static com.mongodb.client.model.Filters.*;
-import com.mongodb.client.MongoDatabase;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.AlgorithmParameters;
-import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Base64;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
+import database.MeetingDBO;
 
 
 public class DbMeetingTests {
@@ -44,8 +19,7 @@ public class DbMeetingTests {
 	 */
 	@Test
 	public void testInsertMeeting() throws Exception{
-		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
-		DbMeetingHandler dbmh = new DbMeetingHandler(mongoClient2);
+		MeetingDBO dbmh = new MeetingDBO();
 		
 		dbmh.insertMeeting("test", "9/19/2018", "9:30", "10:30", "Weekly", 10, "testing_database_user");
 		Document insertedMeeting = dbmh.getOneMeetingByUsername("testing_database_user");
@@ -53,9 +27,7 @@ public class DbMeetingTests {
 		ObjectId id = insertedMeeting.get("_id", ObjectId.class);
 //		System.out.println(id);
 		dbmh.deleteMeeting(id);
-		
-		mongoClient2.close();
-		
+				
 		assertNotNull(insertedMeeting);
 		
 	}
@@ -65,8 +37,7 @@ public class DbMeetingTests {
 	 */
 	@Test
 	public void testDeleteMeeting() throws Exception {
-		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
-		DbMeetingHandler dbmh = new DbMeetingHandler(mongoClient2);
+		MeetingDBO dbmh = new MeetingDBO();
 		
 		dbmh.insertMeeting("test", "9/19/2018", "9:30", "10:30", "Weekly", 10, "testing_database_user");
 		Document insertedMeeting = dbmh.getOneMeetingByUsername("testing_database_user");
@@ -77,7 +48,6 @@ public class DbMeetingTests {
 		
 		insertedMeeting = dbmh.getOneMeetingByUsername("testing_database_user");
 		
-		mongoClient2.close();
 		assertNull(insertedMeeting);
 	}
 	
@@ -86,8 +56,7 @@ public class DbMeetingTests {
 	 */
 	@Test
 	public void testUpdateMeeting() throws Exception {
-		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
-		DbMeetingHandler dbmh = new DbMeetingHandler(mongoClient2);
+		MeetingDBO dbmh = new MeetingDBO();
 		
 		dbmh.insertMeeting("test", "9/19/2018", "9:30", "10:30", "Weekly", 10, "testing_database_user");
 		
@@ -124,8 +93,7 @@ public class DbMeetingTests {
 	 */
 	@Test
 	public void testGetMeetingsByUsername() {
-		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
-		DbMeetingHandler dbmh = new DbMeetingHandler(mongoClient2);
+		MeetingDBO dbmh = new MeetingDBO();
 		
 		dbmh.insertMeeting("test", "9/19/2018", "9:30", "10:30", "Weekly", 10, "testing_database_user");
 		

@@ -5,19 +5,23 @@ import static com.mongodb.client.model.Filters.eq;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
 public class GenericDBO {
 	private MongoDatabase database;
-
+	private MongoClient mongoClient;
 	/**
 	 * Constructor for object to interact with event events
 	 * @param database 
 	 */
-	public GenericDBO(MongoDatabase database) {
-		this.database = database;
+	public GenericDBO() {
+		MongoClientURI uri  = new MongoClientURI("mongodb://tester:tester1@ds135441.mlab.com:35441/408calendar");
+		this.mongoClient = new MongoClient(uri);
+        this.database = mongoClient.getDatabase(uri.getDatabase());
 	}
 
 	/**

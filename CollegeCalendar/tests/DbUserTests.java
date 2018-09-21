@@ -1,37 +1,14 @@
-import database.DbUserHandler;
-import junit.framework.Assert;
-
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-
-import static org.junit.Assert.*;
 //import org.junit.Assert;
-
-import java.util.Arrays;
-import java.util.List;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.bson.Document;
+import org.junit.Test;
 
-import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
-import static com.mongodb.client.model.Filters.*;
-import com.mongodb.client.MongoDatabase;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.AlgorithmParameters;
-import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Base64;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
+
+import database.UserDBO;
+import junit.framework.Assert;
 
 public class DbUserTests {
 	
@@ -41,17 +18,14 @@ public class DbUserTests {
 	 */
 	@Test
 	public void testInsertUser() throws Exception {
-		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 //		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
-		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
+		UserDBO dbuh = new UserDBO();
 		
 		
 		dbuh.insertUser("testing_database_user", "password", "9/1/2018", "12/18/2018", "black");
 		Document insertedUser = dbuh.getUserByUsername("testing_database_user");
 		dbuh.deleteUserByUsername("testing_database_user");
-		
-		mongoClient2.close();
-		
+				
 		assertNotNull(insertedUser);
 	}
 	
@@ -60,14 +34,12 @@ public class DbUserTests {
 	 */
 	@Test
 	public void testDeleteUser() throws Exception {
-		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
-		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
+		UserDBO dbuh = new UserDBO();
 		
 		dbuh.insertUser("testing_database_user", "password", "9/1/2018", "12/18/2018", "black");
 		dbuh.deleteUserByUsername("testing_database_user");
 		Document insertedUser = dbuh.getUserByUsername("testing_database_user");
 		
-		mongoClient2.close();
 		assertNull(insertedUser);
 	}
 	
@@ -76,8 +48,7 @@ public class DbUserTests {
 	 */
 	@Test
 	public void testGetAllUsers() throws Exception {
-		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
-		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
+		UserDBO dbuh = new UserDBO();
 		
 		MongoCollection<Document> collection = dbuh.getAllUsers();
 		
@@ -89,8 +60,7 @@ public class DbUserTests {
 	 */
 	@Test
 	public void testEncryption() throws Exception {
-		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
-		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
+		UserDBO dbuh = new UserDBO();
 		// insert the user used for testing
 		dbuh.insertUser("testing_database_user", "password", "9/1/2018", "12/18/2018", "black");
 		Document insertedUser = dbuh.getUserByUsername("testing_database_user");
@@ -113,8 +83,7 @@ public class DbUserTests {
 	 */
 	@Test
 	public void testUpdateUser() throws Exception {
-		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
-		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
+		UserDBO dbuh = new UserDBO();
 		
 		// insert the user used for testing
 		dbuh.insertUser("testing_database_user", "password", "9/1/2018", "12/18/2018", "black");

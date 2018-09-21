@@ -1,17 +1,8 @@
 package database;
 
 
-import java.util.Arrays;
-import java.util.List;
+import static com.mongodb.client.model.Filters.eq;
 
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
-import com.mongodb.*;
-import com.mongodb.client.MongoCollection;
-import static com.mongodb.client.model.Filters.*;
-import com.mongodb.client.MongoDatabase;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.AlgorithmParameters;
@@ -19,32 +10,38 @@ import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
-import javax.crypto.BadPaddingException;
+
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
 
-public class DbUserHandler {
-	private static MongoClient mongoClient;
-	private static MongoDatabase database;
-	private String encryptionPassword;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+
+public class UserDBO {
+	private MongoClient mongoClient;
+	private MongoDatabase database;
+//	private String encryptionPassword;
 	
 	
-	public DbUserHandler(MongoClient mongoClient) {
-		this.mongoClient = mongoClient;
-		database = mongoClient.getDatabase("408calendar");
+	public UserDBO() {
+		MongoClientURI uri  = new MongoClientURI("mongodb://tester:tester1@ds135441.mlab.com:35441/408calendar");
+		this.mongoClient = new MongoClient(uri);
+        this.database = mongoClient.getDatabase(uri.getDatabase());
 	}
 	
 	
 	public static void main(String[] args) {
-		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
-		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
-		
+		UserDBO dbuh = new UserDBO();
 		dbuh.getAllUsers();
 //		System.out.println(x);
 		
@@ -108,7 +105,7 @@ public class DbUserHandler {
 		}
 		
 		
-		String db_username = (String) user.get("username");
+		// String db_username = (String) user.get("username");
 		String db_password = (String) user.get("password");
 		
 		

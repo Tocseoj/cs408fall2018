@@ -1,53 +1,32 @@
 package database;
 
+import static com.mongodb.client.model.Filters.eq;
+
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import com.mongodb.*;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-
-import static com.mongodb.client.model.Filters.*;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Filters;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.AlgorithmParameters;
-import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
-import java.util.Base64;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-
-public class DbMeetingHandler {
-	private static MongoClient mongoClient;
-	private static MongoDatabase database;
+public class MeetingDBO {
+	private MongoClient mongoClient;
+	private MongoDatabase database;
 	
 	
-	public DbMeetingHandler(MongoClient mongoClient) {
-		this.mongoClient = mongoClient;
-		database = mongoClient.getDatabase("408calendar");
+	public MeetingDBO() {
+		MongoClientURI uri  = new MongoClientURI("mongodb://tester:tester1@ds135441.mlab.com:35441/408calendar");
+		this.mongoClient = new MongoClient(uri);
+        this.database = mongoClient.getDatabase(uri.getDatabase());
 	}
-	
-	
 	
 	/*
 	 * Main method for DbMeetingHandler
 	 */
 	public static void main(String[] args) {
-		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
-		DbMeetingHandler dbmh = new DbMeetingHandler(mongoClient2);
+		MeetingDBO dbmh = new MeetingDBO();
 		
 		dbmh.insertMeeting("testMeeting", "9/21/2018", "9:30", "10:30", "Weekly", 10, "testUser");
 	}
@@ -127,7 +106,7 @@ public class DbMeetingHandler {
 		MongoCursor<Document> ret = collection.find(eq("user", username)).iterator();
 		while (ret.hasNext()) {
 //			System.out.println("in here");
-			String curr = ret.next().toJson();
+//			String curr = ret.next().toJson();
 //			System.out.println(curr);
 		}
 		return ret;
