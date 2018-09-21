@@ -7,7 +7,7 @@ import java.time.DayOfWeek;
 
 enum EventType { GENERIC, HOMEWORK, CLASS, EXAM, MEETING };
 
-public class GenericGO {
+public class EventGO {
 	private EventType type;
 	private String id;
 	private String title;
@@ -19,7 +19,7 @@ public class GenericGO {
 	private LocalDate endRepeat;
 	private Duration notificationOffset;
 	
-	public GenericGO(String id, String title) {
+	public EventGO(String id, String title) {
 		this.id = id;
 		this.title = title;
 		this.date = LocalDate.now();
@@ -30,7 +30,7 @@ public class GenericGO {
 		this.notificationOffset = Duration.ofMinutes(10);
 	}
 	
-	public GenericGO(String id, String title, LocalDate date) {
+	public EventGO(String id, String title, LocalDate date) {
 		this.id = id;
 		this.title = title;
 		this.date = date;
@@ -41,7 +41,7 @@ public class GenericGO {
 		this.notificationOffset = Duration.ofMinutes(10);
 	}
 	
-	public GenericGO(String id, String title, LocalDate date, LocalTime time, Duration duration) {
+	public EventGO(String id, String title, LocalDate date, LocalTime time, Duration duration) {
 		this.id = id;
 		this.title = title;
 		this.date = date;
@@ -52,7 +52,7 @@ public class GenericGO {
 		this.notificationOffset = Duration.ofMinutes(10);
 	}
 	
-	public GenericGO(String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, LocalDate endRepeat, Duration notificationOffset) {
+	public EventGO(String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, LocalDate endRepeat, Duration notificationOffset) {
 		this.id = id;
 		this.title = title;
 		this.date = date;

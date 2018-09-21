@@ -23,7 +23,7 @@ public class MainGUI extends Application{
 	private Controller ic = new Controller();
 	private ArrayList<MeetingGO> meetingList;
 	private ArrayList<HomeworkGO> homeworkList;
-	private ArrayList<GenericGO> genericList;	
+	private ArrayList<EventGO> genericList;	
 	private ArrayList<ExamGO> examList;
 	private ArrayList<ClassGO> classList;
 	private ArrayList<Button> eventButtons;
@@ -126,12 +126,12 @@ public class MainGUI extends Application{
 	
 	// Start Joe's Work
 	public void addEvent(String id, String title, LocalDate date, LocalTime time, Duration duration) {
-		GenericGO newEvent = new GenericGO("0", "test event");
+		EventGO newEvent = new EventGO("0", "test event");
 		genericList.add(newEvent);
 		ic.addEventToDatabase(newEvent);
 	}
 	public void addClass(String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, LocalDate endRepeat, Duration notificationOffset) {
-		GenericGO newEvent = new GenericGO("0", "test event");
+		EventGO newEvent = new EventGO("0", "test event");
 		genericList.add(newEvent);
 		ic.addEventToDatabase(newEvent);
 	}

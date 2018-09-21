@@ -9,12 +9,12 @@ import com.mongodb.client.MongoCursor;
 
 import database.ClassDBO;
 import database.ExamDBO;
-import database.GenericDBO;
+import database.EventDBO;
 import database.HomeworkDBO;
 import database.MeetingDBO;
 import gui.ClassGO;
 import gui.ExamGO;
-import gui.GenericGO;
+import gui.EventGO;
 import gui.HomeworkGO;
 import gui.MeetingGO;
 
@@ -23,7 +23,7 @@ public class Controller {
 	private MeetingDBO mdb;
 	private ClassDBO cdb;
 	private ExamDBO edb;
-	private GenericDBO gdb;
+	private EventDBO gdb;
 	private HomeworkDBO hdb;
 	
 	private final String MEETING_NAME_KEY = "meetingName";
@@ -37,7 +37,7 @@ public class Controller {
 		this.mdb = new MeetingDBO();
 		this.cdb = new ClassDBO();
 		this.edb = new ExamDBO();
-		this.gdb = new GenericDBO();
+		this.gdb = new EventDBO();
 		this.hdb = new HomeworkDBO();
 	}
 	
@@ -92,9 +92,9 @@ public class Controller {
 		return al;
 	}
 	
-	public ArrayList<GenericGO> getAllGenerics(String userName){
+	public ArrayList<EventGO> getAllGenerics(String userName){
 		MongoCursor<Document> c = gdb.getAllEvents(userName);
-		ArrayList<GenericGO> al = new ArrayList<GenericGO>();
+		ArrayList<EventGO> al = new ArrayList<EventGO>();
 		Document doc;
 		if(c == null) {
 			return al;
@@ -104,7 +104,7 @@ public class Controller {
 			ObjectId oid = (ObjectId)doc.get("_id");
 			String id = oid.toString();
 			String title = doc.getString(GENERIC_NAME_KEY);
-			al.add(new GenericGO(id, title));
+			al.add(new EventGO(id, title));
 		}
 		return al;
 	}
@@ -135,7 +135,7 @@ public class Controller {
 	// Adding Events - Joe
 	
 	// Return ID of data in database
-	public String addEventToDatabase(GenericGO event) {
+	public String addEventToDatabase(EventGO event) {
 		
 		// TODO : Add event to database
 		

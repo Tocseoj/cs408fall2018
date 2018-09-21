@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class HomeworkGO extends GenericGO {
+public class HomeworkGO extends EventGO {
 	private Boolean completed;
 	
 	public HomeworkGO(String id, String title) {
