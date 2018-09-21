@@ -41,27 +41,28 @@ public class HomeworkDBO {
 	 * 
 	 * @param repeats	either Daily, Weekly, or Monthly
 	 */
-	public void insertHomework(String className, String dueDate, String repeats, String status, String homeworkName, int priorityLevel, String username) {
+	public String insertHomework(String className, String dueDate, String repeats, String status, String homeworkName, int priorityLevel, String username) {
 		if (className.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
-			return;
+			return "";
 		}
 		
 		if (!repeats.equals("Daily") && !repeats.equals("Weekly") && !repeats.equals("Monthly")) {
 			System.out.println("invalid value for repeats");
-			return;
+			return "";
 		}
-		
 		MongoCollection<Document> collection = database.getCollection("homeworks");
+		ObjectId oid = new ObjectId();
 		Document newHomework = new Document("className", className)
 				.append("dueDate", dueDate)
 				.append("repeats", repeats)
 				.append("status", status)
 				.append("homeworkName", homeworkName)
 				.append("priorityLevel", priorityLevel)
-				.append("user", username);
-		
+				.append("user", username)
+				.append("_id", oid);
 		collection.insertOne(newHomework);
+		return oid.toString();
 		
 	}
 	

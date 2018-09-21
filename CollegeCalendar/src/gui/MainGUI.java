@@ -33,7 +33,6 @@ public class MainGUI extends Application{
 			genericList = ic.getAllGenerics(userName);
 			examList = ic.getAllExams(userName);
 			classList = ic.getAllClasses(userName);
-			
 
 			Scene scene = fxTest();
 			primaryStage.setScene(scene);
@@ -84,6 +83,7 @@ public class MainGUI extends Application{
 		storeDataButton.setOnAction(new EventHandler<ActionEvent> () {
 			public void handle(ActionEvent e) {
 				MeetingGO asd = (MeetingGO)storeDataButton.getUserData();
+				
 				System.out.println(ic.getMeetingName(asd));
 			}
 		});

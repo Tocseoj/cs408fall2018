@@ -40,16 +40,19 @@ public class MeetingDBO {
 	 * @param endTime	the time the meeting ends
 	 * @param username	the user adding the meeting
 	 */
-	public void insertMeeting(String meetingName, String date, String startTime, String endTime, String repeats, int priorityLevel, String username) {
+	public String insertMeeting(String meetingName, String date, String startTime, String endTime, String repeats, int priorityLevel, String username) {
 		MongoCollection<Document> collection = database.getCollection("meetings");
+		ObjectId oid = new ObjectId();
 		Document newMeeting = new Document("meetingName", meetingName)
 				.append("date", date)
 				.append("startTime", startTime)
 				.append("endTime", endTime)
 				.append("repeats", repeats)
 				.append("priorityLevel", priorityLevel)
-				.append("user", username);
+				.append("user", username)
+				.append("_id", oid);
 		collection.insertOne(newMeeting);
+		return oid.toString();
 	}
 	
 	/*
