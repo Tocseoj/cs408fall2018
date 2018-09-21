@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
@@ -36,13 +37,16 @@ public class DbUserHandler {
 	
 	public DbUserHandler(MongoClient mongoClient) {
 		this.mongoClient = mongoClient;
-		database = mongoClient.getDatabase("408testdb");
+		database = mongoClient.getDatabase("408calendar");
 	}
 	
 	
 	public static void main(String[] args) {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
+		
+		dbuh.getAllUsers();
+//		System.out.println(x);
 		
 	}
 	
@@ -53,7 +57,7 @@ public class DbUserHandler {
 	 * @param username the username of the new user
 	 * @param password the password of the new user
 	 */
-	void insertUser(String username, String password, String semesterStart, String semesterEnd, String color) throws Exception {
+	public void insertUser(String username, String password, String semesterStart, String semesterEnd, String color) throws Exception {
 		// need to check if a user already exists with the given user name
 		Document oldUser = getUserByUsername(username);
 		if (oldUser != null) {
@@ -131,7 +135,7 @@ public class DbUserHandler {
 	/*
 	 * Updates the user given by the specified username
 	 */
-	void updateUser(String username, String password, String semesterStart, String semesterEnd, String color) {
+	public void updateUser(String username, String password, String semesterStart, String semesterEnd, String color) {
 		if (username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
@@ -195,7 +199,7 @@ public class DbUserHandler {
 	/*
 	 * Get all the users currently in the database
 	 */
-	MongoCollection<Document> getAllUsers() {
+	public MongoCollection<Document> getAllUsers() {
 		MongoCollection<Document> collection = database.getCollection("users");
 		return collection;
 	}
@@ -204,7 +208,7 @@ public class DbUserHandler {
 	/*
 	 * Queries the database to get a user by user name
 	 */
-	Document getUserByUsername(String username) {
+	public Document getUserByUsername(String username) {
 		MongoCollection<Document> collection = database.getCollection("users");
 		Document user = collection.find(eq("username", username)).first();
 		
@@ -212,7 +216,24 @@ public class DbUserHandler {
 	}
 	
 	
+	/*
+	 * Deletes the user specified by the given id
+	 * @param id oid of the user
+	 */
+	public void deleteUserById(ObjectId id) {
+		MongoCollection<Document> collection = database.getCollection("users");
+		collection.deleteOne(eq("_id", id));
+	}
 	
+	/*
+	 * Deletes the user given by the username
+	 * 
+	 * @param <str> username of the user to delete
+	 */
+	public void deleteUserByUsername(String username) {
+		MongoCollection<Document> collection = database.getCollection("users");
+		collection.deleteOne(eq("username", username));
+	}
 	
 	
 	

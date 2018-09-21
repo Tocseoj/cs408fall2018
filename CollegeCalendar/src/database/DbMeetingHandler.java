@@ -37,7 +37,7 @@ public class DbMeetingHandler {
 	
 	public DbMeetingHandler(MongoClient mongoClient) {
 		this.mongoClient = mongoClient;
-		database = mongoClient.getDatabase("408testdb");
+		database = mongoClient.getDatabase("408calendar");
 	}
 	
 	
@@ -46,13 +46,10 @@ public class DbMeetingHandler {
 	 * Main method for DbMeetingHandler
 	 */
 	public static void main(String[] args) {
-		MongoClient mongoClient2 = new MongoClient("localhost", 27017);
+		MongoClient mongoClient2 = new MongoClient(new MongoClientURI("mongodb://ag_tester:testing123@ds135441.mlab.com:35441/408calendar"));
 		DbMeetingHandler dbmh = new DbMeetingHandler(mongoClient2);
 		
-		ObjectId oid = new ObjectId("5ba1916518f6315f7ca7cd6b");
-		
-		dbmh.deleteMeeting(oid);
-		dbmh.getMeetingsByUsername("testUser");
+		dbmh.insertMeeting("testMeeting", "9/21/2018", "9:30", "10:30", "Weekly", 10, "testUser");
 	}
 	
 	
@@ -64,7 +61,7 @@ public class DbMeetingHandler {
 	 * @param endTime	the time the meeting ends
 	 * @param username	the user adding the meeting
 	 */
-	void insertMeeting(String meetingName, String date, String startTime, String endTime, String repeats, int priorityLevel, String username) {
+	public void insertMeeting(String meetingName, String date, String startTime, String endTime, String repeats, int priorityLevel, String username) {
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		Document newMeeting = new Document("meetingName", meetingName)
 				.append("date", date)
@@ -79,7 +76,7 @@ public class DbMeetingHandler {
 	/*
 	 * Updates an existing meeting with the given fields.
 	 */
-	void updateMeeting(String meetingName, String date, String startTime, String endTime, String repeats, int priorityLevel, String username,
+	public void updateMeeting(String meetingName, String date, String startTime, String endTime, String repeats, int priorityLevel, String username,
 			ObjectId id) {
 		
 		if (meetingName.equals("") || username.equals("")) {
@@ -105,26 +102,45 @@ public class DbMeetingHandler {
 	
 	
 	/*
-	 * Deletes the homework specified by the given id
+	 * Deletes the meeting specified by the given id
 	 * @param id	
 	 */
-	void deleteMeeting(ObjectId id) {
+	public void deleteMeeting(ObjectId id) {
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		collection.deleteOne(eq("_id", id));
 	}
 	
+	
 	/*
-	 * Given a username (normally the one that is logged in) 
+	 * Deletes meetings associated with a specific username
 	 */
-	MongoCursor<Document> getMeetingsByUsername(String username) {
+	public void deleteMeetingByUsername(String username) {
+		MongoCollection<Document> collection = database.getCollection("meetings");
+		collection.deleteMany(eq("user", username));
+	}
+	
+	/*
+	 * Given a username (normally the one that is logged in) gets all the meetings associated with that user.
+	 */
+	public MongoCursor<Document> getMeetingsByUsername(String username) {
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		MongoCursor<Document> ret = collection.find(eq("user", username)).iterator();
 		while (ret.hasNext()) {
-			System.out.println("in here");
+//			System.out.println("in here");
 			String curr = ret.next().toJson();
-			System.out.println(curr);
+//			System.out.println(curr);
 		}
 		return ret;
+	}
+	
+	/*
+	 * Given a username, get one meeting associated with the username
+	 */
+	public Document getOneMeetingByUsername(String username) {
+		MongoCollection<Document> collection = database.getCollection("meetings");
+		Document meeting = collection.find(eq("user", username)).first();
+		
+		return meeting;
 	}
 	
 	/*
