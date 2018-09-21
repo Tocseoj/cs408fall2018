@@ -37,9 +37,9 @@ public class ExamDBO {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	public void insertExam(String className, String startDate, String endDate, String building, String room, String teacherName, String username) {
+	public void insertExam(String examName, String startDate, String endDate, String building, String room, String teacherName, String username) {
 		MongoCollection<Document> collection = database.getCollection("exams");
-		Document newClass = new Document("className", className)
+		Document newClass = new Document("examName", examName)
 				.append("startDate", startDate)
 				.append("endDate", endDate)
 				.append("building", building)
@@ -59,13 +59,13 @@ public class ExamDBO {
 	 * @param username
 	 * @param id
 	 */
-	public void updateExam(String className, String dueDate, String teacherName, String priorityLevel, String username, ObjectId id) {
-		if (className.equals("") || username.equals("")) {
+	public void updateExam(String examName, String dueDate, String teacherName, String priorityLevel, String username, ObjectId id) {
+		if (examName.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
 		}
 		MongoCollection<Document> collection = database.getCollection("exams");
-		Document updatedHomework = new Document("className", className)
+		Document updatedHomework = new Document("className", examName)
 				.append("dueDate", dueDate)
 				.append("teacherName", teacherName)
 				.append("priorityLevel", priorityLevel)

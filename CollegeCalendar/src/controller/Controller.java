@@ -26,6 +26,13 @@ public class Controller {
 	private GenericDBO gdb;
 	private HomeworkDBO hdb;
 	
+	private final String MEETING_NAME_KEY = "meetingName";
+	private final String CLASS_NAME_KEY = "className";
+	private final String EXAM_NAME_KEY = "examName";
+	private final String GENERIC_NAME_KEY = "eventName";
+	private final String HOMEWORK_NAME_KEY = "homeworkName";
+
+	
 	public Controller() {
 		this.mdb = new MeetingDBO();
 		this.cdb = new ClassDBO();
@@ -96,7 +103,7 @@ public class Controller {
 			doc  = c.next();
 			ObjectId oid = (ObjectId)doc.get("_id");
 			String id = oid.toString();
-			String title = doc.getString("meetingName");
+			String title = doc.getString("eventName");
 			al.add(new GenericGO(id, title));
 		}
 		return al;
@@ -113,7 +120,7 @@ public class Controller {
 			doc  = c.next();
 			ObjectId oid = (ObjectId)doc.get("_id");
 			String id = oid.toString();
-			String title = doc.getString("meetingName");
+			String title = doc.getString("Name");
 			al.add(new HomeworkGO(id, title));
 		}
 		return al;

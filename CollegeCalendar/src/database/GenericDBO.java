@@ -36,12 +36,11 @@ public class GenericDBO {
 	 */
 	public void insertEvent(String className, String startDate, String endDate, String building, String room, String eventName, String username) {
 		MongoCollection<Document> collection = database.getCollection("events");
-		Document newClass = new Document("className", className)
+		Document newClass = new Document("eventName", className)
 				.append("startDate", startDate)
 				.append("endDate", endDate)
 				.append("building", building)
 				.append("room", room)
-				.append("eventName", eventName)
 				.append("user", username);
 		collection.insertOne(newClass);
 	}
@@ -56,16 +55,15 @@ public class GenericDBO {
 	 * @param username
 	 * @param id
 	 */
-	public void updateEvent(String name, String dueDate, String eventName, String priorityLevel, String username, ObjectId id) {
-		if (name.equals("") || username.equals("")) {
+	public void updateEvent(String eventName, String dueDate, String priorityLevel, String username, ObjectId id) {
+		if (eventName.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
 		}
 
 		MongoCollection<Document> collection = database.getCollection("events");
-		Document updatedHomework = new Document("name", name)
+		Document updatedHomework = new Document("eventName", eventName)
 				.append("dueDate", dueDate)
-				.append("eventName", eventName)
 				.append("priorityLevel", priorityLevel)
 				.append("user", username);
 		collection.updateOne(eq("_id", id), new Document("$set", updatedHomework));
