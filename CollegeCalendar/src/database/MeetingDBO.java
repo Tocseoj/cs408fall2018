@@ -104,11 +104,12 @@ public class MeetingDBO {
 	public MongoCursor<Document> getMeetingsByUsername(String username) {
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		MongoCursor<Document> ret = collection.find(eq("user", username)).iterator();
-		while (ret.hasNext()) {
-//			System.out.println("in here");
-//			String curr = ret.next().toJson();
-//			System.out.println(curr);
+		/*while (ret.hasNext()) {
+			System.out.println("in here");
+			String curr = ret.next().toJson();
+			System.out.println(curr);
 		}
+		*/
 		return ret;
 	}
 	
@@ -118,7 +119,6 @@ public class MeetingDBO {
 	public Document getOneMeetingByUsername(String username) {
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		Document meeting = collection.find(eq("user", username)).first();
-		
 		return meeting;
 	}
 	
@@ -129,7 +129,6 @@ public class MeetingDBO {
 		ObjectId id = new ObjectId(s);
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		Document meeting = collection.find(eq("_id", id)).first();
-		
 		return meeting;
 	}
 	

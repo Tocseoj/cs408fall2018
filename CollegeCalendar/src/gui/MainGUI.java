@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.ArrayList;
+
 import controller.InitialController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -15,10 +17,13 @@ import javafx.stage.Stage;
 
 public class MainGUI extends Application{
 	private InitialController ic = new InitialController();
+	private ArrayList<MeetingGO> meetingList = new ArrayList<MeetingGO>();
+	private String userName = "testUser";
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		try {
+			meetingList = ic.getAllMeetings(userName);
 			Scene scene = fxTest();
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -68,7 +73,7 @@ public class MainGUI extends Application{
 		storeDataButton.setOnAction(new EventHandler<ActionEvent> () {
 			public void handle(ActionEvent e) {
 				MeetingGO asd = (MeetingGO)storeDataButton.getUserData();
-				System.out.println(ic.getEventDetails(asd));
+				System.out.println(ic.getMeetingName(asd));
 			}
 		});
 		
@@ -77,10 +82,6 @@ public class MainGUI extends Application{
 				System.out.println("Getting");
 			}
 		});
-		
-		
-		
-		
 		
 		//root.getChildren().add(rect);
 		root.setCenter(buttonGroup);
