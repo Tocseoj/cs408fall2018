@@ -15,9 +15,10 @@ public class GenericGO {
 	private LocalTime time;
 	private Duration duration;
 	private int priority;
-	private Boolean[] array = new Boolean[7];
+	private Boolean[] repeatDays = new Boolean[8];
 	private LocalDate endRepeat;
 	private Duration notificationOffset;
+	private Boolean completed;
 	
 	public GenericGO(String id, String title) {
 		this.id = id;
@@ -26,8 +27,10 @@ public class GenericGO {
 		this.time = LocalTime.of(0, 0);
 		this.duration = Duration.ofHours(0);
 		this.priority = 0;
+		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
 		this.endRepeat = this.date;
 		this.notificationOffset = Duration.ofMinutes(10);
+		this.completed = false;
 	}
 	
 	public GenericGO(String id, String title, LocalDate date) {
@@ -37,8 +40,10 @@ public class GenericGO {
 		this.time = LocalTime.of(0, 0);
 		this.duration = Duration.ofHours(0);
 		this.priority = 0;
+		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
 		this.endRepeat = this.date;
 		this.notificationOffset = Duration.ofMinutes(10);
+		this.completed = false;
 	}
 	
 	public GenericGO(String id, String title, LocalDate date, LocalTime time, Duration duration) {
@@ -48,19 +53,23 @@ public class GenericGO {
 		this.time = time;
 		this.duration = duration;
 		this.priority = 0;
+		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
 		this.endRepeat = this.date;
 		this.notificationOffset = Duration.ofMinutes(10);
+		this.completed = false;
 	}
 	
-	public GenericGO(String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, LocalDate endRepeat, Duration notificationOffset) {
+	public GenericGO(String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat, Duration notificationOffset) {
 		this.id = id;
 		this.title = title;
 		this.date = date;
 		this.time = time;
 		this.duration = duration;
 		this.priority = priority;
+		this.repeatDays = repeatDays;
 		this.endRepeat = endRepeat;
 		this.notificationOffset = notificationOffset;
+		this.completed = false;
 	}
 	
 	public String getID() {
@@ -81,5 +90,12 @@ public class GenericGO {
 	
 	public Duration getDuration() {
 		return duration;
+	}
+	
+	public Boolean getCompleted() {
+		return completed;
+	}
+	public void setCompleted(Boolean val) {
+		completed = val;
 	}
 }
