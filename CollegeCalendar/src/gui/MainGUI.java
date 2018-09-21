@@ -1,5 +1,8 @@
 package gui;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -120,5 +123,18 @@ public class MainGUI extends Application{
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	// Start Joe's Work
+	public void addEvent(String id, String title, LocalDate date, LocalTime time, Duration duration) {
+		GenericGO newEvent = new GenericGO("0", "test event");
+		genericList.add(newEvent);
+		ic.addEventToDatabase(newEvent);
+	}
+	public void addClass(String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, LocalDate endRepeat, Duration notificationOffset) {
+		GenericGO newEvent = new GenericGO("0", "test event");
+		genericList.add(newEvent);
+		ic.addEventToDatabase(newEvent);
+	}
+	// End Joe's Work
 
 }

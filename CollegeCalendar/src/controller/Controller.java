@@ -131,5 +131,17 @@ public class Controller {
 		String name = (String)d.get(MEETING_NAME_KEY);
 		return name;
 	}
+	
+	// Adding Events - Joe
+	
+	// Return ID of data in database
+	public String addEventToDatabase(GenericGO event) {
+		
+		// TODO : Add event to database
+		
+		return "0";
+	}
+	
+	// End Joe
 
 }
