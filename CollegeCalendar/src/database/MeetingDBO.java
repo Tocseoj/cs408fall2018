@@ -93,7 +93,7 @@ public class MeetingDBO {
 	/*
 	 * Deletes meetings associated with a specific username
 	 */
-	public void deleteMeetingByUsername(String username) {
+	public void deleteMeetingsByUsername(String username) {
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		collection.deleteMany(eq("user", username));
 	}
