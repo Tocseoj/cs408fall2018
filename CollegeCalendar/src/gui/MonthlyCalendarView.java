@@ -79,7 +79,7 @@ private ArrayList<AnchorPaneNode> allCalendarDays = new ArrayList<>(35); // 35 a
 			double val = 5.0;
 			pane.setBottomAnchor(currDayName, val);
 			pane.getChildren().add(currDayName);
-			dayNamesGrid.add(pane, col, 0); // 0 because we want the first row
+			dayNamesGrid.add(pane, col++, 0); // 0 because we want the first row
 											// to have the day labels
 			
 		}
