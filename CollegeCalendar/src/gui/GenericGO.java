@@ -3,14 +3,19 @@ package gui;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Duration;
+import java.time.DayOfWeek;
+
+enum EventType { GENERIC, HOMEWORK, CLASS, EXAM, MEETING };
 
 public class GenericGO {
+	private EventType type;
 	private String id;
 	private String title;
 	private LocalDate date;
 	private LocalTime time;
 	private Duration duration;
 	private int priority;
+	private Boolean[] array = new Boolean[7];
 	private LocalDate endRepeat;
 	private Duration notificationOffset;
 	
