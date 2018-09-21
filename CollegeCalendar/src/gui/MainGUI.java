@@ -1,6 +1,10 @@
 package gui;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import controller.Controller;
 import javafx.application.Application;
@@ -17,22 +21,14 @@ import javafx.stage.Stage;
 
 public class MainGUI extends Application{
 	private Controller ic = new Controller();
-	private ArrayList<MeetingGO> meetingList;
-	private ArrayList<HomeworkGO> homeworkList;
-	private ArrayList<GenericGO> genericList;	
-	private ArrayList<ExamGO> examList;
-	private ArrayList<ClassGO> classList;
+	private ArrayList<EventGO> eventList;
 
 	private String userName = "testUser";
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		try {
-			meetingList = ic.getAllMeetings(userName);
-			homeworkList = ic.getAllHomeworks(userName);
-			genericList = ic.getAllGenerics(userName);
-			examList = ic.getAllExams(userName);
-			classList = ic.getAllClasses(userName);
+			eventList = ic.getAllEvents(userName);
 
 			Scene scene = fxTest();
 			primaryStage.setScene(scene);
@@ -44,6 +40,27 @@ public class MainGUI extends Application{
 			e.printStackTrace();
 		}
 	}
+	
+	//incomplete method to add buttons to button list
+	public ArrayList<Button> getAllEventButtons(){
+		ArrayList<Button> b = new ArrayList<Button>();
+		Iterator<EventGO> im = eventList.iterator();
+		while(im.hasNext()) {
+			Button storeDataButton = new Button("Store in Database");
+			storeDataButton.setUserData(im.next());
+			
+			storeDataButton.setOnAction(new EventHandler<ActionEvent> () {
+				public void handle(ActionEvent e) {
+					EventGO asd = (EventGO)storeDataButton.getUserData();
+					//some functionality
+					System.out.println(ic.getEventNameById(asd));
+				}
+			});
+			b.add(storeDataButton);
+		}
+		return b;
+	}
+	
 	public Scene fxTest() {
 		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root,500,400);
@@ -70,7 +87,7 @@ public class MainGUI extends Application{
 		
 		VBox buttonGroup = new VBox();
 		
-		MeetingGO cgo = new MeetingGO("5ba3b32818f6310f6c7d8cde","haaa");
+		EventGO cgo = new EventGO("5ba3b32818f6310f6c7d8cde","haaa");
 
 		Button storeDataButton = new Button("Store in Database");
 		buttonGroup.getChildren().add(storeDataButton);
@@ -82,9 +99,9 @@ public class MainGUI extends Application{
 		//Eventhandler<MouseEvent>
 		storeDataButton.setOnAction(new EventHandler<ActionEvent> () {
 			public void handle(ActionEvent e) {
-				MeetingGO asd = (MeetingGO)storeDataButton.getUserData();
+				EventGO asd = (EventGO)storeDataButton.getUserData();
 				
-				System.out.println(ic.getMeetingName(asd));
+				System.out.println(ic.getEventNameById(asd));
 			}
 		});
 		
@@ -107,5 +124,18 @@ public class MainGUI extends Application{
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	// Start Joe's Work
+	public void addEvent(String id, String title, LocalDate date, LocalTime time, Duration duration) {
+		EventGO newEvent = new EventGO("0", "test event");
+		eventList.add(newEvent);
+		ic.addEventToDatabase(newEvent);
+	}
+	public void addClass(String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, LocalDate endRepeat, Duration notificationOffset) {
+		EventGO newEvent = new EventGO("0", "test event");
+		eventList.add(newEvent);
+		ic.addEventToDatabase(newEvent);
+	}
+	// End Joe's Work
 
 }

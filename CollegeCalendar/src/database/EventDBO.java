@@ -2,6 +2,10 @@ package database;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -11,14 +15,18 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
-public class GenericDBO {
+import controller.EventType;
+
+
+public class EventDBO {
 	private MongoDatabase database;
 	private MongoClient mongoClient;
+	
 	/**
 	 * Constructor for object to interact with event events
 	 * @param database 
 	 */
-	public GenericDBO() {
+	public EventDBO() {
 		MongoClientURI uri  = new MongoClientURI("mongodb://tester:tester1@ds135441.mlab.com:35441/408calendar");
 		this.mongoClient = new MongoClient(uri);
         this.database = mongoClient.getDatabase(uri.getDatabase());
@@ -34,15 +42,20 @@ public class GenericDBO {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	public String insertEvent(String className, String startDate, String endDate, String building, String room, String eventName, String username) {
+	public String insertEvent(EventType type, String title, LocalDate date, LocalTime time, 
+								Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat,
+								Duration notificationOffset, Boolean completed) {
 		MongoCollection<Document> collection = database.getCollection("events");
 		ObjectId oid = new ObjectId();
-		Document newClass = new Document("eventName", className)
-				.append("startDate", startDate)
-				.append("endDate", endDate)
-				.append("building", building)
-				.append("room", room)
-				.append("user", username)
+		Document newClass = new Document("eventType", type)
+				.append("title", title)
+				.append("date", date)
+				.append("time", time)
+				.append("duration", duration)
+				.append("priority", priority)
+				.append("repeatDays", repeatDays)
+				.append("endRepeat", endRepeat)
+				.append("notificationOffset", completed)
 				.append("_id", oid);
 		collection.insertOne(newClass);
 		return oid.toString();
@@ -58,17 +71,24 @@ public class GenericDBO {
 	 * @param username
 	 * @param id
 	 */
-	public void updateEvent(String eventName, String dueDate, String priorityLevel, String username, ObjectId id) {
-		if (eventName.equals("") || username.equals("")) {
+	public void updateEvent(ObjectId id, EventType type, String title, LocalDate date, LocalTime time, 
+							Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat,
+							Duration notificationOffset, Boolean completed) {
+		if (title.equals("")) {
 			System.out.println("invalid arguments");
 			return;
 		}
 
 		MongoCollection<Document> collection = database.getCollection("events");
-		Document updatedHomework = new Document("eventName", eventName)
-				.append("dueDate", dueDate)
-				.append("priorityLevel", priorityLevel)
-				.append("user", username);
+		Document updatedHomework = new Document("eventType", type)
+				.append("title", title)
+				.append("date", date)
+				.append("time", time)
+				.append("duration", duration)
+				.append("priority", priority)
+				.append("repeatDays", repeatDays)
+				.append("endRepeat", endRepeat)
+				.append("notificationOffset", completed);
 		collection.updateOne(eq("_id", id), new Document("$set", updatedHomework));
 	}
 
