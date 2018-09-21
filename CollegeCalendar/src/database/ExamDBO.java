@@ -37,9 +37,9 @@ public class ExamDBO {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	void insertExam(String className, String startDate, String endDate, String building, String room, String teacherName, String username) {
+	public void insertExam(String examName, String startDate, String endDate, String building, String room, String teacherName, String username) {
 		MongoCollection<Document> collection = database.getCollection("exams");
-		Document newClass = new Document("className", className)
+		Document newClass = new Document("examName", examName)
 				.append("startDate", startDate)
 				.append("endDate", endDate)
 				.append("building", building)
@@ -59,16 +59,15 @@ public class ExamDBO {
 	 * @param username
 	 * @param id
 	 */
-	void updateExam(String name, String dueDate, String className, String priorityLevel, String username, ObjectId id) {
-		if (name.equals("") || username.equals("")) {
+	public void updateExam(String examName, String dueDate, String teacherName, String priorityLevel, String username, ObjectId id) {
+		if (examName.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
 		}
-
 		MongoCollection<Document> collection = database.getCollection("exams");
-		Document updatedHomework = new Document("name", name)
+		Document updatedHomework = new Document("className", examName)
 				.append("dueDate", dueDate)
-				.append("className", className)
+				.append("teacherName", teacherName)
 				.append("priorityLevel", priorityLevel)
 				.append("user", username);
 		collection.updateOne(eq("_id", id), new Document("$set", updatedHomework));
@@ -79,7 +78,7 @@ public class ExamDBO {
 	 * @param id
 	 * @return
 	 */
-	Document getExam(String id) {
+	public Document getExam(String id) {
 		ObjectId oid= new ObjectId(id);
 		MongoCollection<Document> collection = database.getCollection("exams");
 		Document findQuery = new Document("_id", oid);
@@ -93,7 +92,7 @@ public class ExamDBO {
 	 * @param user
 	 * @return iterator of all events
 	 */
-	MongoCursor<Document> getAllExams(String user){
+	public MongoCursor<Document> getAllExams(String user){
 		MongoCollection<Document> collection = database.getCollection("exams");
 		Document findQuery = new Document("user", user);
 		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
@@ -105,7 +104,7 @@ public class ExamDBO {
 	 * 
 	 * @param id
 	 */
-	void deleteExam(String id) {
+	public void deleteExam(String id) {
 		ObjectId oid= new ObjectId(id);
 		MongoCollection<Document> collection = database.getCollection("exams");
 		Document findQuery = new Document("_id", oid);
