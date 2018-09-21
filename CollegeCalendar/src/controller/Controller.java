@@ -10,11 +10,11 @@ import com.mongodb.client.MongoCursor;
 import database.MeetingDBO;
 import gui.MeetingGO;
 
-public class InitialController {
+public class Controller {
 	
 	private MeetingDBO mdb;
 	
-	public InitialController() {
+	public Controller() {
 		this.mdb = new MeetingDBO();
 	}
 	
@@ -32,7 +32,6 @@ public class InitialController {
 			String title = doc.getString("meetingName");
 			al.add(new MeetingGO(id, title));
 		}
-		
 		return al;
 	}
 	

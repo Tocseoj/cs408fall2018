@@ -2,7 +2,7 @@ package gui;
 
 import java.util.ArrayList;
 
-import controller.InitialController;
+import controller.Controller;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,7 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class MainGUI extends Application{
-	private InitialController ic = new InitialController();
+	private Controller ic = new Controller();
 	private ArrayList<MeetingGO> meetingList = new ArrayList<MeetingGO>();
 	private String userName = "testUser";
 	@Override
