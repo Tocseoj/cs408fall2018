@@ -1,14 +1,10 @@
 package gui;
 
-import org.bson.Document;
-
-import com.mongodb.client.MongoCursor;
-
+import controller.InitialController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -18,7 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class MainGUI extends Application{
-
+	private InitialController ic = new InitialController();
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
@@ -59,19 +55,20 @@ public class MainGUI extends Application{
 		
 		VBox buttonGroup = new VBox();
 		
+		MeetingGO cgo = new MeetingGO("5ba3b32818f6310f6c7d8cde","haaa");
+
 		Button storeDataButton = new Button("Store in Database");
 		buttonGroup.getChildren().add(storeDataButton);
+		storeDataButton.setUserData(cgo);
 		Button getDataButton = new Button("Get All Events");
 		buttonGroup.getChildren().add(getDataButton);
-		
-		
-		MongoCursor<Document> allEvents;
 		
 		
 		//Eventhandler<MouseEvent>
 		storeDataButton.setOnAction(new EventHandler<ActionEvent> () {
 			public void handle(ActionEvent e) {
-				System.out.println("Storing");
+				MeetingGO asd = (MeetingGO)storeDataButton.getUserData();
+				System.out.println(ic.getEventDetails(asd));
 			}
 		});
 		

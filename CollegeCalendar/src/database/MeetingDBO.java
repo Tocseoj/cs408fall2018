@@ -125,7 +125,8 @@ public class MeetingDBO {
 	/*
 	 * Queries the database to get a homework by id
 	 */
-	Document getMeetingById(ObjectId id) {
+	public Document getMeetingById(String s) {
+		ObjectId id = new ObjectId(s);
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		Document meeting = collection.find(eq("_id", id)).first();
 		
