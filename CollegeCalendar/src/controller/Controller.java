@@ -52,7 +52,7 @@ public class Controller {
 			doc  = c.next();
 			ObjectId oid = (ObjectId)doc.get("_id");
 			String id = oid.toString();
-			String title = doc.getString("meetingName");
+			String title = doc.getString(MEETING_NAME_KEY);
 			al.add(new MeetingGO(id, title));
 		}
 		return al;
@@ -69,7 +69,7 @@ public class Controller {
 			doc  = c.next();
 			ObjectId oid = (ObjectId)doc.get("_id");
 			String id = oid.toString();
-			String title = doc.getString("className");
+			String title = doc.getString(CLASS_NAME_KEY);
 			al.add(new ClassGO(id, title));
 		}
 		return al;
@@ -86,7 +86,7 @@ public class Controller {
 			doc  = c.next();
 			ObjectId oid = (ObjectId)doc.get("_id");
 			String id = oid.toString();
-			String title = doc.getString("teacherName");
+			String title = doc.getString(EXAM_NAME_KEY);
 			al.add(new ExamGO(id, title));
 		}
 		return al;
@@ -103,7 +103,7 @@ public class Controller {
 			doc  = c.next();
 			ObjectId oid = (ObjectId)doc.get("_id");
 			String id = oid.toString();
-			String title = doc.getString("eventName");
+			String title = doc.getString(GENERIC_NAME_KEY);
 			al.add(new GenericGO(id, title));
 		}
 		return al;
@@ -120,14 +120,14 @@ public class Controller {
 			doc  = c.next();
 			ObjectId oid = (ObjectId)doc.get("_id");
 			String id = oid.toString();
-			String title = doc.getString("Name");
+			String title = doc.getString(HOMEWORK_NAME_KEY);
 			al.add(new HomeworkGO(id, title));
 		}
 		return al;
 	}
 	public String getMeetingName(MeetingGO mgo) {
 		Document d = mdb.getMeetingById(mgo.getID());
-		String name = (String)d.get("meetingName");
+		String name = (String)d.get(MEETING_NAME_KEY);
 		return name;
 	}
 }
