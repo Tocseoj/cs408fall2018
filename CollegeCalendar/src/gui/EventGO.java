@@ -2,10 +2,11 @@ package gui;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+
+import controller.EventType;
+
 import java.time.Duration;
 import java.time.DayOfWeek;
-
-enum EventType { GENERIC, HOMEWORK, CLASS, EXAM, MEETING };
 
 public class EventGO {
 	private EventType type;
