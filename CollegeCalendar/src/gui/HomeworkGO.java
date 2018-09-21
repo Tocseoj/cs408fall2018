@@ -1,19 +1,27 @@
 package gui;
 
-public class HomeworkGO {
-	private String id;
-	private String title;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class HomeworkGO extends GenericGO {
+	private Boolean completed;
 	
 	public HomeworkGO(String id, String title) {
-		this.id = id;
-		this.title = title;
+		super(id, title);
+		completed = false;
+	}
+	public HomeworkGO(String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, LocalDate endRepeat, Duration notificationOffset) {
+		super(id, title, date, time, duration, priority, endRepeat, notificationOffset);
+		completed = false;
 	}
 	
-	public String getID() {
-		return id;
+	public Boolean getCompleted() {
+		return completed;
+	}
+	public void setCompleted(Boolean val) {
+		completed = val;
 	}
 	
-	public String getTitle() {
-		return title;
-	}
+	
 }
