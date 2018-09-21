@@ -18,6 +18,9 @@ import javafx.stage.Stage;
 public class MainGUI extends Application{
 	private Controller ic = new Controller();
 	private ArrayList<MeetingGO> meetingList;
+	private ArrayList<HomeworkGO> homeworkList;
+	private ArrayList<GenericGO> genericList;	
+	private ArrayList<ExamGO> examList;
 	private ArrayList<ClassGO> classList;
 
 	private String userName = "testUser";
@@ -26,7 +29,11 @@ public class MainGUI extends Application{
 		// TODO Auto-generated method stub
 		try {
 			meetingList = ic.getAllMeetings(userName);
+			homeworkList = ic.getAllHomeworks(userName);
+			genericList = ic.getAllGenerics(userName);
+			examList = ic.getAllExams(userName);
 			classList = ic.getAllClasses(userName);
+			
 
 			Scene scene = fxTest();
 			primaryStage.setScene(scene);

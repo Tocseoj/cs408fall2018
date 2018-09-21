@@ -130,4 +130,5 @@ public class Controller {
 		String name = (String)d.get(MEETING_NAME_KEY);
 		return name;
 	}
+
 }
