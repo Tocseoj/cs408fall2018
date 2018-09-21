@@ -24,6 +24,8 @@ public class MainGUI extends Application{
 			e.printStackTrace();
 		}
 	}
+	
+	
 	public Scene fxTest() {
 		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root,500,400);
