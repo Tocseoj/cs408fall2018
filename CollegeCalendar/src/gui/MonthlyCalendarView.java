@@ -23,32 +23,15 @@ import javafx.scene.text.*;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
-//import javafx.*;
 
-
-public class CalendarViewController extends Application {
-	
-	
-	private ArrayList<AnchorPaneNode> allCalendarDays = new ArrayList<>(35); // 35 anchorpanenodes, each one represents a day
+public class MonthlyCalendarView {
+private ArrayList<AnchorPaneNode> allCalendarDays = new ArrayList<>(35); // 35 anchorpanenodes, each one represents a day
 	
 	
 	private VBox view;
 	private Text calendarView;
 	
 
-	private Stage primaryStage;
-	private BorderPane rootLayout;
-	
-	
-	@FXML
-	private ChoiceBox monthChoiceBox;
-
-	@FXML
-	private Button monthChoiceSubmitButton;
-	
-	
-	@FXML
-	public Button viewUserOptionsButton;
 	
 	private YearMonth currentYearAndMonth;
 	
@@ -56,30 +39,7 @@ public class CalendarViewController extends Application {
 										// currently being viewed
 	
 	
-	
-	/*
-	 * (non-Javadoc)
-	 * @see javafx.application.Application#start(javafx.stage.Stage)
-	 */
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		
-		
-		Parent root = FXMLLoader.load(getClass().getResource("MainCalendarView.fxml"));
-		
-		
-		Scene scene = new Scene(root, 700, 500);
-		
-		primaryStage.setTitle("MyCalendarApp");
-		primaryStage.setScene(scene);
-		primaryStage.show();
-	}
-	
-	
-	/*
-	 * 
-	 */
-	public void MonthlyCalendarView(YearMonth currMonth) {
+	public MonthlyCalendarView(YearMonth currMonth) {
 		this.currentYearAndMonth = currMonth;
 		
 		//Make a grid pane for the calendar
@@ -100,7 +60,7 @@ public class CalendarViewController extends Application {
 		
 		GridPane dayNamesGrid = new GridPane();
 		dayNamesGrid.setPrefWidth(600);
-		int col = 0;
+		Integer col = 0;
 		
 		Text[] dayLabels = new Text[] {
 				new Text("Sunday"),
@@ -114,7 +74,7 @@ public class CalendarViewController extends Application {
 		
 		for (Text currDayName : dayLabels) {
 			AnchorPane pane = new AnchorPane();
-			pane.setPrefSize(200, 200);
+			pane.setPrefSize(200, 10);
 			
 			double val = 5.0;
 			pane.setBottomAnchor(currDayName, val);
@@ -147,54 +107,49 @@ public class CalendarViewController extends Application {
 		computeCalendar(currentYearAndMonth);
 		
 		view = new VBox(title, dayNamesGrid, monthlyCalendar); // the calendar view
-		
 	}
-
-
+	
+	
+	
 	private void computeCalendar(YearMonth yearAndMonth) {
 		// TODO Auto-generated method stub
-		// Get the date we want to start with on the calendar
-		LocalDate currDate = LocalDate.of(yearAndMonth.getYear(), yearAndMonth.getMonthValue(), 1);
-		
-		// need to compute the first sunday before the currDate
-		while (!currDate.getDayOfWeek().toString().equals("SUNDAY")) {
-			// subtract a day from currDate
-			currDate = currDate.minusDays(1);
-		}
-		
-		
-		// compute the day numbers for the calendar
-		for (AnchorPaneNode node : allCalendarDays) {
-			if (node.getChildren().size() != 0) {
-				node.getChildren().remove(0);
-			}
-			
-			Text text = new Text(String.valueOf(currDate.getDayOfMonth()));
-			node.setDate(currDate); // set the date of the node
-			
-			double anchorVal = 5.0;
-			node.setTopAnchor(text, anchorVal);
-			node.setLeftAnchor(text,  anchorVal);
-			node.getChildren().add(text);
-			
-			
-			// increment the currDate by 1
-			currDate = currDate.plusDays(1);
-		}
-		
-		
-		// compute the title of the calendar
-		String currMonth = yearAndMonth.getMonth().toString();
-		String currYear = String.valueOf(yearAndMonth.getYear());
-		monthlyCalendarTitle.setText(currMonth + " " + currYear);
-	}
-
-
-	private void viewNextMonth() {
 		// TODO Auto-generated method stub
-		currentYearAndMonth = currentYearAndMonth.plusMonths(1); // increment the month
-		computeCalendar(currentYearAndMonth); // re-compute the days of the calendar
+				// Get the date we want to start with on the calendar
+				LocalDate currDate = LocalDate.of(yearAndMonth.getYear(), yearAndMonth.getMonthValue(), 1);
+				
+				// need to compute the first sunday before the currDate
+				while (!currDate.getDayOfWeek().toString().equals("SUNDAY")) {
+					// subtract a day from currDate
+					currDate = currDate.minusDays(1);
+				}
+				
+				
+				// compute the day numbers for the calendar
+				for (AnchorPaneNode node : allCalendarDays) {
+					if (node.getChildren().size() != 0) {
+						node.getChildren().remove(0);
+					}
+					
+					Text text = new Text(String.valueOf(currDate.getDayOfMonth()));
+					node.setDate(currDate); // set the date of the node
+					
+					double anchorVal = 5.0;
+					node.setTopAnchor(text, anchorVal);
+					node.setLeftAnchor(text,  anchorVal);
+					node.getChildren().add(text);
+					
+					
+					// increment the currDate by 1
+					currDate = currDate.plusDays(1);
+				}
+				
+				
+				// compute the title of the calendar
+				String currMonth = yearAndMonth.getMonth().toString();
+				String currYear = String.valueOf(yearAndMonth.getYear());
+				monthlyCalendarTitle.setText(currMonth + " " + currYear);
 	}
+
 
 
 	private void viewPreviousMonth() {
@@ -202,15 +157,15 @@ public class CalendarViewController extends Application {
 		currentYearAndMonth = currentYearAndMonth.minusMonths(1); // increment the month
 		computeCalendar(currentYearAndMonth); // re-compute the days of the calendar
 	}
-
-
-	/*
-	 * TODO: Should send the app to a user options screen
-	 */
-	@FXML
-	private void handleUserOptionsButton() {
-		return;
+	
+	
+	private void viewNextMonth()
+	{
+		currentYearAndMonth = currentYearAndMonth.plusMonths(1); // increment the month
+		computeCalendar(currentYearAndMonth); // re-compute the days of the calendar
 	}
+	
+	
 	
 	/*
 	 * Getter for the view
@@ -231,24 +186,5 @@ public class CalendarViewController extends Application {
 	 */
 	public void setAllCalendarDays(ArrayList<AnchorPaneNode> allCalendarDays) {
 		this.allCalendarDays = allCalendarDays;
-	}
-	
-	
-	@FXML
-	public void initializeMonthChoiceBox() {
-		monthChoiceBox.setItems(FXCollections.observableArrayList("January", "February", "March", "April", "May",
-				"June", "July", "August", "September", "October", "November", "December"));
-	}
-	
-	
-	/*
-	 * Returns the primary stage
-	 */
-	public Stage getPrimaryStage() {
-		return primaryStage;
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 }
