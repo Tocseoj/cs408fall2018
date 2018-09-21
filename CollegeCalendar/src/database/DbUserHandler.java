@@ -234,11 +234,4 @@ public class DbUserHandler {
 		MongoCollection<Document> collection = database.getCollection("users");
 		collection.deleteOne(eq("username", username));
 	}
-	
-	
-	
-	
-	
-	
-	
 }
