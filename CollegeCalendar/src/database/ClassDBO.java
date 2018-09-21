@@ -39,16 +39,19 @@ public class ClassDBO {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	public void insertClassEvent(String className, String startDate, String endDate, String building, String room, String teacherName, String username) {
+	public String insertClassEvent(String className, String startDate, String endDate, String building, String room, String teacherName, String username) {
 		MongoCollection<Document> collection = database.getCollection("classes");
+		ObjectId oid = new ObjectId();
 		Document newClass = new Document("className", className)
 				.append("startDate", startDate)
 				.append("endDate", endDate)
 				.append("building", building)
 				.append("room", room)
 				.append("teacherName", teacherName)
-				.append("user", username);
+				.append("user", username)
+				.append("_id", oid);
 		collection.insertOne(newClass);
+		return oid.toString();
 	}
 	
 	/**
