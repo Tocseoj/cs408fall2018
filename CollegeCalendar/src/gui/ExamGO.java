@@ -1,19 +1,8 @@
 package gui;
 
-public class ExamGO {
-	private String id;
-	private String title;
+public class ExamGO extends GenericGO {
 	
 	public ExamGO(String id, String title) {
-		this.id = id;
-		this.title = title;
-	}
-	
-	public String getID() {
-		return id;
-	}
-	
-	public String getTitle() {
-		return title;
+		super(id, title);
 	}
 }
