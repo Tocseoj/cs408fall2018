@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import controller.Controller;
 import javafx.application.Application;
@@ -22,6 +23,7 @@ public class MainGUI extends Application{
 	private ArrayList<GenericGO> genericList;	
 	private ArrayList<ExamGO> examList;
 	private ArrayList<ClassGO> classList;
+	private ArrayList<Button> eventButtons;
 
 	private String userName = "testUser";
 	@Override
@@ -44,6 +46,17 @@ public class MainGUI extends Application{
 			e.printStackTrace();
 		}
 	}
+	
+	public ArrayList<Button> getAllEventButtons(){
+		ArrayList<Button> b = new ArrayList<Button>();
+		Iterator<MeetingGO> im = meetingList.iterator();
+		while(im.hasNext()) {
+			Button storeDataButton = new Button("Store in Database");
+			storeDataButton.setUserData(im.next());
+		}
+		return b;
+	}
+	
 	public Scene fxTest() {
 		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root,500,400);
