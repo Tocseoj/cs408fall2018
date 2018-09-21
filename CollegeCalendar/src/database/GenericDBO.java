@@ -34,14 +34,14 @@ public class GenericDBO {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	void insertEvent(String className, String startDate, String endDate, String building, String room, String teacherName, String username) {
+	public void insertEvent(String className, String startDate, String endDate, String building, String room, String eventName, String username) {
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document newClass = new Document("className", className)
 				.append("startDate", startDate)
 				.append("endDate", endDate)
 				.append("building", building)
 				.append("room", room)
-				.append("teacherName", teacherName)
+				.append("eventName", eventName)
 				.append("user", username);
 		collection.insertOne(newClass);
 	}
@@ -56,7 +56,7 @@ public class GenericDBO {
 	 * @param username
 	 * @param id
 	 */
-	void updateEvent(String name, String dueDate, String className, String priorityLevel, String username, ObjectId id) {
+	public void updateEvent(String name, String dueDate, String eventName, String priorityLevel, String username, ObjectId id) {
 		if (name.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
@@ -65,7 +65,7 @@ public class GenericDBO {
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document updatedHomework = new Document("name", name)
 				.append("dueDate", dueDate)
-				.append("className", className)
+				.append("eventName", eventName)
 				.append("priorityLevel", priorityLevel)
 				.append("user", username);
 		collection.updateOne(eq("_id", id), new Document("$set", updatedHomework));
@@ -76,7 +76,7 @@ public class GenericDBO {
 	 * @param id
 	 * @return
 	 */
-	Document getEvent(String id) {
+	public Document getEvent(String id) {
 		ObjectId oid= new ObjectId(id);
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("_id", oid);
@@ -90,7 +90,7 @@ public class GenericDBO {
 	 * @param user
 	 * @return iterator of all events
 	 */
-	MongoCursor<Document> getAllEvents(String user){
+	public MongoCursor<Document> getAllEvents(String user){
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("user", user);
 		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
@@ -102,7 +102,7 @@ public class GenericDBO {
 	 * 
 	 * @param id
 	 */
-	void deleteEvent(String id) {
+	public void deleteEvent(String id) {
 		ObjectId oid= new ObjectId(id);
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("_id", oid);

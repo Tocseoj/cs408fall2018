@@ -69,10 +69,9 @@ public class MeetingDBO {
 		}
 		
 		MongoCollection<Document> collection = database.getCollection("meetings");
-		Document updatedMeeting = new Document("name", meetingName)
+		Document updatedMeeting = new Document("meetingName", meetingName)
 				.append("startTime", startTime)
 				.append("endTime", endTime)
-				.append("meetingName", meetingName)
 				.append("repeats", repeats)
 				.append("priorityLevel", priorityLevel)
 				.append("user", username);

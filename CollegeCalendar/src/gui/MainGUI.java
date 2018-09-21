@@ -17,13 +17,17 @@ import javafx.stage.Stage;
 
 public class MainGUI extends Application{
 	private Controller ic = new Controller();
-	private ArrayList<MeetingGO> meetingList = new ArrayList<MeetingGO>();
+	private ArrayList<MeetingGO> meetingList;
+	private ArrayList<ClassGO> classList;
+
 	private String userName = "testUser";
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		try {
 			meetingList = ic.getAllMeetings(userName);
+			classList = ic.getAllClasses(userName);
+
 			Scene scene = fxTest();
 			primaryStage.setScene(scene);
 			primaryStage.show();

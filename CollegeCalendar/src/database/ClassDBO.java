@@ -24,7 +24,7 @@ public class ClassDBO {
 	 * Constructor for object to interact with class events
 	 * @param database 
 	 */
-	public ClassDBO(MongoDatabase database) {
+	public ClassDBO() {
 		MongoClientURI uri  = new MongoClientURI("mongodb://tester:tester1@ds135441.mlab.com:35441/408calendar");
 		this.mongoClient = new MongoClient(uri);
         this.database = mongoClient.getDatabase(uri.getDatabase());	}
@@ -39,7 +39,7 @@ public class ClassDBO {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	void insertClassEvent(String className, String startDate, String endDate, String building, String room, String teacherName, String username) {
+	public void insertClassEvent(String className, String startDate, String endDate, String building, String room, String teacherName, String username) {
 		MongoCollection<Document> collection = database.getCollection("classes");
 		Document newClass = new Document("className", className)
 				.append("startDate", startDate)
@@ -61,16 +61,16 @@ public class ClassDBO {
 	 * @param username
 	 * @param id
 	 */
-	void updateClassEvent(String name, String dueDate, String className, String priorityLevel, String username, ObjectId id) {
-		if (name.equals("") || username.equals("")) {
+	public void updateClassEvent(String className, String dueDate, String teacherName, String priorityLevel, String username, ObjectId id) {
+		if (className.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
 		}
 
 		MongoCollection<Document> collection = database.getCollection("classes");
-		Document updatedHomework = new Document("name", name)
+		Document updatedHomework = new Document("className", className)
 				.append("dueDate", dueDate)
-				.append("className", className)
+				.append("teacherName", teacherName)
 				.append("priorityLevel", priorityLevel)
 				.append("user", username);
 		collection.updateOne(eq("_id", id), new Document("$set", updatedHomework));
@@ -81,7 +81,7 @@ public class ClassDBO {
 	 * @param id
 	 * @return
 	 */
-	Document getClassEvent(String id) {
+	public Document getClassEvent(String id) {
 		ObjectId oid= new ObjectId(id);
 		MongoCollection<Document> collection = database.getCollection("classes");
 		Document findQuery = new Document("_id", oid);
@@ -95,7 +95,7 @@ public class ClassDBO {
 	 * @param user
 	 * @return iterator of all events
 	 */
-	MongoCursor<Document> getAllClasses(String user){
+	public MongoCursor<Document> getAllClasses(String user){
 		MongoCollection<Document> collection = database.getCollection("classes");
 		Document findQuery = new Document("user", user);
 		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
@@ -107,7 +107,7 @@ public class ClassDBO {
 	 * 
 	 * @param id
 	 */
-	void deleteClassEvent(String id) {
+	public void deleteClassEvent(String id) {
 		ObjectId oid= new ObjectId(id);
 		MongoCollection<Document> collection = database.getCollection("classes");
 		Document findQuery = new Document("_id", oid);
