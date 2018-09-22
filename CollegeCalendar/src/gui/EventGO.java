@@ -144,4 +144,12 @@ public class EventGO {
 	public void setType(EventType type) {
 		this.type = type;
 	}
+	
+	public Boolean[] getRepeatDays() {
+		return repeatDays;
+	}
+
+	public void setRepeatDays(Boolean[] repeatDays) {
+		this.repeatDays = repeatDays;
+	}
 }
