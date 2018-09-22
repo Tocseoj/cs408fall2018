@@ -146,8 +146,9 @@ private ArrayList<AnchorPaneNode> allCalendarDays = new ArrayList<>(35); // 35 a
 			
 			// compute the title of the calendar
 			String currMonth = yearAndMonth.getMonth().toString();
+			currMonth = currMonth.substring(0, 1).toUpperCase() + currMonth.substring(1).toLowerCase();
 			String currYear = String.valueOf(yearAndMonth.getYear());
-			monthlyCalendarTitle.setText(currMonth + " " + currYear);
+			monthlyCalendarTitle.setText(currMonth + ", " + currYear);
 	}
 
 

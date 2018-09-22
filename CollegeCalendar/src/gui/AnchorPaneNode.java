@@ -14,7 +14,7 @@ public class AnchorPaneNode extends AnchorPane{
 	public AnchorPaneNode(Node... children) {
 		super(children);
 		
-		this.setOnMouseClicked(e -> System.out.println("Today's date is + " + this.date));
+		this.setOnMouseClicked(e -> System.out.println("You clicked on  " + this.date));
 	}
 	
 	
