@@ -153,12 +153,10 @@ public class WeeklyCalendarView {
 		
 	}
 	
-	
+	/*
+	 * Computes the day numbers for the weekly calendar
+	 */
 	private void computeCalendar(YearMonth yearAndMonth) {
-
-		
-		
-		
 		// create a var to hold today's date
 		LocalDate currDate = LocalDate.of(yearAndMonth.getYear(), yearAndMonth.getMonthValue(), this.day);
 
@@ -168,7 +166,7 @@ public class WeeklyCalendarView {
 			currDate = currDate.minusDays(1);
 		}
 
-		// currDate should be the first Sunday of the month that the user requested
+		// currDate should be the first Sunday of the week that the user requested
 
 		// compute the day numbers for the calendar
 		for (AnchorPaneNode node : allCalendarDays) {
@@ -194,7 +192,7 @@ public class WeeklyCalendarView {
 		String currMonth = yearAndMonth.getMonth().toString();
 		currMonth = currMonth.substring(0, 1).toUpperCase() + currMonth.substring(1).toLowerCase();
 		String currYear = String.valueOf(yearAndMonth.getYear());
-		weeklyCalendarTitle.setText(currMonth + ", " + currYear);
+		weeklyCalendarTitle.setText(currMonth + " " + day + ", " + currYear);
 	}
 
 
