@@ -25,7 +25,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 
 public class MonthlyCalendarView {
-private ArrayList<AnchorPaneNode> allCalendarDays = new ArrayList<>(35); // 35 anchorpanenodes, each one represents a day
+	private ArrayList<AnchorPaneNode> allCalendarDays = new ArrayList<>(35); // 35 anchorpanenodes, each one represents a day
 	
 	
 	private VBox view;
@@ -114,41 +114,41 @@ private ArrayList<AnchorPaneNode> allCalendarDays = new ArrayList<>(35); // 35 a
 	private void computeCalendar(YearMonth yearAndMonth) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
-			// Get the date we want to start with on the calendar
-			LocalDate currDate = LocalDate.of(yearAndMonth.getYear(), yearAndMonth.getMonthValue(), 1);
-			
-			// need to compute the first sunday before the currDate
-			while (!currDate.getDayOfWeek().toString().equals("SUNDAY")) {
-				// subtract a day from currDate
-				currDate = currDate.minusDays(1);
+		// Get the date we want to start with on the calendar
+		LocalDate currDate = LocalDate.of(yearAndMonth.getYear(), yearAndMonth.getMonthValue(), 1);
+		
+		// need to compute the first sunday before the currDate
+		while (!currDate.getDayOfWeek().toString().equals("SUNDAY")) {
+			// subtract a day from currDate
+			currDate = currDate.minusDays(1);
+		}
+		
+		
+		// compute the day numbers for the calendar
+		for (AnchorPaneNode node : allCalendarDays) {
+			if (node.getChildren().size() != 0) {
+				node.getChildren().remove(0);
 			}
 			
+			Text text = new Text(String.valueOf(currDate.getDayOfMonth()));
+			node.setDate(currDate); // set the date of the node
 			
-			// compute the day numbers for the calendar
-			for (AnchorPaneNode node : allCalendarDays) {
-				if (node.getChildren().size() != 0) {
-					node.getChildren().remove(0);
-				}
-				
-				Text text = new Text(String.valueOf(currDate.getDayOfMonth()));
-				node.setDate(currDate); // set the date of the node
-				
-				double anchorVal = 5.0;
-				node.setTopAnchor(text, anchorVal);
-				node.setLeftAnchor(text,  anchorVal);
-				node.getChildren().add(text);
-				
-				
-				// increment the currDate by 1
-				currDate = currDate.plusDays(1);
-			}
+			double anchorVal = 5.0;
+			node.setTopAnchor(text, anchorVal);
+			node.setLeftAnchor(text,  anchorVal);
+			node.getChildren().add(text);
 			
 			
-			// compute the title of the calendar
-			String currMonth = yearAndMonth.getMonth().toString();
-			currMonth = currMonth.substring(0, 1).toUpperCase() + currMonth.substring(1).toLowerCase();
-			String currYear = String.valueOf(yearAndMonth.getYear());
-			monthlyCalendarTitle.setText(currMonth + ", " + currYear);
+			// increment the currDate by 1
+			currDate = currDate.plusDays(1);
+		}
+		
+		
+		// compute the title of the calendar
+		String currMonth = yearAndMonth.getMonth().toString();
+		currMonth = currMonth.substring(0, 1).toUpperCase() + currMonth.substring(1).toLowerCase();
+		String currYear = String.valueOf(yearAndMonth.getYear());
+		monthlyCalendarTitle.setText(currMonth + ", " + currYear);
 	}
 
 
@@ -176,7 +176,7 @@ private ArrayList<AnchorPaneNode> allCalendarDays = new ArrayList<>(35); // 35 a
 	}
 	
 	/*
-	 * Getter for all the calendar daus
+	 * Getter for all the calendar days
 	 */
 	public ArrayList<AnchorPaneNode> getAllCalendarDays() {
 		return this.allCalendarDays;
