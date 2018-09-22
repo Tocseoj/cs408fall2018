@@ -1,5 +1,8 @@
 package controller;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import org.bson.Document;
@@ -32,9 +35,18 @@ public class Controller {
 		while(c.hasNext()) {
 			doc  = c.next();
 			ObjectId oid = (ObjectId)doc.get("_id");
-			String id = oid.toString();
+			EventType type = (EventType)doc.get("eventType");
 			String title = doc.getString(EVENT_NAME_KEY);
-			al.add(new EventGO(id, title));
+			LocalDate date = (LocalDate)doc.get("date");
+			LocalTime time = (LocalTime)doc.get("time");
+			Duration duration = (Duration)doc.get("duration");
+			int priority = doc.getInteger("priority");
+			Boolean[] repeatDays = (Boolean[])doc.get("repeatDays");
+			LocalDate endRepeat = (LocalDate)doc.get("endRepeat");
+			Duration notificationOffset = (Duration)doc.get("notificationOffset");
+			Boolean completed = doc.getBoolean("completed");
+			String id = oid.toString();
+			al.add(new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed));
 		}
 		return al;
 	}
