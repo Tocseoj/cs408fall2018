@@ -124,7 +124,7 @@ public class WeeklyCalendarView {
 		// create a new date object, with today's date
 		this.date = new Date();
 		// convert to LocalDate to use the getters
-		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate localDate = this.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		
 //		int day = cal.get(Calendar.DAY_OF_WEEK); // get todays day
 		int day   = localDate.getDayOfMonth();
@@ -140,13 +140,12 @@ public class WeeklyCalendarView {
 		int year = localDate.getYear();
 		this.year = year;
 		
-		System.out.println("this month is " + year);
 
 		
 		
 //		System.out.println("val of date is: " + day);
 		
-		computeCalendar(currentYearAndMonth);
+		computeCalendar(this.year, this.month, this.day);
 		
 		view = new VBox(title, dayNamesGrid, weeklyCalendar); // the calendar view
 		
@@ -156,9 +155,9 @@ public class WeeklyCalendarView {
 	/*
 	 * Computes the day numbers for the weekly calendar
 	 */
-	private void computeCalendar(YearMonth yearAndMonth) {
+	private void computeCalendar(int year, int month, int day) {
 		// create a var to hold today's date
-		LocalDate currDate = LocalDate.of(yearAndMonth.getYear(), yearAndMonth.getMonthValue(), this.day);
+		LocalDate currDate = LocalDate.of(year, month, day);
 
 		// need to compute the first sunday before the currDate, calendar starts on sunday
 		while (!currDate.getDayOfWeek().toString().equals("SUNDAY")) {
@@ -189,20 +188,41 @@ public class WeeklyCalendarView {
 
 
 		// compute the title of the calendar
-		String currMonth = yearAndMonth.getMonth().toString();
+		String currMonth = String.valueOf(month);
 		currMonth = currMonth.substring(0, 1).toUpperCase() + currMonth.substring(1).toLowerCase();
-		String currYear = String.valueOf(yearAndMonth.getYear());
-		weeklyCalendarTitle.setText(currMonth + " " + day + ", " + currYear);
+		String currYear = String.valueOf(year);
+		weeklyCalendarTitle.setText("Week of " + currMonth + "/" + day + "/" + currYear);
 	}
 
 
 	/*
-	 * 
+	 * Increments the date by a week
 	 */
 	private void viewNextWeek() {
 		// TODO Auto-generated method stub
-		currentYearAndMonth = currentYearAndMonth.plusMonths(1); // increment the month
-		computeCalendar(currentYearAndMonth); // re-compute the days of the calendar
+		int numDays = 7; // incrementing by one week
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.date); // set the calendar to the current date
+		cal.add(Calendar.DAY_OF_YEAR, numDays); // increment the calendar by a week
+		this.date = cal.getTime(); // get the incremented time, update the date of the class
+		// compute the local date
+		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		int day   = localDate.getDayOfMonth();
+		
+		// set class variable to today's day
+		this.day = day;
+		
+		// get the current month
+		int month = localDate.getMonthValue();
+		// set the class variable
+		this.month = month;
+		
+		int year = localDate.getYear();
+		this.year = year;
+		
+		
+//		currentYearAndMonth = currentYearAndMonth.plusMonths(1); // increment the month
+		computeCalendar(this.year, this.month, this.day); // re-compute the days of the calendar
 	}
 	
 	
@@ -211,8 +231,27 @@ public class WeeklyCalendarView {
 	 * Rewind the weekly calendar view by a week
 	 */
 	private void viewPreviousWeek() {
-		currentYearAndMonth = currentYearAndMonth.minusMonths(1); // increment the month
-		computeCalendar(currentYearAndMonth); // re-compute the days of the calendar
+		int numDays = -7; // incrementing by one week
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.date); // set the calendar to the current date
+		cal.add(Calendar.DAY_OF_YEAR, numDays); // increment the calendar by a week
+		this.date = cal.getTime(); // get the incremented time, update the date of the class
+		// compute the local date
+		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		int day   = localDate.getDayOfMonth();
+
+		// set class variable to today's day
+		this.day = day;
+
+		// get the current month
+		int month = localDate.getMonthValue();
+		// set the class variable
+		this.month = month;
+
+		int year = localDate.getYear();
+		this.year = year;
+//		currentYearAndMonth = currentYearAndMonth.minusMonths(1); // increment the month
+		computeCalendar(this.year, this.month, this.day); // re-compute the days of the calendar
 	}
 	
 	
