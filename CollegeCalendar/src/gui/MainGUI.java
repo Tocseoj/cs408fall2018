@@ -4,9 +4,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 import controller.Controller;
+import controller.SortByDate;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,14 +24,16 @@ import javafx.stage.Stage;
 public class MainGUI extends Application{
 	private Controller ic = new Controller();
 	private ArrayList<EventGO> eventList;
-
+	private ArrayList<Button> buttonList;
+	
 	private String userName = "testUser";
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		try {
 			eventList = ic.getAllEvents(userName);
-
+			buttonList = getAllEventButtons();
+			sortButtonList();
 			Scene scene = fxTest();
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -41,7 +45,9 @@ public class MainGUI extends Application{
 		}
 	}
 	
-
+	public void sortButtonList() {
+		Collections.sort(buttonList, new SortByDate());
+	}
 	//incomplete method to add buttons to button list
 	public ArrayList<Button> getAllEventButtons(){
 		ArrayList<Button> b = new ArrayList<Button>();
@@ -49,7 +55,6 @@ public class MainGUI extends Application{
 		while(im.hasNext()) {
 			Button storeDataButton = new Button("Store in Database");
 			storeDataButton.setUserData(im.next());
-			
 			storeDataButton.setOnAction(new EventHandler<ActionEvent> () {
 				public void handle(ActionEvent e) {
 					EventGO asd = (EventGO)storeDataButton.getUserData();

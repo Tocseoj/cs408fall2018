@@ -55,7 +55,8 @@ public class EventDBO {
 				.append("priority", priority)
 				.append("repeatDays", repeatDays)
 				.append("endRepeat", endRepeat)
-				.append("notificationOffset", completed)
+				.append("notificationOffset", notificationOffset)
+				.append("completed", completed)
 				.append("_id", oid);
 		collection.insertOne(newClass);
 		return oid.toString();
