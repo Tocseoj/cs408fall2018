@@ -41,35 +41,36 @@ public class HomeworkDBO {
 	 * 
 	 * @param repeats	either Daily, Weekly, or Monthly
 	 */
-	void insertHomework(String name, String dueDate, String repeats, String status, String className, int priorityLevel, String username) {
-		if (name.equals("") || username.equals("")) {
+	public String insertHomework(String className, String dueDate, String repeats, String status, String homeworkName, int priorityLevel, String username) {
+		if (className.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
-			return;
+			return "";
 		}
 		
 		if (!repeats.equals("Daily") && !repeats.equals("Weekly") && !repeats.equals("Monthly")) {
 			System.out.println("invalid value for repeats");
-			return;
+			return "";
 		}
-		
 		MongoCollection<Document> collection = database.getCollection("homeworks");
-		Document newHomework = new Document("name", name)
+		ObjectId oid = new ObjectId();
+		Document newHomework = new Document("className", className)
 				.append("dueDate", dueDate)
 				.append("repeats", repeats)
 				.append("status", status)
-				.append("className", className)
+				.append("homeworkName", homeworkName)
 				.append("priorityLevel", priorityLevel)
-				.append("user", username);
-		
+				.append("user", username)
+				.append("_id", oid);
 		collection.insertOne(newHomework);
+		return oid.toString();
 		
 	}
 	
 	/*
 	 * Updates an existing homework with the given fields.
 	 */
-	void updateHomework(String name, String dueDate, String className, String repeats, String status, String priorityLevel, String username, ObjectId id) {
-		if (name.equals("") || username.equals("")) {
+	public void updateHomework(String className, String dueDate, String homeworkName, String repeats, String status, String priorityLevel, String username, ObjectId id) {
+		if (className.equals("") || username.equals("")) {
 			System.out.println("invalid arguments");
 			return;
 		}
@@ -80,9 +81,9 @@ public class HomeworkDBO {
 		}
 		
 		MongoCollection<Document> collection = database.getCollection("homeworks");
-		Document updatedHomework = new Document("name", name)
+		Document updatedHomework = new Document("className", className)
 				.append("dueDate", dueDate)
-				.append("className", className)
+				.append("homeworkName", homeworkName)
 				.append("repeats", repeats)
 				.append("status", status)
 				.append("priorityLevel", priorityLevel)
@@ -94,7 +95,7 @@ public class HomeworkDBO {
 	 * Deletes the homework specified by the given id
 	 * @param id	
 	 */
-	void deleteHomework(ObjectId id) {
+	public void deleteHomework(ObjectId id) {
 		MongoCollection<Document> collection = database.getCollection("homeworks");
 		collection.deleteOne(eq("_id", id));
 	}
@@ -102,7 +103,7 @@ public class HomeworkDBO {
 	/*
 	 * Given a username (normally the one that is logged in) 
 	 */
-	MongoCursor<Document> getHomeworkByUsername(String username) {
+	public MongoCursor<Document> getHomeworkByUsername(String username) {
 		MongoCollection<Document> collection = database.getCollection("homeworks");
 		MongoCursor<Document> ret = collection.find(eq("user", username)).iterator();
 		while (ret.hasNext()) {
@@ -116,7 +117,7 @@ public class HomeworkDBO {
 	/*
 	 * Queries the database to get a user by user name
 	 */
-	Document getHomeworkById(ObjectId id) {
+	public Document getHomeworkById(ObjectId id) {
 		MongoCollection<Document> collection = database.getCollection("homeworks");
 		Document homework = collection.find(eq("_id", id)).first();
 		
@@ -126,7 +127,7 @@ public class HomeworkDBO {
 	/*
 	 * Used for printing returns from a collection
 	 */
-	Block<Document> printBlock = new Block<Document>() {
+	public Block<Document> printBlock = new Block<Document>() {
 	       @Override
 	       public void apply(final Document document) {
 	           System.out.println(document.toJson());

@@ -40,16 +40,19 @@ public class MeetingDBO {
 	 * @param endTime	the time the meeting ends
 	 * @param username	the user adding the meeting
 	 */
-	public void insertMeeting(String meetingName, String date, String startTime, String endTime, String repeats, int priorityLevel, String username) {
+	public String insertMeeting(String meetingName, String date, String startTime, String endTime, String repeats, int priorityLevel, String username) {
 		MongoCollection<Document> collection = database.getCollection("meetings");
+		ObjectId oid = new ObjectId();
 		Document newMeeting = new Document("meetingName", meetingName)
 				.append("date", date)
 				.append("startTime", startTime)
 				.append("endTime", endTime)
 				.append("repeats", repeats)
 				.append("priorityLevel", priorityLevel)
-				.append("user", username);
+				.append("user", username)
+				.append("_id", oid);
 		collection.insertOne(newMeeting);
+		return oid.toString();
 	}
 	
 	/*
@@ -69,10 +72,9 @@ public class MeetingDBO {
 		}
 		
 		MongoCollection<Document> collection = database.getCollection("meetings");
-		Document updatedMeeting = new Document("name", meetingName)
+		Document updatedMeeting = new Document("meetingName", meetingName)
 				.append("startTime", startTime)
 				.append("endTime", endTime)
-				.append("meetingName", meetingName)
 				.append("repeats", repeats)
 				.append("priorityLevel", priorityLevel)
 				.append("user", username);
@@ -104,11 +106,12 @@ public class MeetingDBO {
 	public MongoCursor<Document> getMeetingsByUsername(String username) {
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		MongoCursor<Document> ret = collection.find(eq("user", username)).iterator();
-		while (ret.hasNext()) {
-//			System.out.println("in here");
-//			String curr = ret.next().toJson();
-//			System.out.println(curr);
+		/*while (ret.hasNext()) {
+			System.out.println("in here");
+			String curr = ret.next().toJson();
+			System.out.println(curr);
 		}
+		*/
 		return ret;
 	}
 	
@@ -118,17 +121,16 @@ public class MeetingDBO {
 	public Document getOneMeetingByUsername(String username) {
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		Document meeting = collection.find(eq("user", username)).first();
-		
 		return meeting;
 	}
 	
 	/*
 	 * Queries the database to get a homework by id
 	 */
-	Document getMeetingById(ObjectId id) {
+	public Document getMeetingById(String s) {
+		ObjectId id = new ObjectId(s);
 		MongoCollection<Document> collection = database.getCollection("meetings");
 		Document meeting = collection.find(eq("_id", id)).first();
-		
 		return meeting;
 	}
 	
