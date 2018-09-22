@@ -41,6 +41,7 @@ public class MainGUI extends Application{
 		}
 	}
 	
+
 	//incomplete method to add buttons to button list
 	public ArrayList<Button> getAllEventButtons(){
 		ArrayList<Button> b = new ArrayList<Button>();
