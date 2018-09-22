@@ -48,7 +48,6 @@ public class MainGUI extends Application{
 	public void sortButtonList() {
 		Collections.sort(buttonList, new SortByDate());
 	}
-	
 	//incomplete method to add buttons to button list
 	public ArrayList<Button> getAllEventButtons(){
 		ArrayList<Button> b = new ArrayList<Button>();
