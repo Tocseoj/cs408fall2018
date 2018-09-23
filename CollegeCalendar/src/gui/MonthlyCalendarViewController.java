@@ -62,6 +62,8 @@ public class MonthlyCalendarViewController extends Application {
 
 	/*
 	 * Change the scene to the user options scene
+	 * 
+	 * TODO actually make a user options scene
 	 */
     private void showUserOptions() {
 		// TODO Auto-generated method stub
