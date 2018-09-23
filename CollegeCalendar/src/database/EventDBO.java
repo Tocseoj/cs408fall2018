@@ -73,9 +73,9 @@ public class EventDBO {
 	 * @param username
 	 * @param id
 	 */
-	public void updateEvent(ObjectId id, EventType type, String title, LocalDate date, LocalTime time, 
-							Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat,
-							Duration notificationOffset, Boolean completed) {
+	public void updateEvent(ObjectId id, int type, String title, LocalDate date, LocalTime time, 
+							String duration, int priority, String repeatDays, LocalDate endRepeat,
+							String notificationOffset, Boolean completed, String userName) {
 		if (title.equals("")) {
 			System.out.println("invalid arguments");
 			return;

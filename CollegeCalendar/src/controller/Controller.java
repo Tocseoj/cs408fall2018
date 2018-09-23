@@ -81,17 +81,18 @@ public class Controller {
 	// Return ID of data in database
 	public void updateEventInDatabase(EventGO e) {
 		ObjectId oid = new ObjectId(e.getID());
-		EventType type = e.getType();
+		int type = e.getType().ordinal();
 		String title = e.getTitle();
 		LocalDate date = e.getDate();
 		LocalTime time = e.getTime();
-		Duration duration = e.getDuration();
+		String duration = e.getDuration().toString();
 		int priority = e.getPriority();
-		Boolean[] repeatDays = e.getRepeatDays();
+		String repeatDays = e.getRepeatDays().toString();
 		LocalDate endRepeat = e.getEndRepeat();
-		Duration notificationOffset = e.getNotificationOffset();
+		String notificationOffset = e.getNotificationOffset().toString();
 		Boolean completed = e.getCompleted();
-		edb.updateEvent(oid, type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed);
+		String userName = e.getUserName();
+		edb.updateEvent(oid, type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
 	}
 	
 	public EventGO getEventInDatabase(String id) {
