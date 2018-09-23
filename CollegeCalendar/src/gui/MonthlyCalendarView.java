@@ -5,6 +5,8 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -99,8 +101,24 @@ public class MonthlyCalendarView {
 		// assign onaction
 		nextMonth.setOnAction(e -> viewNextMonth());
 		
+		// create a button that shows you the next week
+		Button viewWeekly = new Button("View Weekly");
+		viewWeekly.setOnAction(e -> {
+			try {
+				showWeeklyView();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 		
-		HBox title = new HBox(prevMonth, monthlyCalendarTitle, nextMonth);
+		
+		// add a button to control adding of events
+		Button addEvent = new Button("Add Event");
+		
+		
+		
+		HBox title = new HBox(addEvent, prevMonth, monthlyCalendarTitle, nextMonth, viewWeekly);
 		
 		title.setAlignment(Pos.BASELINE_CENTER); // center align the title bar
 		
@@ -110,7 +128,17 @@ public class MonthlyCalendarView {
 	}
 	
 	
-	
+	/*
+	 * Call the weekly thing
+	 */
+	private void showWeeklyView() throws Exception {
+		// TODO Auto-generated method stub
+		WeeklyCalendarViewController c = new WeeklyCalendarViewController();
+//		stage.setScene(stage);
+	}
+
+
+
 	private void computeCalendar(YearMonth yearAndMonth) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
