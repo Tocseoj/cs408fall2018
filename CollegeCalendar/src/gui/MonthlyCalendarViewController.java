@@ -10,13 +10,15 @@ import java.time.YearMonth;
 
 public class MonthlyCalendarViewController extends Application {
 	
-	Stage stage;
+	Stage stage; // The main stage
 	
-	Button viewWeekly;
-	Button userOptions;
+	Button viewWeekly; // MonthlyView button that leads to weekly view
+	Button userOptions; // MonthlyView button that renders user options
 	
-	Scene monthlyScene;
-	Scene weeklyScene;
+	Button weekToMonthButton; // the button on the weekly view that leads to monthly view
+	
+	Scene monthlyScene; // the monthly view scene
+	Scene weeklyScene; // the weekly view scene
 	
 	@Override
     public void start(Stage primaryStage) throws Exception {
@@ -46,11 +48,20 @@ public class MonthlyCalendarViewController extends Application {
         Scene weeklyScene = new Scene(weeklyView.getView());
         this.weeklyScene = weeklyScene;
         
+        this.weekToMonthButton = weeklyView.getMonthlyViewButton();
+        this.weekToMonthButton.setOnAction(e -> showMonthlyScene());
+        
         stage.setScene(monthlyScene);
         stage.show();
     }
 	
 	
+	private void showMonthlyScene() {
+		// TODO Auto-generated method stub
+		stage.setScene(monthlyScene);
+	}
+
+
 	/*
 	 * Set the scene to the weekly scene
 	 */
