@@ -26,7 +26,7 @@ public class MainGUI extends Application{
 	private ArrayList<EventGO> eventList;
 	private ArrayList<Button> buttonList;
 	
-	private String userName = "testUser";
+	private String userName = "tester";
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
@@ -93,7 +93,7 @@ public class MainGUI extends Application{
 		
 		VBox buttonGroup = new VBox();
 		
-		EventGO cgo = new EventGO("5ba3b32818f6310f6c7d8cde","haaa");
+		EventGO cgo = new EventGO("5ba3b32818f6310f6c7d8cde","haaa",userName);
 
 		Button storeDataButton = new Button("Store in Database");
 		buttonGroup.getChildren().add(storeDataButton);
@@ -133,12 +133,12 @@ public class MainGUI extends Application{
 	
 	// Start Joe's Work
 	public void addEvent(String id, String title, LocalDate date, LocalTime time, Duration duration) {
-		EventGO newEvent = new EventGO("0", "test event");
+		EventGO newEvent = new EventGO("0", "test event",userName );
 		eventList.add(newEvent);
 		ic.addEventToDatabase(newEvent);
 	}
 	public void addClass(String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, LocalDate endRepeat, Duration notificationOffset) {
-		EventGO newEvent = new EventGO("0", "test event");
+		EventGO newEvent = new EventGO("0", "test event", userName);
 		eventList.add(newEvent);
 		ic.addEventToDatabase(newEvent);
 	}
