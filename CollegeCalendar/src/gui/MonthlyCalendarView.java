@@ -39,6 +39,11 @@ public class MonthlyCalendarView {
 										// currently being viewed
 	
 	
+	Button userOptions;
+	
+	Button viewWeekly;
+	
+	
 	public MonthlyCalendarView(YearMonth currMonth) {
 		this.currentYearAndMonth = currMonth;
 		
@@ -88,6 +93,7 @@ public class MonthlyCalendarView {
 		
 		
 		Button userOptions = new Button("User Options");
+		this.userOptions = userOptions;
 		
 		// Create a button to go back a month
 		Button prevMonth = new Button("Prev Month");
@@ -100,7 +106,12 @@ public class MonthlyCalendarView {
 		nextMonth.setOnAction(e -> viewNextMonth());
 		
 		
-		HBox title = new HBox(prevMonth, monthlyCalendarTitle, nextMonth);
+		Button viewWeekly = new Button("Weekly View");
+		this.viewWeekly = viewWeekly;
+//		viewWeekly.setOnAction(e -> viewWeekly());
+		
+		
+		HBox title = new HBox(userOptions, prevMonth, monthlyCalendarTitle, nextMonth, viewWeekly);
 		
 		title.setAlignment(Pos.BASELINE_CENTER); // center align the title bar
 		
@@ -109,8 +120,33 @@ public class MonthlyCalendarView {
 		view = new VBox(title, dayNamesGrid, monthlyCalendar); // the calendar view
 	}
 	
+	/*
+	 * Getter for the user options button
+	 */
+	public Button getUserOptionsButton() {
+		return this.userOptions;
+	}
 	
 	
+	/*
+	 * Getter for the viewWeekly button
+	 */
+	public Button getWeeklyButton() {
+		return this.viewWeekly;
+	}
+	
+	
+	
+	private void viewWeekly() {
+		// TODO Auto-generated method stub
+		Stage weeklyStage = new Stage();
+		weeklyStage.setTitle("Weekly View");
+		this.view = new WeeklyCalendarView(YearMonth.now()).getView();
+//		weeklyStage.setScene(new Scene(new WeeklyCalendarView(YearMonth.now()).getView()));
+	}
+
+
+
 	private void computeCalendar(YearMonth yearAndMonth) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
