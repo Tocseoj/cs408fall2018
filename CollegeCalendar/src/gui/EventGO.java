@@ -18,8 +18,9 @@ public class EventGO {
 	private LocalDate endRepeat;
 	private Duration notificationOffset;
 	private Boolean completed;
+	private String userName;
 	
-	public EventGO(String id, String title) {
+	public EventGO(String id, String title, String userName) {
 		this.id = id;
 		this.title = title;
 		this.date = LocalDate.now();
@@ -30,9 +31,10 @@ public class EventGO {
 		this.setEndRepeat(this.date);
 		this.setNotificationOffset(Duration.ofMinutes(10));
 		this.completed = false;
+		this.userName = userName;
 	}
 	
-	public EventGO(String id, String title, LocalDate date) {
+	public EventGO(String id, String title, LocalDate date, String userName) {
 		this.id = id;
 		this.title = title;
 		this.date = date;
@@ -43,9 +45,11 @@ public class EventGO {
 		this.setEndRepeat(this.date);
 		this.setNotificationOffset(Duration.ofMinutes(10));
 		this.completed = false;
+		this.userName = userName;
+
 	}
 	
-	public EventGO(String id, String title, LocalDate date, LocalTime time, Duration duration) {
+	public EventGO(String id, String title, LocalDate date, LocalTime time, Duration duration, String userName) {
 		this.id = id;
 		this.title = title;
 		this.date = date;
@@ -56,9 +60,11 @@ public class EventGO {
 		this.setEndRepeat(this.date);
 		this.setNotificationOffset(Duration.ofMinutes(10));
 		this.completed = false;
+		this.userName = userName;
+
 	}
 	
-	public EventGO(EventType type, String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat, Duration notificationOffset) {
+	public EventGO(EventType type, String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat, Duration notificationOffset, String userName) {
 		this.setType(type);
 		this.id = id;
 		this.title = title;
@@ -70,9 +76,11 @@ public class EventGO {
 		this.setEndRepeat(endRepeat);
 		this.setNotificationOffset(notificationOffset);
 		this.completed = false;
+		this.userName = userName;
+
 	}
 	
-	public EventGO(EventType type, String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat, Duration notificationOffset, boolean completed) {
+	public EventGO(EventType type, String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat, Duration notificationOffset, boolean completed,String userName) {
 		this.setType(type);
 		this.id = id;
 		this.title = title;
@@ -84,6 +92,8 @@ public class EventGO {
 		this.setEndRepeat(endRepeat);
 		this.setNotificationOffset(notificationOffset);
 		this.completed = completed;
+		this.userName = userName;
+
 	}
 	
 	public String getID() {
@@ -151,5 +161,13 @@ public class EventGO {
 
 	public void setRepeatDays(Boolean[] repeatDays) {
 		this.repeatDays = repeatDays;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }

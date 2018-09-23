@@ -45,8 +45,9 @@ public class Controller {
 			LocalDate endRepeat = (LocalDate)doc.get("endRepeat");
 			Duration notificationOffset = (Duration)doc.get("notificationOffset");
 			Boolean completed = doc.getBoolean("completed");
+			String user = doc.getString("userName");
 			String id = oid.toString();
-			al.add(new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed));
+			al.add(new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, user));
 		}
 		return al;
 	}
@@ -59,17 +60,18 @@ public class Controller {
 
 	// Return ID of data in database
 	public String addEventToDatabase(EventGO e) {
-		EventType type = e.getType();
+		int type = e.getType().ordinal();
 		String title = e.getTitle();
 		LocalDate date = e.getDate();
 		LocalTime time = e.getTime();
-		Duration duration = e.getDuration();
+		String duration = e.getDuration().toString();
 		int priority = e.getPriority();
-		Boolean[] repeatDays = e.getRepeatDays();
+		String repeatDays = e.getRepeatDays().toString();
 		LocalDate endRepeat = e.getEndRepeat();
-		Duration notificationOffset = e.getNotificationOffset();
+		String notificationOffset = e.getNotificationOffset().toString();
 		Boolean completed = e.getCompleted();
-		return edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed);
+		String userName = e.getUserName();
+		return edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
 	}
 
 	public void deleteEventFromDatabase(ObjectId id) {
@@ -104,7 +106,8 @@ public class Controller {
 		LocalDate endRepeat = (LocalDate)doc.get("endRepeat");
 		Duration notificationOffset = (Duration)doc.get("notificationOffset");
 		Boolean completed = doc.getBoolean("completed");
-		return new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed);
+		String userName = doc.getString("userName");
+		return new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
 		
 	}
 
