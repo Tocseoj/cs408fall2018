@@ -1,4 +1,6 @@
 package gui;
+import controller.*;
+import database.*;
 
 import java.io.IOException;
 
@@ -120,6 +122,10 @@ public class MonthlyCalendarView {
 		view = new VBox(title, dayNamesGrid, monthlyCalendar); // the calendar view
 	}
 	
+	
+	
+	
+	
 	/*
 	 * Getter for the user options button
 	 */
@@ -165,14 +171,20 @@ public class MonthlyCalendarView {
 			if (node.getChildren().size() != 0) {
 				node.getChildren().remove(0);
 			}
-			
-			Text text = new Text(String.valueOf(currDate.getDayOfMonth()));
 			node.setDate(currDate); // set the date of the node
 			
+			Text text = new Text(String.valueOf(currDate.getDayOfMonth())); // the number of the day
+			
+			
+//			Text testText = new Text("this is a test"); // testing
+			
+			
 			double anchorVal = 5.0;
-			node.setTopAnchor(text, anchorVal);
-			node.setLeftAnchor(text,  anchorVal);
-			node.getChildren().add(text);
+			node.setTopAnchor(text, anchorVal); // set the top anchor of the child to be offset by 5
+			node.setLeftAnchor(text,  anchorVal); // set the left anchor of the number to be offset by 5
+			node.getChildren().add(text); // add the number text to the anchor pane's children
+			
+			
 			
 			
 			// increment the currDate by 1
