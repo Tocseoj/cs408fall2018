@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCursor;
 
 import database.EventDBO;
@@ -17,8 +19,9 @@ public class Controller {
 
 	private EventDBO edb;
 
-
 	private final String EVENT_NAME_KEY = "title";
+	private ObjectMapper oMapper = new ObjectMapper();
+
 
 
 	public Controller() {
@@ -35,15 +38,16 @@ public class Controller {
 		while(c.hasNext()) {
 			doc  = c.next();
 			ObjectId oid = (ObjectId)doc.get("_id");
-			EventType type = (EventType)doc.get("eventType");
+			EventType type = EventType.valueOf(doc.getInteger("eventType"));
 			String title = doc.getString(EVENT_NAME_KEY);
-			LocalDate date = (LocalDate)doc.get("date");
-			LocalTime time = (LocalTime)doc.get("time");
-			Duration duration = (Duration)doc.get("duration");
+			LocalDate date = oMapper.convertValue(doc.get("date"), LocalDate.class);
+			LocalTime time = oMapper.convertValue(doc.get("time"), LocalTime.class);
+			Duration duration = oMapper.convertValue(doc.get("duration"), Duration.class);
+			LocalDate endRepeat = oMapper.convertValue(doc.get("endRepeat"), LocalDate.class);
+			Duration notificationOffset = oMapper.convertValue(doc.get("notificationOffset"), Duration.class);
+			
 			int priority = doc.getInteger("priority");
 			Boolean[] repeatDays = (Boolean[])doc.get("repeatDays");
-			LocalDate endRepeat = (LocalDate)doc.get("endRepeat");
-			Duration notificationOffset = (Duration)doc.get("notificationOffset");
 			Boolean completed = doc.getBoolean("completed");
 			String user = doc.getString("userName");
 			String id = oid.toString();
@@ -62,13 +66,13 @@ public class Controller {
 	public String addEventToDatabase(EventGO e) {
 		int type = e.getType().ordinal();
 		String title = e.getTitle();
-		LocalDate date = e.getDate();
-		LocalTime time = e.getTime();
-		String duration = e.getDuration().toString();
+		BasicDBObject date = oMapper.convertValue(e.getDate(), BasicDBObject.class);
+		BasicDBObject time = oMapper.convertValue(e.getTime(), BasicDBObject.class);
+		BasicDBObject duration = oMapper.convertValue(e.getDuration(), BasicDBObject.class);
+		BasicDBObject endRepeat = oMapper.convertValue(e.getEndRepeat(), BasicDBObject.class);
+		BasicDBObject notificationOffset = oMapper.convertValue(e.getNotificationOffset(), BasicDBObject.class);
 		int priority = e.getPriority();
 		String repeatDays = e.getRepeatDays().toString();
-		LocalDate endRepeat = e.getEndRepeat();
-		String notificationOffset = e.getNotificationOffset().toString();
 		Boolean completed = e.getCompleted();
 		String userName = e.getUserName();
 		return edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
@@ -82,34 +86,36 @@ public class Controller {
 	public void updateEventInDatabase(EventGO e) {
 		ObjectId oid = new ObjectId(e.getID());
 		int type = e.getType().ordinal();
+		
+		BasicDBObject date = oMapper.convertValue(e.getDate(), BasicDBObject.class);
+		BasicDBObject time = oMapper.convertValue(e.getTime(), BasicDBObject.class);
+		BasicDBObject duration = oMapper.convertValue(e.getDuration(), BasicDBObject.class);
+		BasicDBObject endRepeat = oMapper.convertValue(e.getEndRepeat(), BasicDBObject.class);
+		BasicDBObject notificationOffset = oMapper.convertValue(e.getNotificationOffset(), BasicDBObject.class);
 		String title = e.getTitle();
-		LocalDate date = e.getDate();
-		LocalTime time = e.getTime();
-		String duration = e.getDuration().toString();
 		int priority = e.getPriority();
 		String repeatDays = e.getRepeatDays().toString();
-		LocalDate endRepeat = e.getEndRepeat();
-		String notificationOffset = e.getNotificationOffset().toString();
 		Boolean completed = e.getCompleted();
 		String userName = e.getUserName();
 		edb.updateEvent(oid, type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
 	}
-	
+
 	public EventGO getEventInDatabase(String id) {
 		Document doc = edb.getEvent(id);
-		EventType type = (EventType)doc.get("eventType");
+		EventType type = EventType.valueOf(doc.getInteger("eventType"));
 		String title = doc.getString(EVENT_NAME_KEY);
-		LocalDate date = (LocalDate)doc.get("date");
-		LocalTime time = (LocalTime)doc.get("time");
-		Duration duration = (Duration)doc.get("duration");
+		LocalDate date = oMapper.convertValue(doc.get("date"), LocalDate.class);
+		LocalTime time = oMapper.convertValue(doc.get("time"), LocalTime.class);
+		Duration duration = oMapper.convertValue(doc.get("duration"), Duration.class);
+		LocalDate endRepeat = oMapper.convertValue(doc.get("endRepeat"), LocalDate.class);
+		Duration notificationOffset = oMapper.convertValue(doc.get("notificationOffset"), Duration.class);
+		
 		int priority = doc.getInteger("priority");
 		Boolean[] repeatDays = (Boolean[])doc.get("repeatDays");
-		LocalDate endRepeat = (LocalDate)doc.get("endRepeat");
-		Duration notificationOffset = (Duration)doc.get("notificationOffset");
+
 		Boolean completed = doc.getBoolean("completed");
 		String userName = doc.getString("userName");
-		return new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
-		
+		return new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);	
 	}
 
 

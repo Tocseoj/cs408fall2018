@@ -11,5 +11,8 @@
 	<classpathentry kind="lib" path="libs/jbcrypt-0.3m.jar"/>
 	<classpathentry kind="lib" path="libs/junit-4.10.jar"/>
 	<classpathentry kind="lib" path="libs/jfoenix-9.0.6.jar"/>
+	<classpathentry kind="lib" path="libs/jackson-databind-2.9.6.jar"/>
+	<classpathentry kind="lib" path="libs/jackson-all-1.9.0.jar"/>
+	<classpathentry kind="lib" path="libs/jackson-core-2.9.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

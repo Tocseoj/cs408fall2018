@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -13,6 +14,8 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCursor;
 
 import controller.EventType;
@@ -21,7 +24,8 @@ import database.EventDBO;
 public class Test_EventDBO {
 
 	private final String INVALID_ID = "5ba7dcdde0fec83c8d000000";
-	
+	private ObjectMapper oMapper = new ObjectMapper();
+
 	@Test
 	public void getEvent_Exists() {
 		EventDBO edb = new EventDBO();
@@ -42,15 +46,22 @@ public class Test_EventDBO {
 		EventDBO edb = new EventDBO();
 		int type = EventType.GENERIC.ordinal();
 		String title = "event";
-		LocalDate date = LocalDate.now();
-		LocalTime time = LocalTime.now();
-		String duration = Duration.ofHours(1).toString();
+		LocalDate tempDate = LocalDate.now();
+		LocalTime tempTime = LocalTime.now();
+		Duration tempDuration = Duration.ofHours(1);
 		int priority = 2;
 		String repeatDays = (new Boolean[8]).toString();
-		LocalDate endRepeat = date.plusDays(1);
-		String notificationOffset = Duration.ofMinutes(15).toString();
+		LocalDate tEndRepeat = tempDate.plusDays(1);
+		Duration tNotificationOffset = Duration.ofMinutes(15);
 		boolean completed = false;
 		String userName = "tester";
+		
+		BasicDBObject date = oMapper.convertValue(tempDate, BasicDBObject.class);
+		BasicDBObject time = oMapper.convertValue(tempTime, BasicDBObject.class);
+		BasicDBObject duration = oMapper.convertValue(tempDuration, BasicDBObject.class);
+		BasicDBObject endRepeat = oMapper.convertValue(tEndRepeat, BasicDBObject.class);
+		BasicDBObject notificationOffset = oMapper.convertValue(tNotificationOffset, BasicDBObject.class);
+		
 		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
 		Document insertedEvent = edb.getEvent(id);
 		assertNotNull(insertedEvent);
@@ -62,15 +73,22 @@ public class Test_EventDBO {
 		EventDBO edb = new EventDBO();
 		int type = EventType.GENERIC.ordinal();
 		String title = "event";
-		LocalDate date = LocalDate.now();
-		LocalTime time = LocalTime.now();
-		String duration = Duration.ofHours(1).toString();
+		LocalDate tempDate = LocalDate.now();
+		LocalTime tempTime = LocalTime.now();
+		Duration tempDuration = Duration.ofHours(1);
 		int priority = 2;
 		String repeatDays = (new Boolean[8]).toString();
-		LocalDate endRepeat = date.plusDays(1);
-		String notificationOffset = Duration.ofMinutes(15).toString();
+		LocalDate tEndRepeat = tempDate.plusDays(1);
+		Duration tNotificationOffset = Duration.ofMinutes(15);
 		boolean completed = false;
 		String userName = "tester";
+		
+		BasicDBObject date = oMapper.convertValue(tempDate, BasicDBObject.class);
+		BasicDBObject time = oMapper.convertValue(tempTime, BasicDBObject.class);
+		BasicDBObject duration = oMapper.convertValue(tempDuration, BasicDBObject.class);
+		BasicDBObject endRepeat = oMapper.convertValue(tEndRepeat, BasicDBObject.class);
+		BasicDBObject notificationOffset = oMapper.convertValue(tNotificationOffset, BasicDBObject.class);
+		
 		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
 		edb.deleteEvent(id);
 		Document insertedEvent = edb.getEvent(id);
@@ -88,7 +106,7 @@ public class Test_EventDBO {
 	public void testGetAllEvents_ValidUser() {
 		EventDBO edb = new EventDBO();
 		MongoCursor<Document> events = edb.getAllEvents("tester");
-		assertNotNull(events);
+		assertTrue(events.hasNext());
 	}
 	
 	@Test
@@ -102,15 +120,22 @@ public class Test_EventDBO {
 		EventDBO edb = new EventDBO();
 		int type = EventType.GENERIC.ordinal();
 		String title = "event";
-		LocalDate date = LocalDate.now();
-		LocalTime time = LocalTime.now();
-		String duration = Duration.ofHours(1).toString();
+		LocalDate tempDate = LocalDate.now();
+		LocalTime tempTime = LocalTime.now();
+		Duration tempDuration = Duration.ofHours(1);
 		int priority = 2;
 		String repeatDays = (new Boolean[8]).toString();
-		LocalDate endRepeat = date.plusDays(1);
-		String notificationOffset = Duration.ofMinutes(15).toString();
+		LocalDate tEndRepeat = tempDate.plusDays(1);
+		Duration tNotificationOffset = Duration.ofMinutes(15);
 		boolean completed = false;
 		String userName = "tester";
+		
+		BasicDBObject date = oMapper.convertValue(tempDate, BasicDBObject.class);
+		BasicDBObject time = oMapper.convertValue(tempTime, BasicDBObject.class);
+		BasicDBObject duration = oMapper.convertValue(tempDuration, BasicDBObject.class);
+		BasicDBObject endRepeat = oMapper.convertValue(tEndRepeat, BasicDBObject.class);
+		BasicDBObject notificationOffset = oMapper.convertValue(tNotificationOffset, BasicDBObject.class);
+		
 		String sid = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
 		ObjectId oid = new ObjectId(sid);
 		String updatedTitle = "updatedEvent";
@@ -122,16 +147,24 @@ public class Test_EventDBO {
 	@Test
 	public void updateEvent_NonExistent() {
 		EventDBO edb = new EventDBO();
-		ObjectId invalidId = new ObjectId(INVALID_ID);int type = EventType.GENERIC.ordinal();
-		LocalDate date = LocalDate.now();
-		LocalTime time = LocalTime.now();
-		String duration = Duration.ofHours(1).toString();
+		ObjectId invalidId = new ObjectId(INVALID_ID);
+		int type = EventType.GENERIC.ordinal();
+		String title = "event";
+		LocalDate tempDate = LocalDate.now();
+		LocalTime tempTime = LocalTime.now();
+		Duration tempDuration = Duration.ofHours(1);
 		int priority = 2;
 		String repeatDays = (new Boolean[8]).toString();
-		LocalDate endRepeat = date.plusDays(1);
-		String notificationOffset = Duration.ofMinutes(15).toString();
+		LocalDate tEndRepeat = tempDate.plusDays(1);
+		Duration tNotificationOffset = Duration.ofMinutes(15);
 		boolean completed = false;
 		String userName = "tester";
+		
+		BasicDBObject date = oMapper.convertValue(tempDate, BasicDBObject.class);
+		BasicDBObject time = oMapper.convertValue(tempTime, BasicDBObject.class);
+		BasicDBObject duration = oMapper.convertValue(tempDuration, BasicDBObject.class);
+		BasicDBObject endRepeat = oMapper.convertValue(tEndRepeat, BasicDBObject.class);
+		BasicDBObject notificationOffset = oMapper.convertValue(tNotificationOffset, BasicDBObject.class);
 		
 		String updatedTitle = "updatedEvent";
 		

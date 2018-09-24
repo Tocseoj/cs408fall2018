@@ -2,20 +2,15 @@ package database;
 
 import static com.mongodb.client.model.Filters.eq;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-
-import controller.EventType;
 
 
 public class EventDBO {
@@ -42,9 +37,9 @@ public class EventDBO {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	public String insertEvent(int type, String title, LocalDate date, LocalTime time, 
-								String duration, int priority, String repeatDays, LocalDate endRepeat,
-								String notificationOffset, Boolean completed, String userName) {
+	public String insertEvent(int type, String title, BasicDBObject date, BasicDBObject time, 
+			BasicDBObject duration, int priority, String repeatDays, BasicDBObject endRepeat,
+			BasicDBObject notificationOffset, Boolean completed, String userName) {
 		MongoCollection<Document> collection = database.getCollection("events");
 		ObjectId oid = new ObjectId();
 		Document newClass = new Document("eventType", type)
@@ -73,14 +68,14 @@ public class EventDBO {
 	 * @param username
 	 * @param id
 	 */
-	public void updateEvent(ObjectId id, int type, String title, LocalDate date, LocalTime time, 
-							String duration, int priority, String repeatDays, LocalDate endRepeat,
-							String notificationOffset, Boolean completed, String userName) {
+	public void updateEvent(ObjectId id, int type, String title, BasicDBObject date, BasicDBObject time, 
+			BasicDBObject duration, int priority, String repeatDays, BasicDBObject endRepeat,
+			BasicDBObject notificationOffset, Boolean completed, String userName) {
 		if (title.equals("")) {
 			System.out.println("invalid arguments");
 			return;
 		}
-
+		
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document updatedHomework = new Document("eventType", type)
 				.append("title", title)
@@ -115,7 +110,7 @@ public class EventDBO {
 	 */
 	public MongoCursor<Document> getAllEvents(String user){
 		MongoCollection<Document> collection = database.getCollection("events");
-		Document findQuery = new Document("user", user);
+		Document findQuery = new Document("userName", user);
 		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
 		return dbObj;
 	}
