@@ -42,9 +42,9 @@ public class EventDBO {
 	 * @param teacherName the name of the teacher for the class
 	 * @param username the user that is adding the class
 	 */
-	public String insertEvent(EventType type, String title, LocalDate date, LocalTime time, 
-								Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat,
-								Duration notificationOffset, Boolean completed) {
+	public String insertEvent(int type, String title, LocalDate date, LocalTime time, 
+								String duration, int priority, String repeatDays, LocalDate endRepeat,
+								String notificationOffset, Boolean completed, String userName) {
 		MongoCollection<Document> collection = database.getCollection("events");
 		ObjectId oid = new ObjectId();
 		Document newClass = new Document("eventType", type)
@@ -57,7 +57,8 @@ public class EventDBO {
 				.append("endRepeat", endRepeat)
 				.append("notificationOffset", notificationOffset)
 				.append("completed", completed)
-				.append("_id", oid);
+				.append("_id", oid)
+				.append("userName", userName);
 		collection.insertOne(newClass);
 		return oid.toString();
 	}
@@ -129,6 +130,8 @@ public class EventDBO {
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("_id", oid);
 		Document dbObj = collection.find(findQuery).first();
-		collection.deleteOne(dbObj);
+		if(dbObj != null) {
+			collection.deleteOne(dbObj);
+		}
 	}
 }

@@ -1,3 +1,4 @@
+package TestDb;
 //import org.junit.Assert;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -18,9 +19,7 @@ public class DbUserTests {
 	 */
 	@Test
 	public void testInsertUser() throws Exception {
-//		DbUserHandler dbuh = new DbUserHandler(mongoClient2);
 		UserDBO dbuh = new UserDBO();
-		
 		
 		dbuh.insertUser("testing_database_user", "password", "9/1/2018", "12/18/2018", "black");
 		Document insertedUser = dbuh.getUserByUsername("testing_database_user");

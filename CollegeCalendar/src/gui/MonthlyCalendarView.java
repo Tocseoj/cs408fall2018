@@ -2,36 +2,29 @@ package gui;
 import controller.*;
 import database.*;
 
-import java.io.IOException;
-
-import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.geometry.*;
-import javafx.scene.text.*;
-
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 
+import controller.Controller;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
 public class MonthlyCalendarView {
 	private ArrayList<AnchorPaneNode> allCalendarDays = new ArrayList<>(35); // 35 anchorpanenodes, each one represents a day
 	
-	
+	private Controller ic = new Controller();
+	private ArrayList<EventGO> eventList;
+	private ArrayList<Button> buttonList;
 	private VBox view;
 	private Text calendarView;
+	
+	private String userName = "testUser";
 	
 
 	
