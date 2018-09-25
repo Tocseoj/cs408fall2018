@@ -18,11 +18,37 @@ public class Controller {
 	private EventDBO edb;
 
 
-	private final String EVENT_NAME_KEY = "title";
+	private static final String EVENT_NAME_KEY = "title";
 
 
 	public Controller() {
 		this.edb = new EventDBO();
+	}
+	
+	private static Boolean[] fromString(String string) {
+	    String[] strings = string.replace("[", "").replace("]", "").split(", ");
+	    Boolean result[] = new Boolean[strings.length];
+	    for (int i = 0; i < result.length; i++) {
+	      result[i] = Boolean.parseBoolean(strings[i]);
+	    }
+	    return result;
+	  }
+	
+	public static EventGO convertDocToEventGO(Document doc){
+		ObjectId oid = doc.getObjectId("_id");
+		EventType type = EventType.valueOf(doc.getInteger("eventType"));
+		String title = doc.getString(EVENT_NAME_KEY);
+		LocalDate date = LocalDate.parse(doc.getString("date"));
+		LocalTime time = LocalTime.parse(doc.getString("time"));
+		Duration duration = Duration.parse(doc.getString("duration"));
+		int priority = doc.getInteger("priority");
+		Boolean[] repeatDays = fromString(doc.getString("repeatDays"));
+		LocalDate endRepeat = LocalDate.parse(doc.getString("endRepeat"));
+		Duration notificationOffset = Duration.parse(doc.getString("notificationOffset"));
+		Boolean completed = doc.getBoolean("completed");
+		String user = doc.getString("userName");
+		String id = oid.toString();
+		return new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, user);
 	}
 
 	public ArrayList<EventGO> getAllEvents(String userName){
@@ -34,20 +60,7 @@ public class Controller {
 		}
 		while(c.hasNext()) {
 			doc  = c.next();
-			ObjectId oid = (ObjectId)doc.get("_id");
-			EventType type = (EventType)doc.get("eventType");
-			String title = doc.getString(EVENT_NAME_KEY);
-			LocalDate date = (LocalDate)doc.get("date");
-			LocalTime time = (LocalTime)doc.get("time");
-			Duration duration = (Duration)doc.get("duration");
-			int priority = doc.getInteger("priority");
-			Boolean[] repeatDays = (Boolean[])doc.get("repeatDays");
-			LocalDate endRepeat = (LocalDate)doc.get("endRepeat");
-			Duration notificationOffset = (Duration)doc.get("notificationOffset");
-			Boolean completed = doc.getBoolean("completed");
-			String user = doc.getString("userName");
-			String id = oid.toString();
-			al.add(new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, user));
+			al.add(convertDocToEventGO(doc));
 		}
 		return al;
 	}
@@ -64,11 +77,11 @@ public class Controller {
 		String title = e.getTitle();
 		LocalDate date = e.getDate();
 		LocalTime time = e.getTime();
-		String duration = e.getDuration().toString();
+		Duration duration = e.getDuration();
 		int priority = e.getPriority();
-		String repeatDays = e.getRepeatDays().toString();
+		Boolean[] repeatDays = e.getRepeatDays();
 		LocalDate endRepeat = e.getEndRepeat();
-		String notificationOffset = e.getNotificationOffset().toString();
+		Duration notificationOffset = e.getNotificationOffset();
 		Boolean completed = e.getCompleted();
 		String userName = e.getUserName();
 		return edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
@@ -85,11 +98,11 @@ public class Controller {
 		String title = e.getTitle();
 		LocalDate date = e.getDate();
 		LocalTime time = e.getTime();
-		String duration = e.getDuration().toString();
+		Duration duration = e.getDuration();
 		int priority = e.getPriority();
-		String repeatDays = e.getRepeatDays().toString();
+		Boolean[] repeatDays = e.getRepeatDays();
 		LocalDate endRepeat = e.getEndRepeat();
-		String notificationOffset = e.getNotificationOffset().toString();
+		Duration notificationOffset = e.getNotificationOffset();
 		Boolean completed = e.getCompleted();
 		String userName = e.getUserName();
 		edb.updateEvent(oid, type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);

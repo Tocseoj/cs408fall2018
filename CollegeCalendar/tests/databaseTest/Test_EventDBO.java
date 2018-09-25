@@ -15,8 +15,10 @@ import org.junit.Test;
 
 import com.mongodb.client.MongoCursor;
 
+import controller.Controller;
 import controller.EventType;
 import database.EventDBO;
+import gui.EventGO;
 
 public class Test_EventDBO {
 
@@ -38,17 +40,51 @@ public class Test_EventDBO {
 	}
 	
 	@Test
+	public void getEvent_ActualValues() {
+		EventDBO edb = new EventDBO();
+		int type = EventType.GENERIC.ordinal();
+		String title = "event";
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		Duration duration = Duration.ofHours(1);
+		int priority = 2;
+		Boolean[] repeatDays = new Boolean[8];
+		LocalDate endRepeat = date.plusDays(1);
+		Duration notificationOffset = Duration.ofMinutes(15);
+		boolean completed = false;
+		String userName = "tester";
+		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
+		
+		Document doc = edb.getEvent(id);
+		EventGO ego = Controller.convertDocToEventGO(doc);
+		
+		assertEquals(EventType.valueOf(type), ego.getType());
+		assertEquals(title, ego.getTitle());
+		assertEquals(date, ego.getDate());
+		assertEquals(time, ego.getTime());
+		assertEquals(duration, ego.getDuration());
+		assertEquals(priority, ego.getPriority());
+		assertEquals(false, ego.getRepeatDays()[0]);
+		assertEquals(endRepeat, ego.getEndRepeat());
+		assertEquals(notificationOffset, ego.getNotificationOffset());
+		assertEquals(completed, ego.getCompleted());
+		assertEquals(userName, ego.getUserName());	
+		
+		edb.deleteEvent(id);
+	}
+	
+	@Test
 	public void testInsertEvent() throws Exception {
 		EventDBO edb = new EventDBO();
 		int type = EventType.GENERIC.ordinal();
 		String title = "event";
 		LocalDate date = LocalDate.now();
 		LocalTime time = LocalTime.now();
-		String duration = Duration.ofHours(1).toString();
+		Duration duration = Duration.ofHours(1);
 		int priority = 2;
-		String repeatDays = (new Boolean[8]).toString();
+		Boolean[] repeatDays = new Boolean[8];
 		LocalDate endRepeat = date.plusDays(1);
-		String notificationOffset = Duration.ofMinutes(15).toString();
+		Duration notificationOffset = Duration.ofMinutes(15);
 		boolean completed = false;
 		String userName = "tester";
 		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
@@ -64,11 +100,11 @@ public class Test_EventDBO {
 		String title = "event";
 		LocalDate date = LocalDate.now();
 		LocalTime time = LocalTime.now();
-		String duration = Duration.ofHours(1).toString();
+		Duration duration = Duration.ofHours(1);
 		int priority = 2;
-		String repeatDays = (new Boolean[8]).toString();
+		Boolean[] repeatDays = new Boolean[8];
 		LocalDate endRepeat = date.plusDays(1);
-		String notificationOffset = Duration.ofMinutes(15).toString();
+		Duration notificationOffset = Duration.ofMinutes(15);
 		boolean completed = false;
 		String userName = "tester";
 		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
@@ -104,11 +140,11 @@ public class Test_EventDBO {
 		String title = "event";
 		LocalDate date = LocalDate.now();
 		LocalTime time = LocalTime.now();
-		String duration = Duration.ofHours(1).toString();
+		Duration duration = Duration.ofHours(1);
 		int priority = 2;
-		String repeatDays = (new Boolean[8]).toString();
+		Boolean[] repeatDays = new Boolean[8];
 		LocalDate endRepeat = date.plusDays(1);
-		String notificationOffset = Duration.ofMinutes(15).toString();
+		Duration notificationOffset = Duration.ofMinutes(15);
 		boolean completed = false;
 		String userName = "tester";
 		String sid = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
@@ -116,20 +152,22 @@ public class Test_EventDBO {
 		String updatedTitle = "updatedEvent";
 		edb.updateEvent(oid, type, updatedTitle, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
 		Document doc = edb.getEvent(sid);
+		edb.deleteEvent(sid);
 		assertEquals("updatedEvent", doc.getString("title"));
 	}
 	
 	@Test
 	public void updateEvent_NonExistent() {
 		EventDBO edb = new EventDBO();
-		ObjectId invalidId = new ObjectId(INVALID_ID);int type = EventType.GENERIC.ordinal();
+		ObjectId invalidId = new ObjectId(INVALID_ID);
+		int type = EventType.GENERIC.ordinal();
 		LocalDate date = LocalDate.now();
 		LocalTime time = LocalTime.now();
-		String duration = Duration.ofHours(1).toString();
+		Duration duration = Duration.ofHours(1);
 		int priority = 2;
-		String repeatDays = (new Boolean[8]).toString();
+		Boolean[] repeatDays = new Boolean[8];
 		LocalDate endRepeat = date.plusDays(1);
-		String notificationOffset = Duration.ofMinutes(15).toString();
+		Duration notificationOffset = Duration.ofMinutes(15);
 		boolean completed = false;
 		String userName = "tester";
 		
