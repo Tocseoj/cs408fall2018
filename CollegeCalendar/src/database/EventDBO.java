@@ -115,7 +115,7 @@ public class EventDBO {
 	 */
 	public MongoCursor<Document> getAllEvents(String user){
 		MongoCollection<Document> collection = database.getCollection("events");
-		Document findQuery = new Document("user", user);
+		Document findQuery = new Document("userName", user);
 		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
 		return dbObj;
 	}
