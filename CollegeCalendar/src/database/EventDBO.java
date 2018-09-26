@@ -5,6 +5,7 @@ import static com.mongodb.client.model.Filters.eq;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -14,8 +15,6 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-
-import controller.EventType;
 
 
 public class EventDBO {
@@ -43,19 +42,19 @@ public class EventDBO {
 	 * @param username the user that is adding the class
 	 */
 	public String insertEvent(int type, String title, LocalDate date, LocalTime time, 
-								String duration, int priority, String repeatDays, LocalDate endRepeat,
-								String notificationOffset, Boolean completed, String userName) {
+								Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat,
+								Duration notificationOffset, Boolean completed, String userName) {
 		MongoCollection<Document> collection = database.getCollection("events");
 		ObjectId oid = new ObjectId();
 		Document newClass = new Document("eventType", type)
 				.append("title", title)
-				.append("date", date)
-				.append("time", time)
-				.append("duration", duration)
+				.append("date", date.toString())
+				.append("time", time.toString())
+				.append("duration", duration.toString())
 				.append("priority", priority)
-				.append("repeatDays", repeatDays)
-				.append("endRepeat", endRepeat)
-				.append("notificationOffset", notificationOffset)
+				.append("repeatDays", Arrays.toString(repeatDays))
+				.append("endRepeat", endRepeat.toString())
+				.append("notificationOffset", notificationOffset.toString())
 				.append("completed", completed)
 				.append("_id", oid)
 				.append("userName", userName);
@@ -73,9 +72,9 @@ public class EventDBO {
 	 * @param username
 	 * @param id
 	 */
-	public void updateEvent(ObjectId id, EventType type, String title, LocalDate date, LocalTime time, 
+	public void updateEvent(ObjectId id, int type, String title, LocalDate date, LocalTime time, 
 							Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat,
-							Duration notificationOffset, Boolean completed) {
+							Duration notificationOffset, Boolean completed, String userName) {
 		if (title.equals("")) {
 			System.out.println("invalid arguments");
 			return;
@@ -84,13 +83,14 @@ public class EventDBO {
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document updatedHomework = new Document("eventType", type)
 				.append("title", title)
-				.append("date", date)
-				.append("time", time)
-				.append("duration", duration)
+				.append("date", date.toString())
+				.append("time", time.toString())
+				.append("duration", duration.toString())
 				.append("priority", priority)
-				.append("repeatDays", repeatDays)
-				.append("endRepeat", endRepeat)
-				.append("notificationOffset", completed);
+				.append("repeatDays", Arrays.toString(repeatDays))
+				.append("endRepeat", endRepeat.toString())
+				.append("notificationOffset", notificationOffset.toString())
+				.append("completed", completed);
 		collection.updateOne(eq("_id", id), new Document("$set", updatedHomework));
 	}
 
@@ -100,7 +100,12 @@ public class EventDBO {
 	 * @return
 	 */
 	public Document getEvent(String id) {
-		ObjectId oid= new ObjectId(id);
+		ObjectId oid;
+		try {
+			oid = new ObjectId(id);
+		}catch(IllegalArgumentException e) {
+			return null;
+		}
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("_id", oid);
 		Document dbObj = collection.find(findQuery).first();
@@ -115,7 +120,7 @@ public class EventDBO {
 	 */
 	public MongoCursor<Document> getAllEvents(String user){
 		MongoCollection<Document> collection = database.getCollection("events");
-		Document findQuery = new Document("user", user);
+		Document findQuery = new Document("userName", user);
 		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
 		return dbObj;
 	}
@@ -126,7 +131,12 @@ public class EventDBO {
 	 * @param id
 	 */
 	public void deleteEvent(String id) {
-		ObjectId oid= new ObjectId(id);
+		ObjectId oid;
+		try {
+			oid = new ObjectId(id);
+		}catch(IllegalArgumentException e) {
+			return;
+		}
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("_id", oid);
 		Document dbObj = collection.find(findQuery).first();
