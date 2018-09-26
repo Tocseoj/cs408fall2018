@@ -23,6 +23,12 @@
     -fx-border-radius:		5;
 }
 
+.calendar-day {
+    -fx-background-color: 	#ffffff;
+    -fx-max-width: 			infinity;
+    -fx-max-height: 		infinity;
+}
+
 .calendar-day-button {
     -fx-background-color: 	#ffffff;
     -fx-text-fill: 			#000000;
