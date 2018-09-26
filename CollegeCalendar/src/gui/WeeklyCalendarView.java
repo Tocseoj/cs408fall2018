@@ -49,6 +49,9 @@ public class WeeklyCalendarView {
 	private Text weeklyCalendarTitle; // the title of the weekly calendar
 										// currently being viewed
 	
+	private Button showMonthly;
+	
+	private Button userOptions;
 	
 	
 	/*
@@ -104,6 +107,7 @@ public class WeeklyCalendarView {
 		weeklyCalendarTitle = new Text();
 		
 		Button userOptions = new Button("User Options");
+		this.setUserOptionsButton(userOptions);
 		
 		// Create a button to go back a month
 		Button prevWeek = new Button("Prev Week");
@@ -116,7 +120,11 @@ public class WeeklyCalendarView {
 		nextWeek.setOnAction(e -> viewNextWeek());
 		
 		
-		HBox title = new HBox(prevWeek, weeklyCalendarTitle, nextWeek);
+		Button monthlyView = new Button("Monthly View");
+		this.showMonthly = monthlyView;
+		
+		
+		HBox title = new HBox(userOptions, prevWeek, weeklyCalendarTitle, nextWeek, monthlyView);
 		
 		title.setAlignment(Pos.BASELINE_CENTER); // center align the title bar
 		
@@ -274,6 +282,34 @@ public class WeeklyCalendarView {
 	 */
 	public void setAllCalendarDays(ArrayList<AnchorPaneNode> allCalendarDays) {
 		this.allCalendarDays = allCalendarDays;
+	}
+
+	/*
+	 * Get the user options button
+	 */
+	public Button getUserOptionsButton() {
+		return userOptions;
+	}
+
+	/*
+	 * Set the user options button
+	 */
+	public void setUserOptionsButton(Button userOptions) {
+		this.userOptions = userOptions;
+	}
+	
+	/*
+	 * Getter for the monthly button
+	 */
+	public Button getMonthlyViewButton() {
+		return showMonthly;
+	}
+	
+	/*
+	 * Setter for the monthly button
+	 */
+	public void setMonthlyViewButton(Button viewMonthly) {
+		this.showMonthly = viewMonthly;
 	}
 	
 }

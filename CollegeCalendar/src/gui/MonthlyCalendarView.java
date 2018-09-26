@@ -1,4 +1,6 @@
 package gui;
+import controller.*;
+import database.*;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -30,6 +32,11 @@ public class MonthlyCalendarView {
 	
 	private Text monthlyCalendarTitle; // the title of the monthly calendar
 										// currently being viewed
+	
+	
+	Button userOptions;
+	
+	Button viewWeekly;
 	
 	
 	public MonthlyCalendarView(YearMonth currMonth) {
@@ -81,6 +88,7 @@ public class MonthlyCalendarView {
 		
 		
 		Button userOptions = new Button("User Options");
+		this.userOptions = userOptions;
 		
 		// Create a button to go back a month
 		Button prevMonth = new Button("Prev Month");
@@ -93,7 +101,12 @@ public class MonthlyCalendarView {
 		nextMonth.setOnAction(e -> viewNextMonth());
 		
 		
-		HBox title = new HBox(prevMonth, monthlyCalendarTitle, nextMonth);
+		Button viewWeekly = new Button("Weekly View");
+		this.viewWeekly = viewWeekly;
+//		viewWeekly.setOnAction(e -> viewWeekly());
+		
+		
+		HBox title = new HBox(userOptions, prevMonth, monthlyCalendarTitle, nextMonth, viewWeekly);
 		
 		title.setAlignment(Pos.BASELINE_CENTER); // center align the title bar
 		
@@ -104,6 +117,35 @@ public class MonthlyCalendarView {
 	
 	
 	
+	
+	
+	/*
+	 * Getter for the user options button
+	 */
+	public Button getUserOptionsButton() {
+		return this.userOptions;
+	}
+	
+	
+	/*
+	 * Getter for the viewWeekly button
+	 */
+	public Button getWeeklyButton() {
+		return this.viewWeekly;
+	}
+	
+	
+	
+	private void viewWeekly() {
+		// TODO Auto-generated method stub
+		Stage weeklyStage = new Stage();
+		weeklyStage.setTitle("Weekly View");
+		this.view = new WeeklyCalendarView(YearMonth.now()).getView();
+//		weeklyStage.setScene(new Scene(new WeeklyCalendarView(YearMonth.now()).getView()));
+	}
+
+
+
 	private void computeCalendar(YearMonth yearAndMonth) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
@@ -122,14 +164,20 @@ public class MonthlyCalendarView {
 			if (node.getChildren().size() != 0) {
 				node.getChildren().remove(0);
 			}
-			
-			Text text = new Text(String.valueOf(currDate.getDayOfMonth()));
 			node.setDate(currDate); // set the date of the node
 			
+			Text text = new Text(String.valueOf(currDate.getDayOfMonth())); // the number of the day
+			
+			
+//			Text testText = new Text("this is a test"); // testing
+			
+			
 			double anchorVal = 5.0;
-			node.setTopAnchor(text, anchorVal);
-			node.setLeftAnchor(text,  anchorVal);
-			node.getChildren().add(text);
+			node.setTopAnchor(text, anchorVal); // set the top anchor of the child to be offset by 5
+			node.setLeftAnchor(text,  anchorVal); // set the left anchor of the number to be offset by 5
+			node.getChildren().add(text); // add the number text to the anchor pane's children
+			
+			
 			
 			
 			// increment the currDate by 1
