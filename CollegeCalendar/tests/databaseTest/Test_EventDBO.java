@@ -27,7 +27,7 @@ public class Test_EventDBO {
 	@Test
 	public void getEvent_Exists() {
 		EventDBO edb = new EventDBO();
-		final String PERM_ID = "5ba7dcdde0fec83c8d604cb9";
+		final String PERM_ID = "5baa92fde0fec84f582d29f6";
 		Document event = edb.getEvent(PERM_ID);
 		assertNotNull(event);
 	}
@@ -36,6 +36,13 @@ public class Test_EventDBO {
 	public void getEvent_NonExistent() {
 		EventDBO edb = new EventDBO();
 		Document event = edb.getEvent(INVALID_ID);
+		assertNull(event);
+	}
+	
+	@Test
+	public void getEvent_InvalidArg() {
+		EventDBO edb = new EventDBO();
+		Document event = edb.getEvent("");
 		assertNull(event);
 	}
 
@@ -72,6 +79,7 @@ public class Test_EventDBO {
 
 		edb.deleteEvent(id);
 	}
+	
 	/*
 	@Test
 	public void testInsertPermamnentEvent() {
@@ -86,7 +94,7 @@ public class Test_EventDBO {
 		LocalDate endRepeat = date.plusDays(1);
 		Duration notificationOffset = Duration.ofMinutes(15);
 		boolean completed = false;
-		String userName = "tester";
+		String userName = "permanentTester";
 		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
 
 	}

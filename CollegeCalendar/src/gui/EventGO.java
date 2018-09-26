@@ -20,6 +20,21 @@ public class EventGO {
 	private Boolean completed;
 	private String userName;
 	
+	public EventGO(String title, String userName) {
+		this.id = "";
+		this.setType(EventType.GENERIC);
+		this.title = title;
+		this.date = LocalDate.now();
+		this.time = LocalTime.of(0, 0);
+		this.duration = Duration.ofHours(0);
+		this.setPriority(0);
+		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
+		this.setEndRepeat(this.date);
+		this.setNotificationOffset(Duration.ofMinutes(10));
+		this.completed = false;
+		this.userName = userName;
+	}
+	
 	public EventGO(String id, String title, String userName) {
 		this.id = id;
 		this.title = title;
@@ -169,5 +184,13 @@ public class EventGO {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	
+	public String getId() {
+		return userName;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

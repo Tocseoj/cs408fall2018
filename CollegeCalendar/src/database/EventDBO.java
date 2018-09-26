@@ -100,7 +100,12 @@ public class EventDBO {
 	 * @return
 	 */
 	public Document getEvent(String id) {
-		ObjectId oid= new ObjectId(id);
+		ObjectId oid;
+		try {
+			oid = new ObjectId(id);
+		}catch(IllegalArgumentException e) {
+			return null;
+		}
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("_id", oid);
 		Document dbObj = collection.find(findQuery).first();
@@ -126,7 +131,12 @@ public class EventDBO {
 	 * @param id
 	 */
 	public void deleteEvent(String id) {
-		ObjectId oid= new ObjectId(id);
+		ObjectId oid;
+		try {
+			oid = new ObjectId(id);
+		}catch(IllegalArgumentException e) {
+			return;
+		}
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("_id", oid);
 		Document dbObj = collection.find(findQuery).first();
