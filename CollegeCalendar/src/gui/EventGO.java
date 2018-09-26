@@ -37,6 +37,7 @@ public class EventGO {
 	
 	public EventGO(String id, String title, String userName) {
 		this.id = id;
+		this.setType(EventType.GENERIC);
 		this.title = title;
 		this.date = LocalDate.now();
 		this.time = LocalTime.of(0, 0);
@@ -51,45 +52,15 @@ public class EventGO {
 	
 	public EventGO(String id, String title, LocalDate date, String userName) {
 		this.id = id;
+		this.setType(EventType.GENERIC);
 		this.title = title;
 		this.date = date;
 		this.time = LocalTime.of(0, 0);
 		this.duration = Duration.ofHours(0);
-		this.setPriority(0);
+		this.priority = 0;
 		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
 		this.setEndRepeat(this.date);
 		this.setNotificationOffset(Duration.ofMinutes(10));
-		this.completed = false;
-		this.userName = userName;
-
-	}
-	
-	public EventGO(String id, String title, LocalDate date, LocalTime time, Duration duration, String userName) {
-		this.id = id;
-		this.title = title;
-		this.date = date;
-		this.time = time;
-		this.duration = duration;
-		this.setPriority(0);
-		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
-		this.setEndRepeat(this.date);
-		this.setNotificationOffset(Duration.ofMinutes(10));
-		this.completed = false;
-		this.userName = userName;
-
-	}
-	
-	public EventGO(EventType type, String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat, Duration notificationOffset, String userName) {
-		this.setType(type);
-		this.id = id;
-		this.title = title;
-		this.date = date;
-		this.time = time;
-		this.duration = duration;
-		this.setPriority(priority);
-		this.repeatDays = repeatDays;
-		this.setEndRepeat(endRepeat);
-		this.setNotificationOffset(notificationOffset);
 		this.completed = false;
 		this.userName = userName;
 
@@ -102,13 +73,12 @@ public class EventGO {
 		this.date = date;
 		this.time = time;
 		this.duration = duration;
-		this.setPriority(priority);
+		this.priority = priority;
 		this.repeatDays = repeatDays;
 		this.setEndRepeat(endRepeat);
 		this.setNotificationOffset(notificationOffset);
 		this.completed = completed;
 		this.userName = userName;
-
 	}
 	
 	public String getID() {

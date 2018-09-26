@@ -47,7 +47,8 @@ public class Controller {
 	 */
 	public static EventGO convertDocToEventGO(Document doc){
 		ObjectId oid = doc.getObjectId("_id");
-		EventType type = EventType.valueOf(doc.getInteger("eventType"));
+		int i = doc.getInteger("eventType");
+		EventType type = EventType.valueOf(i);
 		String title = doc.getString(EVENT_NAME_KEY);
 		LocalDate date = LocalDate.parse(doc.getString("date"));
 		LocalTime time = LocalTime.parse(doc.getString("time"));
@@ -169,6 +170,5 @@ public class Controller {
 			return null;
 		}
 		return convertDocToEventGO(doc);
-
 	}
 }

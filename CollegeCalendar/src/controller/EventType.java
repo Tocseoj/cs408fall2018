@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum EventType {
-	GENERIC(1), HOMEWORK(2), CLAS(3), EXAM(4), MEETING(4);
+	GENERIC(0), HOMEWORK(1), CLASS(2), EXAM(3), MEETING(4);
 	private int value;
     private static Map map = new HashMap<>();
     
