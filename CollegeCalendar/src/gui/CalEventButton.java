@@ -9,9 +9,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 public class CalEventButton extends Button {
-	protected String id;
-	protected LocalTime time;
-	protected Duration duration;
+	protected double startRatio = 0;
 	
 	protected EventGO baseEvent;
 	protected ClickHandler clickedHand;
@@ -21,11 +19,6 @@ public class CalEventButton extends Button {
 		clickedHand = new ClickHandler();
 		
 		setOnAction(clickedHand);
-	}
-	public CalEventButton(String eventID) {
-		this();
-		id = eventID;
-		setText(id);
 	}
 	public CalEventButton(EventGO base) {
 		this();
