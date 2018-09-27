@@ -122,7 +122,7 @@ public class Controller {
 		Boolean completed = e.getCompleted();
 		String userName = e.getUserName();
 		String idResult = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
-		e.setId(idResult);
+		e.setID(idResult);
 		return idResult;
 	}
 
