@@ -104,7 +104,7 @@ public class Controller {
 	 * Adds event to database and sets its ID to the id that mongoDB assigns it.
 	 * Returns the string id that it was set to
 	 * @param e
-	 * @return
+	 * @return the string ID that it was set to in MongoDB
 	 */
 	public String addEventToDatabase(EventGO e) {
 		if(e == null) {
