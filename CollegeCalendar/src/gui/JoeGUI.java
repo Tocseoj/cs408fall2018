@@ -9,6 +9,7 @@ import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 import org.bson.types.ObjectId;
@@ -16,6 +17,7 @@ import org.bson.types.ObjectId;
 import controller.Controller;
 import controller.EventType;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -23,6 +25,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -378,6 +381,29 @@ public class JoeGUI extends Application {
         // Add components
 //        TextField eventName = new TextField();
 //        containerPane.getChildren().add(eventName);
+        final ComboBox<String> comboBox = new ComboBox<>();
+        comboBox.getItems().addAll(getNames(EventType.class));
+        comboBox.setValue("GENERIC");
+        
+        Label completedL = new Label("Homework Completed?");
+        CheckBox completed = new CheckBox();
+        
+        comboBox.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override public void handle(ActionEvent e) {
+		    	ComboBox<String> self = (ComboBox<String>)e.getSource();
+		    	if (self.getValue().equals("HOMEWORK")) {
+		    		int index = containerPane.getChildren().indexOf(self);
+		    		containerPane.getChildren().add(index + 1, completed);
+		    		containerPane.getChildren().add(index + 1, completedL);
+		    	} else {
+		    		containerPane.getChildren().remove(completedL);
+		            containerPane.getChildren().remove(completed);
+		    	}
+		    }
+		});
+        
+        containerPane.getChildren().add(new Label("Event Type"));
+        containerPane.getChildren().add(comboBox);
         TextField title = new TextField();
         containerPane.getChildren().add(new Label("Event Name"));
         containerPane.getChildren().add(title);
@@ -452,10 +478,14 @@ public class JoeGUI extends Application {
         containerPane.getChildren().add(notify);
         containerPane.getChildren().add(new Label("Repeat"));
         containerPane.getChildren().add(repeat);
-        Button submit = new Button("Submit");
+        Button submit = new Button("Add Event");
         submit.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
-		    	
+		    			    	
+		    	Boolean is_completed = false;
+		    	if (comboBox.getValue().equals("HOMEWORK")) {
+		    		is_completed = completed.isSelected();
+		    	}
 		    	String no = "0";
 		    	if (notify.isSelected()) {
 		    		no = notificationOffset.getText();
@@ -476,7 +506,7 @@ public class JoeGUI extends Application {
 		    		events.remove(editEvent);
 		    		removeEvent(editEvent);
 		    	}
-		    	events.add(addEvent(EventType.GENERIC, "", title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, false, userName));
+		    	events.add(addEvent(EventType.valueOf(comboBox.getValue()), "", title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed, userName));
 		    	redrawCalendarView();
 		    	dialog.close();
 		    }
@@ -484,6 +514,7 @@ public class JoeGUI extends Application {
         containerPane.getChildren().add(submit);
         
         if (editEvent != null) {
+        	comboBox.setValue(editEvent.getType().toString());
         	title.setText(editEvent.getTitle());
         	datePicker.setValue(editEvent.getDate());
         	time.setText(editEvent.getTime().toString());
@@ -510,6 +541,8 @@ public class JoeGUI extends Application {
 					break;
 				}
     		}
+        	System.out.println(editEvent.getEndRepeat());
+        	System.out.println(editEvent.getDate());
         	repeat.setSelected(((editEvent.getEndRepeat() != editEvent.getDate())) || is_checked);
         	if (repeat.isSelected()) {
         		CheckBox self = repeat;
@@ -532,9 +565,21 @@ public class JoeGUI extends Application {
     				c.setSelected(editEvent.getRepeatDays()[i]);
         		}
         	}
+        	if (editEvent.getType() == EventType.HOMEWORK) {
+        		ComboBox<String> self = comboBox;
+		    	if (self.getValue().equals("HOMEWORK")) {
+		    		int index = containerPane.getChildren().indexOf(self);
+		    		containerPane.getChildren().add(index + 1, completed);
+		    		containerPane.getChildren().add(index + 1, completedL);
+		    	} else {
+		    		containerPane.getChildren().remove(completedL);
+		            containerPane.getChildren().remove(completed);
+		    	}
+        	}
         	
         	dialog.setTitle("Editing Event " + editEvent.getTitle());
         	
+        	submit.setText("Confirm Changes");
         	Button delete = new Button("Delete Event");
         	delete.setOnAction(new EventHandler<ActionEvent>() {
     		    @Override public void handle(ActionEvent e) {
@@ -619,6 +664,7 @@ public class JoeGUI extends Application {
 		
 		if (date == null) {
 			date = LocalDate.now();
+			endRepeat = date;
 		}
 		if (title.equals("")) {
 			title = "(No Title)";
@@ -642,5 +688,9 @@ public class JoeGUI extends Application {
 	
 	private void removeEvent(EventGO e) {
 		controller.deleteEventFromDatabase(new ObjectId(e.getID()));
+	}
+	
+	private static String[] getNames(Class<? extends Enum<?>> e) {
+	    return Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
 	}
 }
