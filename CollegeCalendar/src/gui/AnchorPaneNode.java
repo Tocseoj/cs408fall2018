@@ -30,7 +30,7 @@ public class AnchorPaneNode extends AnchorPane {
 //		EventGO event = new EventGO("1", "testing");
 //		this.events.add(event);
 		
-		this.setOnMouseClicked(e -> System.out.println("You clicked on  " + event.getTitle()));
+//		this.setOnMouseClicked(e -> System.out.println("You clicked on  " + event.getTitle()));
 	}
 	
 	
