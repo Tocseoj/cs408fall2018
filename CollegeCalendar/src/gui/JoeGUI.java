@@ -122,10 +122,13 @@ public class JoeGUI extends Application {
 		// Month Label and month change buttons
 		//		Label monthYear = new Label();
 		monthYear.getStyleClass().add("day-of-week-label");
+		monthYear.setMaxWidth(Double.MAX_VALUE);
 		monthYear.setText(monthBeingViewed.format(monthYearFormatter));
 		gridpane.add(monthYear, 3, 0, 3, 1);
 		Button left = new Button("<");
 		left.getStyleClass().add("month-change-button");
+		left.setMaxWidth(Double.MAX_VALUE);
+		left.setMaxHeight(Double.MAX_VALUE);
 		left.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				monthBeingViewed = monthBeingViewed.minusMonths(1);
@@ -135,6 +138,8 @@ public class JoeGUI extends Application {
 		gridpane.add(left, 1, 0);
 		Button right = new Button(">");
 		right.getStyleClass().add("month-change-button");
+		right.setMaxWidth(Double.MAX_VALUE);
+		right.setMaxHeight(Double.MAX_VALUE);
 		right.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				monthBeingViewed = monthBeingViewed.plusMonths(1);
@@ -144,6 +149,8 @@ public class JoeGUI extends Application {
 		gridpane.add(right, 2, 0);
 		Button today = new Button("Today");
 		today.getStyleClass().add("month-change-button");
+		today.setMaxWidth(Double.MAX_VALUE);
+		today.setMaxHeight(Double.MAX_VALUE);
 		today.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				date = LocalDate.now();
@@ -154,6 +161,8 @@ public class JoeGUI extends Application {
 		gridpane.add(today, 0, 0);
 		Button view = new Button("Calendar View");
 		view.getStyleClass().add("month-change-button");
+		view.setMaxWidth(Double.MAX_VALUE);
+		view.setMaxHeight(Double.MAX_VALUE);
 		view.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				date = LocalDate.now();
@@ -174,6 +183,7 @@ public class JoeGUI extends Application {
 		for (int c = 0; c < 7; c++) {
 			Label l = new Label();
 			l.getStyleClass().add("day-of-week-label");
+			l.setMaxWidth(Double.MAX_VALUE);
 			DayOfWeek day = DayOfWeek.of(((c == 0) ? 7 : c));
 			l.setText(day.getDisplayName(TextStyle.FULL_STANDALONE, Locale.US));	
 			gridpane.add(l, c, 1);
@@ -237,6 +247,8 @@ public class JoeGUI extends Application {
 				if (dayOfMonth >= 1 && dayOfMonth <= lastOfMonth.getDayOfMonth()) {
 					Button b = new Button(String.valueOf(dayOfMonth));
 					b.getStyleClass().add("calendar-day-button");
+					b.setMaxWidth(Double.MAX_VALUE);
+					b.setMaxHeight(Double.MAX_VALUE);
 					if (monthBeingViewed.getMonth() == date.getMonth() && dayOfMonth == date.getDayOfMonth()) {
 						b.getStyleClass().add("today");
 					}
@@ -253,6 +265,8 @@ public class JoeGUI extends Application {
 						dayView.setMouseTransparent(true);
 						//			    			dayView.setPickOnBounds(false);
 						dayView.getStyleClass().add("day-view");
+						dayView.setMaxWidth(Double.MAX_VALUE);
+						dayView.setMaxHeight(Double.MAX_VALUE);
 						for (int i = 0; i < daysEvents.size() && i < 3; i++) {
 							EventGO e = daysEvents.get(i);
 							Button event = new Button(e.getTitle());
@@ -276,6 +290,8 @@ public class JoeGUI extends Application {
 
 		Button addEvent = new Button("Add Event");
 		addEvent.getStyleClass().add("month-change-button");
+		addEvent.setMaxWidth(Double.MAX_VALUE);
+		addEvent.setMaxHeight(Double.MAX_VALUE);
 		addEvent.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				addEventDialog(null);
