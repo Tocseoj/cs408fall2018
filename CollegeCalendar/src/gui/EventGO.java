@@ -161,11 +161,4 @@ public class EventGO {
 		this.userName = userName;
 	}
 	
-	public String getId() {
-		return userName;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 }
