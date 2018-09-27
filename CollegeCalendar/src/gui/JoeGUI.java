@@ -242,11 +242,13 @@ public class JoeGUI extends Application {
 			    		gridpane.add(b, c, r);
 			    		
 			    		// Add events
-			    		ArrayList<EventGO> daysEvents = getEventOnDay(firstOfMonth.plusDays(dayOfMonth - 1));
+			    		LocalDate events_date = firstOfMonth.plusDays(dayOfMonth - 1);
+			    		ArrayList<EventGO> daysEvents = getEventOnDay(events_date);
 			    		FlowPane dayView;
 			    		if (daysEvents.size() > 0) {
 			    			dayView = new FlowPane();
 			    			dayView.setMouseTransparent(true);
+//			    			dayView.setPickOnBounds(false);
 			    			dayView.getStyleClass().add("day-view");
 				    		for (int i = 0; i < daysEvents.size() && i < 3; i++) {
 				    			EventGO e = daysEvents.get(i);
@@ -263,8 +265,6 @@ public class JoeGUI extends Application {
 				    		}
 			    			gridpane.add(dayView, c, r);
 			    		}
-			    		
-	//		    		buttonChildren[r - calendarRows[0]][c - calendarColumns[0]] = b;
 		    		}
 		    	}
 		    }
@@ -289,6 +289,10 @@ public class JoeGUI extends Application {
 		ArrayList<EventGO> e = new ArrayList<>();;
 		for (int i = 0; i < events.size(); i++) {
 			if (events.get(i).getDate().equals(day)) {
+				e.add(events.get(i));
+			}
+			// Repeating events
+			else if ((day.isAfter(events.get(i).getDate()) || day.isEqual(events.get(i).getDate())) && (day.isBefore(events.get(i).getEndRepeat()) || day.isEqual(events.get(i).getEndRepeat())) && events.get(i).getRepeatDays()[((day.getDayOfWeek().getValue() == 7 ? 0 : day.getDayOfWeek().getValue()))]) {
 				e.add(events.get(i));
 			}
 		}
@@ -388,6 +392,8 @@ public class JoeGUI extends Application {
         Label completedL = new Label("Homework Completed?");
         CheckBox completed = new CheckBox();
         
+        Label dateL = new Label("Event Date");
+        
         comboBox.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
 		    	ComboBox<String> self = (ComboBox<String>)e.getSource();
@@ -395,9 +401,11 @@ public class JoeGUI extends Application {
 		    		int index = containerPane.getChildren().indexOf(self);
 		    		containerPane.getChildren().add(index + 1, completed);
 		    		containerPane.getChildren().add(index + 1, completedL);
+		    		dateL.setText("Due Date");
 		    	} else {
 		    		containerPane.getChildren().remove(completedL);
 		            containerPane.getChildren().remove(completed);
+		            dateL.setText("Event Date");
 		    	}
 		    }
 		});
@@ -407,7 +415,7 @@ public class JoeGUI extends Application {
         TextField title = new TextField();
         containerPane.getChildren().add(new Label("Event Name"));
         containerPane.getChildren().add(title);
-        containerPane.getChildren().add(new Label("Event Date"));
+        containerPane.getChildren().add(dateL);
         DatePicker datePicker = new DatePicker();
         containerPane.getChildren().add(datePicker);
         containerPane.getChildren().add(new Label("Event Time"));
@@ -567,13 +575,15 @@ public class JoeGUI extends Application {
         	}
         	if (editEvent.getType() == EventType.HOMEWORK) {
         		ComboBox<String> self = comboBox;
-		    	if (self.getValue().equals("HOMEWORK")) {
+        		if (self.getValue().equals("HOMEWORK")) {
 		    		int index = containerPane.getChildren().indexOf(self);
 		    		containerPane.getChildren().add(index + 1, completed);
 		    		containerPane.getChildren().add(index + 1, completedL);
+		    		dateL.setText("Due Date");
 		    	} else {
 		    		containerPane.getChildren().remove(completedL);
 		            containerPane.getChildren().remove(completed);
+		            dateL.setText("Event Date");
 		    	}
         	}
         	
