@@ -143,14 +143,14 @@ public class JoeGUI extends Application {
 		    }
 		});
 		gridpane.add(view, 6, 0);
-		Button addEvent = new Button("Add Event");
-		addEvent.getStyleClass().add("month-change-button");
-		addEvent.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) {
-		    	addEventDialog();
-		    }
-		});
-		gridpane.add(addEvent, 6, 7);
+//		Button addEvent = new Button("Add Event");
+//		addEvent.getStyleClass().add("month-change-button");
+//		addEvent.setOnAction(new EventHandler<ActionEvent>() {
+//		    @Override public void handle(ActionEvent e) {
+//		    	addEventDialog();
+//		    }
+//		});
+//		gridpane.add(addEvent, 6, 7);
 		// Day of week Labels
 	    for (int c = 0; c < 7; c++) {
 	    	Label l = new Label();
@@ -235,6 +235,15 @@ public class JoeGUI extends Application {
 	    }
 		
 		monthYear.setText(monthBeingViewed.format(monthYearFormatter));
+		
+		Button addEvent = new Button("Add Event");
+		addEvent.getStyleClass().add("month-change-button");
+		addEvent.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override public void handle(ActionEvent e) {
+		    	addEventDialog();
+		    }
+		});
+		gridpane.add(addEvent, 6, 7);
 	}
 	
 	private ArrayList<EventGO> getEventOnDay(LocalDate day) {
