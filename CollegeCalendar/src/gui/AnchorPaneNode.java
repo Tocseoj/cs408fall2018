@@ -1,12 +1,9 @@
 package gui;
-import controller.*;
-import database.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 /**
  *  Extended version of the JavaFx AnchorPane type.
@@ -27,8 +24,8 @@ public class AnchorPaneNode extends AnchorPane {
 		
 //		this.events = controller.getAllEvents("tester");
 		
-//		EventGO event = new EventGO("1", "testing");
-//		this.events.add(event);
+		EventGO event = new EventGO("1", "testing");
+		this.events.add(event);
 		
 		this.setOnMouseClicked(e -> System.out.println("You clicked on  " + event.getTitle()));
 	}
