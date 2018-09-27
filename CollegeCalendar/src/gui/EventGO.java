@@ -15,8 +15,8 @@ public class EventGO {
 	private Duration duration;
 	private int priority;
 	private Boolean[] repeatDays = new Boolean[8];
-	private LocalDate endRepeat;
-	private Duration notificationOffset;
+	private LocalDate endRepeat;						// If endRepeat == date then no repeat
+	private Duration notificationOffset;				// If negative, then notifications off
 	private Boolean completed;
 	private String userName;
 	
