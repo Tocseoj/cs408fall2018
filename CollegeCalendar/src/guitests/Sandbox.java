@@ -1,4 +1,8 @@
 package guitests;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import gui.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,16 +27,15 @@ public class Sandbox {
 		for (counter = 0; counter < 7; ++counter) {
 			daysOfWeek[counter] = new StackPane();
 			daysOfWeek[counter].setMinWidth(MINDAYWIDTH);
-			daysOfWeek[counter].setPrefHeight(100);
+			daysOfWeek[counter].setPrefHeight(500);
 			daysOfWeek[counter].setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
-			Rectangle temp = new Rectangle(50, 50, Color.CADETBLUE);
-			CalEventButton pressable = new CalEventButton("buttontext");
-			StackPane.setAlignment(temp, Pos.TOP_CENTER);
-			StackPane.setAlignment(pressable, Pos.BOTTOM_CENTER);
+			CalEventButton pressable = new CalEventButton(
+					new EventGO("007", "CS252 HW", LocalDate.now(), LocalTime.now(), Duration.ofMinutes(30), null));
+
+			pressable.setPrefWidth(daysOfWeek[counter].getPrefWidth());
+			StackPane.setAlignment(pressable, Pos.CENTER);
 			
-			
-			daysOfWeek[counter].getChildren().add(temp);
 			daysOfWeek[counter].getChildren().add(pressable);
 			
 			week.addColumn(counter, daysOfWeek[counter]);
