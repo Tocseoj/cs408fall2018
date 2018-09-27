@@ -1,0 +1,52 @@
+.grid-pane {
+	-fx-background-color: 	#000000;
+	-fx-vgap:				1;
+	-fx-hgap:				1;
+}
+
+.day-of-week-label {
+	-fx-alignment: 			center;
+	-fx-background-color: 	#000000;
+	-fx-text-fill: 			#ffffff;
+	-fx-max-width: 			infinity;
+}
+
+.month-change-button {
+    -fx-background-color: 	#000000;
+    -fx-text-fill: 			#ffffff;
+    -fx-alignment: 			center;
+    -fx-max-width: 			infinity;
+    -fx-max-height: 		infinity;
+    -fx-background-radius:	0;
+    -fx-background-insets:	0;
+    -fx-border-color:		#ffffff;
+    -fx-border-radius:		5;
+}
+
+.calendar-day {
+    -fx-background-color: 	#ffffff;
+    -fx-max-width: 			infinity;
+    -fx-max-height: 		infinity;
+}
+
+.calendar-day-button {
+    -fx-background-color: 	#ffffff;
+    -fx-text-fill: 			#000000;
+    -fx-alignment: 			top-left;
+    -fx-max-width: 			infinity;
+    -fx-max-height: 		infinity;
+    -fx-background-radius:	0;
+    -fx-background-insets:	0;
+}
+
+.today {
+	-fx-background-color: 	#C28E0E;
+	-fx-text-fill: 			#ffffff;
+}
+
+.day-view {
+	-fx-max-width: 			infinity;
+    -fx-max-height: 		infinity;
+    -fx-padding:			25 0 0 0;
+    -fx-background-color: 	rgba(0, 100, 100, 0);
+}

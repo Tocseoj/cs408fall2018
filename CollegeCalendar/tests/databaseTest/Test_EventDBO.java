@@ -80,7 +80,7 @@ public class Test_EventDBO {
 		edb.deleteEvent(id);
 	}
 	
-	/*
+	
 	@Test
 	public void testInsertPermamnentEvent() {
 		EventDBO edb = new EventDBO();
@@ -98,7 +98,7 @@ public class Test_EventDBO {
 		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
 
 	}
-	 */
+	 
 	@Test
 	public void testInsertEvent() throws Exception {
 		EventDBO edb = new EventDBO();

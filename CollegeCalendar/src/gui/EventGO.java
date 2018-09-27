@@ -15,11 +15,12 @@ public class EventGO {
 	private Duration duration;
 	private int priority;
 	private Boolean[] repeatDays = new Boolean[8];
-	private LocalDate endRepeat;
-	private Duration notificationOffset;
+	private LocalDate endRepeat;						// If endRepeat == date then no repeat
+	private Duration notificationOffset;				// If negative, then notifications off
 	private Boolean completed;
 	private String userName;
 	
+
 	public EventGO(String title, String userName) {
 		this.id = "";
 		this.setType(EventType.GENERIC);
@@ -34,7 +35,7 @@ public class EventGO {
 		this.completed = false;
 		this.userName = userName;
 	}
-	
+
 	public EventGO(String id, String title, String userName) {
 		this.id = id;
 		this.setType(EventType.GENERIC);
@@ -83,6 +84,10 @@ public class EventGO {
 	
 	public String getID() {
 		return id;
+	}
+	
+	public void setID(String id) {
+		this.id = id;
 	}
 	
 	public String getTitle() {
@@ -156,11 +161,4 @@ public class EventGO {
 		this.userName = userName;
 	}
 	
-	public String getId() {
-		return userName;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 }
