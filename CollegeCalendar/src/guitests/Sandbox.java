@@ -30,8 +30,7 @@ public class Sandbox {
 			daysOfWeek[counter].setPrefHeight(500);
 			daysOfWeek[counter].setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
-			CalEventButton pressable = new CalEventButton(
-					new EventGO("007", "CS252 HW", LocalDate.now(), LocalTime.now(), Duration.ofMinutes(30), null));
+			CalEventButton pressable = new CalEventButton();
 
 			pressable.setPrefWidth(daysOfWeek[counter].getPrefWidth());
 			StackPane.setAlignment(pressable, Pos.CENTER);
