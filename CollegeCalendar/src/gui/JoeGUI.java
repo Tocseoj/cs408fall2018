@@ -696,7 +696,7 @@ public class JoeGUI extends Application {
 	}
 
 	private void removeEvent(EventGO e) {
-		controller.deleteEventFromDatabase(new ObjectId(e.getID()));
+		controller.deleteEventFromDatabase(e.getID());
 	}
 
 	private static String[] getNames(Class<? extends Enum<?>> e) {
