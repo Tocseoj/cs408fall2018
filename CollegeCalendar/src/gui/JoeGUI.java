@@ -1,13 +1,20 @@
 package gui;
 
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import org.bson.types.ObjectId;
+
+import controller.Controller;
+import controller.EventType;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,11 +35,16 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class JoeGUI extends Application {
+	
+	static Controller controller = new Controller();
+	
+	private static String userName = "tester";
 	
 	LocalDate date;
 	LocalDate monthBeingViewed;
@@ -50,6 +62,8 @@ public class JoeGUI extends Application {
 //	Button[][] buttonChildren = new Button[6][7];
 	Label monthYear = new Label();
 	DateTimeFormatter monthYearFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+	
+	Boolean isCalendarView = true;
 	
 		
 	public static void main(String[] args) {
@@ -139,7 +153,9 @@ public class JoeGUI extends Application {
 		view.getStyleClass().add("month-change-button");
 		view.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
-		    	System.out.println("Change View");
+		    	date = LocalDate.now();
+		    	isCalendarView = !isCalendarView;
+		    	redrawCalendarView();
 		    }
 		});
 		gridpane.add(view, 6, 0);
@@ -179,71 +195,90 @@ public class JoeGUI extends Application {
 	}
 	
 	private void redrawCalendarView() {
-		LocalDate firstOfMonth = monthBeingViewed.with(TemporalAdjusters.firstDayOfMonth());
-	    LocalDate lastOfMonth = monthBeingViewed.with(TemporalAdjusters.lastDayOfMonth());
-	    
-	    EventHandler<ActionEvent> calendarDayEvent = new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) {
-		    	String dateClicked = ((Button)e.getSource()).getText();
-		    	viewDay(dateClicked);
-		    }
-		};
 		
-		ArrayList<Node> toRemove = new ArrayList<>();
-		for (Node node : gridpane.getChildren()) {
-			int r = GridPane.getRowIndex(node);
-			int c = GridPane.getColumnIndex(node);
-			if (calendarRows[0] <= r && r <= calendarRows[1]) {
-				if (calendarColumns[0] <= c && c <= calendarColumns[1]) {
-					toRemove.add(node);
+		if (isCalendarView) {
+			LocalDate firstOfMonth = monthBeingViewed.with(TemporalAdjusters.firstDayOfMonth());
+		    LocalDate lastOfMonth = monthBeingViewed.with(TemporalAdjusters.lastDayOfMonth());
+		    
+		    EventHandler<ActionEvent> calendarDayEvent = new EventHandler<ActionEvent>() {
+			    @Override public void handle(ActionEvent e) {
+			    	String dateClicked = ((Button)e.getSource()).getText();
+			    	viewDay(dateClicked);
+			    }
+			};
+			
+			ArrayList<Node> toRemove = new ArrayList<>();
+			for (Node node : gridpane.getChildren()) {
+				int r = GridPane.getRowIndex(node);
+				int c = GridPane.getColumnIndex(node);
+				if (calendarRows[0] <= r && r <= calendarRows[1]) {
+					if (calendarColumns[0] <= c && c <= calendarColumns[1]) {
+						toRemove.add(node);
+					}
 				}
 			}
-		}
-		for (Node node : toRemove) {
-			gridpane.getChildren().remove(node);
-		}
-		
-		for (int r = calendarRows[0]; r <= calendarRows[1]; r++) {
-	    	for (int c = calendarColumns[0]; c <= calendarColumns[1]; c++) {
-//	    		if (buttonChildren[r - calendarRows[0]][c - calendarColumns[0]] != null) {
-//	    			gridpane.getChildren().remove(buttonChildren[r - calendarRows[0]][c - calendarColumns[0]]);
-//	    			buttonChildren[r - calendarRows[0]][c - calendarColumns[0]] = null;
-//	    		}
-	    		int dayOfMonth = ((r - calendarRows[0]) * 7) + ((c - calendarColumns[0]) + 1) - (firstOfMonth.getDayOfWeek().getValue() == 7 ? 0 : firstOfMonth.getDayOfWeek().getValue());
-	    		if (dayOfMonth >= 1 && dayOfMonth <= lastOfMonth.getDayOfMonth()) {
-		    		Button b = new Button(String.valueOf(dayOfMonth));
-		    		b.getStyleClass().add("calendar-day-button");
-		    		if (monthBeingViewed.getMonth() == date.getMonth() && dayOfMonth == date.getDayOfMonth()) {
-		    			b.getStyleClass().add("today");
+			for (Node node : toRemove) {
+				gridpane.getChildren().remove(node);
+			}
+						
+			for (int r = calendarRows[0]; r <= calendarRows[1]; r++) {
+		    	for (int c = calendarColumns[0]; c <= calendarColumns[1]; c++) {
+	//	    		if (buttonChildren[r - calendarRows[0]][c - calendarColumns[0]] != null) {
+	//	    			gridpane.getChildren().remove(buttonChildren[r - calendarRows[0]][c - calendarColumns[0]]);
+	//	    			buttonChildren[r - calendarRows[0]][c - calendarColumns[0]] = null;
+	//	    		}
+		    		int dayOfMonth = ((r - calendarRows[0]) * 7) + ((c - calendarColumns[0]) + 1) - (firstOfMonth.getDayOfWeek().getValue() == 7 ? 0 : firstOfMonth.getDayOfWeek().getValue());
+		    		if (dayOfMonth >= 1 && dayOfMonth <= lastOfMonth.getDayOfMonth()) {
+			    		Button b = new Button(String.valueOf(dayOfMonth));
+			    		b.getStyleClass().add("calendar-day-button");
+			    		if (monthBeingViewed.getMonth() == date.getMonth() && dayOfMonth == date.getDayOfMonth()) {
+			    			b.getStyleClass().add("today");
+			    		}
+			    		
+			    		b.setOnAction(calendarDayEvent);
+			    		gridpane.add(b, c, r);
+			    		
+			    		// Add events
+			    		ArrayList<EventGO> daysEvents = getEventOnDay(firstOfMonth.plusDays(dayOfMonth - 1));
+			    		FlowPane dayView;
+			    		if (daysEvents.size() > 0) {
+			    			dayView = new FlowPane();
+			    			dayView.setMouseTransparent(true);
+			    			dayView.getStyleClass().add("day-view");
+				    		for (int i = 0; i < daysEvents.size() && i < 3; i++) {
+				    			EventGO e = daysEvents.get(i);
+				    			Button event = new Button(e.getTitle());
+				    			event.getStyleClass().add("calendar-day-events");
+				    			dayView.getChildren().add(event);
+				    		}
+				    		if (3 < daysEvents.size()) {
+				    			Label temp = new Label("...");
+				    			temp.setMouseTransparent(true);
+				    			temp.getStyleClass().add("event-ellipses");
+				    			dayView.getChildren().add(temp);
+				    		}
+			    			gridpane.add(dayView, c, r);
+			    		}
+			    		
+	//		    		buttonChildren[r - calendarRows[0]][c - calendarColumns[0]] = b;
 		    		}
-		    		
-		    		b.setOnAction(calendarDayEvent);
-		    		gridpane.add(b, c, r);
-		    		
-		    		// Add events
-		    		ArrayList<EventGO> daysEvents = getEventOnDay(firstOfMonth.plusDays(dayOfMonth - 1));
-		    		for (int i = 0; i < daysEvents.size(); i++) {
-		    			EventGO e = daysEvents.get(i);
-		    			Button event = new Button(e.getTitle());
-		    			event.getStyleClass().add("calendar-day-events");
-		    			gridpane.add(event, c, r);
-		    		}
-		    		
-//		    		buttonChildren[r - calendarRows[0]][c - calendarColumns[0]] = b;
-	    		}
-	    	}
-	    }
-		
-		monthYear.setText(monthBeingViewed.format(monthYearFormatter));
-		
-		Button addEvent = new Button("Add Event");
-		addEvent.getStyleClass().add("month-change-button");
-		addEvent.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) {
-		    	addEventDialog();
+		    	}
 		    }
-		});
-		gridpane.add(addEvent, 6, 7);
+			
+			monthYear.setText(monthBeingViewed.format(monthYearFormatter));
+			
+			Button addEvent = new Button("Add Event");
+			addEvent.getStyleClass().add("month-change-button");
+			addEvent.setOnAction(new EventHandler<ActionEvent>() {
+			    @Override public void handle(ActionEvent e) {
+			    	addEventDialog(null);
+			    }
+			});
+			gridpane.add(addEvent, 6, 7);
+		
+		} else {
+			System.out.println("Weekly View");
+		}
 	}
 	
 	private ArrayList<EventGO> getEventOnDay(LocalDate day) {
@@ -258,7 +293,7 @@ public class JoeGUI extends Application {
 	
 	private void viewDay(String day) {
 		// TODO Auto-generated method stub
-		System.out.println("Viewing day " + day);
+//		System.out.println("Viewing day " + day);
 		
 		int width = 300;
 		int height = 200;
@@ -271,18 +306,56 @@ public class JoeGUI extends Application {
         scroll.setPrefSize(width, height);
         
         VBox dialogVbox = new VBox();
-        for (int i = 0; i < 30; i++) {
-        	dialogVbox.getChildren().add(new Text("This is a Dialog"));
+        LocalDate dayOf = monthBeingViewed.with(TemporalAdjusters.firstDayOfMonth()).plusDays(Integer.parseInt(day) - 1);
+        ArrayList<EventGO> dayEvents = getEventOnDay(dayOf);
+        for (int i = 0; i < dayEvents.size(); i++) {
+        	EventGO event_go = dayEvents.get(i);
+        	Button event = new Button(event_go.getTitle());
+        	event.setOnAction(new EventHandler<ActionEvent>() {
+			    @Override public void handle(ActionEvent e) {
+			    	addEventDialog(event_go);
+			    }
+			});
+        	dialogVbox.getChildren().add(event);
+        }
+        if (dayEvents.size() <= 0) {
+        	dialogVbox.getChildren().add(new Label("No Events on Day " + dayOf.getDayOfMonth()));
         }
         scroll.setContent(dialogVbox);
 
         
         Scene dialogScene = new Scene(scroll, width, height);
         dialog.setScene(dialogScene);
+        dialog.setTitle("Viewing Events on Day " + day);
         dialog.show();
 	}
 	
-	private void addEventDialog() {
+	private void viewEvent(EventGO e) {
+		int width = 300;
+		int height = 200;
+		
+		final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(primaryStage);
+        
+        ScrollPane scroll = new ScrollPane();
+        scroll.setPrefSize(width, height);
+        
+        VBox dialogVbox = new VBox();
+        
+        Label title = new Label(e.getTitle());
+        Label date = new Label(e.getDate().toString());
+        Label time = new Label(e.getTime().toString());
+        
+        dialogVbox.getChildren().addAll(title, date, time);
+        scroll.setContent(dialogVbox);
+        
+        Scene dialogScene = new Scene(scroll, width, height);
+        dialog.setScene(dialogScene);
+        dialog.show();
+	}
+	
+	private void addEventDialog(EventGO editEvent) {
 		// Setup Dialog
 		final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -303,21 +376,25 @@ public class JoeGUI extends Application {
         // Add components
 //        TextField eventName = new TextField();
 //        containerPane.getChildren().add(eventName);
-        
+        TextField title = new TextField();
         containerPane.getChildren().add(new Label("Event Name"));
-        containerPane.getChildren().add(new TextField());
+        containerPane.getChildren().add(title);
         containerPane.getChildren().add(new Label("Event Date"));
-        containerPane.getChildren().add(new DatePicker());
+        DatePicker datePicker = new DatePicker();
+        containerPane.getChildren().add(datePicker);
         containerPane.getChildren().add(new Label("Event Time"));
-        containerPane.getChildren().add(new TextField());
-        containerPane.getChildren().add(new Label("Duration"));
-        containerPane.getChildren().add(new TextField());
+        TextField time = new TextField();
+        containerPane.getChildren().add(time);
+        containerPane.getChildren().add(new Label("Duration (min)"));
+        TextField duration = new TextField();
+        containerPane.getChildren().add(duration);
         
         containerPane.getChildren().add(new Label("Priority"));
-        containerPane.getChildren().add(new TextField());
+        TextField priority = new TextField();
+        containerPane.getChildren().add(priority);
         
         Label endRepeatL = new Label("End Repeat");
-        TextField endRepeat = new TextField();
+        DatePicker endRepeat = new DatePicker();
         Label repeatDaysL = new Label("Repeat on Days");
         HBox repeatDays = new HBox();
         for (int i = 0; i < 7; i++) {
@@ -352,7 +429,7 @@ public class JoeGUI extends Application {
 //        containerPane.getChildren().add(endRepeatL);
 //        containerPane.getChildren().add(endRepeat);
         
-        Label notificationOffsetL = new Label("(Hours:)Minutes before to notify");
+        Label notificationOffsetL = new Label("Minutes before to notify");
         TextField notificationOffset = new TextField();
         
         containerPane.getChildren().add(new Label("Notify Me"));
@@ -376,28 +453,127 @@ public class JoeGUI extends Application {
         Button submit = new Button("Submit");
         submit.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
-		    	System.out.println("Hello");
-		    	EventGO event = new EventGO(""+0, "New Event", LocalDate.now(), "joe");
-		    	events.add(event);
+		    	
+		    	String no = "0";
+		    	if (notify.isSelected()) {
+		    		no = notificationOffset.getText();
+		    	}
+		    	Boolean[] rpt = { false, false, false, false, false, false, false };
+		    	LocalDate edrpt = datePicker.getValue();
+		    	if (repeat.isSelected()) {
+		    		edrpt = endRepeat.getValue();
+		    		for (int i = 0; i < repeatDays.getChildren().size(); i++) {
+		    			Node child = repeatDays.getChildren().get(i);
+		    			if (child instanceof CheckBox) {
+		    				rpt[i / 2] = ((CheckBox)child).isSelected();
+		    				System.out.println(i);
+		    			}
+		    		}
+		    	}
+		    	
+		    	if (editEvent != null) {
+		    		events.remove(editEvent);
+		    		removeEvent(editEvent);
+		    	}
+		    	events.add(addEvent(EventType.GENERIC, "", title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, false, userName));
 		    	redrawCalendarView();
+		    	dialog.close();
 		    }
 		});
         containerPane.getChildren().add(submit);
+        
+        if (editEvent != null) {
+    		title.setText(editEvent.getTitle());
+    	}
         
         // Add container to scene to stage
         scrollWrapper.setContent(containerPane);
         Scene dialogScene = new Scene(scrollWrapper, width, height);
         dialog.setScene(dialogScene);
+        if (editEvent != null) {
+        	dialog.setTitle("Editing Event " + editEvent.getTitle());
+        } else {
+        	dialog.setTitle("Adding New Event");
+        }
         dialog.show();
 	}
 	
 	private static ArrayList<EventGO> getAllEvents() {
 		// TODO Get real events
-		ArrayList<EventGO> list = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
-			EventGO e = new EventGO(""+i, "Test Event", LocalDate.now().plusDays(i + 1), "joe");
-			list.add(e);
+//		ArrayList<EventGO> list = new ArrayList<>();
+//		for (int i = 0; i < 10; i++) {
+//			EventGO e = new EventGO(""+i, "Test Event", LocalDate.now().plusDays(i + 1), "joe");
+//			list.add(e);
+//		}
+//		return list;
+		
+		return controller.getAllEvents(userName);
+	}
+	
+	private EventGO addEvent(EventType type,
+	String id,
+	String title,
+	LocalDate date,
+	String time,
+	String duration,
+	String priority,
+	Boolean[] repeatDays,
+	LocalDate endRepeat,						// If endRepeat == date then no repeat
+	String notificationOffset,			// If negative, then notifications off
+	Boolean completed,
+	String userName) {		
+		
+		LocalTime ptime = LocalTime.now();
+		if (!time.equals("")) {
+			try {
+				ptime = LocalTime.parse(time);
+			}
+			catch (DateTimeParseException e) {
+				System.out.println("Time Invalid");
+			}
 		}
-		return list;
+		Duration pduration = Duration.ofMinutes(0);
+		if (!duration.equals("")) {
+			try {
+				pduration = Duration.ofMinutes(Long.parseLong(duration));
+			}
+			catch (Exception e) {
+				System.out.println("Duration Invalid");
+			}
+		}
+		int ppriority = 0;
+		if (!priority.equals("")) {
+			try {
+				ppriority = Integer.parseInt(priority);
+			} catch (Exception e) {
+				System.err.println("Priority invalid");
+			}
+		}
+		Duration poffset = Duration.ofMinutes(0);
+		if (notificationOffset != "") {
+			try {
+				poffset = Duration.ofMinutes(Long.parseLong(notificationOffset));
+			} catch (Exception e) {
+				System.err.println("Offset invalid");
+			}
+		}
+		
+		if (date == null) {
+			date = LocalDate.now();
+		}
+		if (title.equals("")) {
+			title = "(No Title)";
+		}
+		
+		EventGO e = new EventGO(type, id, title, date, ptime, pduration, ppriority, repeatDays, endRepeat, poffset, completed, userName);
+		
+		e.setID(controller.addEventToDatabase(e));
+//		events.add(e);
+
+		return e;
+	}
+	
+	private void removeEvent(EventGO e) {
+		controller.deleteEventFromDatabase(new ObjectId(e.getID()));
 	}
 }

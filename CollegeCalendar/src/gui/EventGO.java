@@ -20,7 +20,8 @@ public class EventGO {
 	private Boolean completed;
 	private String userName;
 	
-	public EventGO(String id, String title, String userName) {
+	public EventGO(EventType type, String id, String title, String userName) {
+		this.setType(type);
 		this.id = id;
 		this.title = title;
 		this.date = LocalDate.now();
@@ -34,7 +35,8 @@ public class EventGO {
 		this.userName = userName;
 	}
 	
-	public EventGO(String id, String title, LocalDate date, String userName) {
+	public EventGO(EventType type, String id, String title, LocalDate date, String userName) {
+		this.setType(type);
 		this.id = id;
 		this.title = title;
 		this.date = date;
@@ -98,6 +100,10 @@ public class EventGO {
 	
 	public String getID() {
 		return id;
+	}
+	
+	public void setID(String id) {
+		this.id = id;
 	}
 	
 	public String getTitle() {
