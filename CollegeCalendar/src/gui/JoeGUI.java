@@ -249,6 +249,7 @@ public class JoeGUI extends Application {
 				    			EventGO e = daysEvents.get(i);
 				    			Button event = new Button(e.getTitle());
 				    			event.getStyleClass().add("calendar-day-events");
+//				    			event.setMouseTransparent(false);
 				    			dayView.getChildren().add(event);
 				    		}
 				    		if (3 < daysEvents.size()) {
@@ -314,6 +315,7 @@ public class JoeGUI extends Application {
         	event.setOnAction(new EventHandler<ActionEvent>() {
 			    @Override public void handle(ActionEvent e) {
 			    	addEventDialog(event_go);
+			    	dialog.close();
 			    }
 			});
         	dialogVbox.getChildren().add(event);
@@ -463,11 +465,10 @@ public class JoeGUI extends Application {
 		    	if (repeat.isSelected()) {
 		    		edrpt = endRepeat.getValue();
 		    		for (int i = 0; i < repeatDays.getChildren().size(); i++) {
-		    			Node child = repeatDays.getChildren().get(i);
-		    			if (child instanceof CheckBox) {
-		    				rpt[i / 2] = ((CheckBox)child).isSelected();
-		    				System.out.println(i);
-		    			}
+		    			VBox vb = (VBox)repeatDays.getChildren().get(i);
+	    				CheckBox c = (CheckBox)vb.getChildren().get(0);
+	    				rpt[i] = c.isSelected();
+//	    				System.out.println((i) + ": " + c.isSelected());
 		    		}
 		    	}
 		    	
@@ -483,18 +484,76 @@ public class JoeGUI extends Application {
         containerPane.getChildren().add(submit);
         
         if (editEvent != null) {
-    		title.setText(editEvent.getTitle());
-    	}
+        	title.setText(editEvent.getTitle());
+        	datePicker.setValue(editEvent.getDate());
+        	time.setText(editEvent.getTime().toString());
+        	duration.setText(editEvent.getDuration().toString());
+        	priority.setText(editEvent.getPriority() + "");
+        	notify.setSelected(!(editEvent.getNotificationOffset().isZero()));
+        	if (notify.isSelected()) {
+        		CheckBox self = notify;
+		    	if (self.isSelected()) {
+		    		int index = containerPane.getChildren().indexOf(self);
+		    		containerPane.getChildren().add(index + 1, notificationOffset);
+		    		containerPane.getChildren().add(index + 1, notificationOffsetL);
+		    	} else {
+		    		containerPane.getChildren().remove(notificationOffsetL);
+		            containerPane.getChildren().remove(notificationOffset);
+		    	}
+        		notificationOffset.setText(editEvent.getNotificationOffset().toMinutes() + "");
+        	}
+        	Boolean is_checked = false;
+        	for (int i = 0; i < editEvent.getRepeatDays().length; i++) {
+				if (editEvent.getRepeatDays()[i]) {
+//					System.out.println("TRUE");
+					is_checked = true;
+					break;
+				}
+    		}
+        	repeat.setSelected(((editEvent.getEndRepeat() != editEvent.getDate())) || is_checked);
+        	if (repeat.isSelected()) {
+        		CheckBox self = repeat;
+		    	if (self.isSelected()) {
+		    		int index = containerPane.getChildren().indexOf(self);
+		    		containerPane.getChildren().add(index + 1, repeatDays);
+		    		containerPane.getChildren().add(index + 1, repeatDaysL); 
+		    		containerPane.getChildren().add(index + 1, endRepeat);
+		    		containerPane.getChildren().add(index + 1, endRepeatL); 
+		    	} else {
+		    		containerPane.getChildren().remove(endRepeatL);
+		            containerPane.getChildren().remove(endRepeat);
+		            containerPane.getChildren().remove(repeatDays);
+		    		containerPane.getChildren().remove(repeatDaysL); 
+		    	}
+        		endRepeat.setValue(editEvent.getEndRepeat());
+        		for (int i = 0; i < repeatDays.getChildren().size(); i++) {
+        			VBox vb = (VBox)repeatDays.getChildren().get(i);
+    				CheckBox c = (CheckBox)vb.getChildren().get(0);
+    				c.setSelected(editEvent.getRepeatDays()[i]);
+        		}
+        	}
+        	
+        	dialog.setTitle("Editing Event " + editEvent.getTitle());
+        	
+        	Button delete = new Button("Delete Event");
+        	delete.setOnAction(new EventHandler<ActionEvent>() {
+    		    @Override public void handle(ActionEvent e) {
+    		    	events.remove(editEvent);
+    		    	removeEvent(editEvent);
+    		    	redrawCalendarView();
+    		    	dialog.close();
+    		    }
+        	});
+        	containerPane.getChildren().add(delete);
+        } else {
+        	dialog.setTitle("Adding New Event");
+        }
         
         // Add container to scene to stage
         scrollWrapper.setContent(containerPane);
         Scene dialogScene = new Scene(scrollWrapper, width, height);
         dialog.setScene(dialogScene);
-        if (editEvent != null) {
-        	dialog.setTitle("Editing Event " + editEvent.getTitle());
-        } else {
-        	dialog.setTitle("Adding New Event");
-        }
+       
         dialog.show();
 	}
 	
@@ -569,6 +628,14 @@ public class JoeGUI extends Application {
 		
 		e.setID(controller.addEventToDatabase(e));
 //		events.add(e);
+//		System.out.print("[");
+//		for (int i = 0; i < 7; i++) {
+//			if (i + 1 < 7) {
+//				System.out.print(e.getRepeatDays()[i] + ", ");
+//			} else {
+//				System.out.print(e.getRepeatDays()[i] + "]\n");
+//			}
+//		}
 
 		return e;
 	}
