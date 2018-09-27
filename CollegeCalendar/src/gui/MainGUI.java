@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import controller.Controller;
+import controller.EventType;
 import controller.SortByDate;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -93,7 +94,7 @@ public class MainGUI extends Application{
 		
 		VBox buttonGroup = new VBox();
 		
-		EventGO cgo = new EventGO("5ba3b32818f6310f6c7d8cde","haaa",userName);
+		EventGO cgo = new EventGO(EventType.GENERIC, "5ba3b32818f6310f6c7d8cde","haaa",userName);
 
 		Button storeDataButton = new Button("Store in Database");
 		buttonGroup.getChildren().add(storeDataButton);
@@ -133,12 +134,12 @@ public class MainGUI extends Application{
 	
 	// Start Joe's Work
 	public void addEvent(String id, String title, LocalDate date, LocalTime time, Duration duration) {
-		EventGO newEvent = new EventGO("0", "test event",userName );
+		EventGO newEvent = new EventGO(EventType.GENERIC, "0", "test event",userName );
 		eventList.add(newEvent);
 		ic.addEventToDatabase(newEvent);
 	}
 	public void addClass(String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, LocalDate endRepeat, Duration notificationOffset) {
-		EventGO newEvent = new EventGO("0", "test event", userName);
+		EventGO newEvent = new EventGO(EventType.GENERIC, "0", "test event", userName);
 		eventList.add(newEvent);
 		ic.addEventToDatabase(newEvent);
 	}
