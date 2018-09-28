@@ -237,7 +237,7 @@ public class JoeGUI extends Application {
 				if (dayOfMonth >= 1 && dayOfMonth <= lastOfMonth.getDayOfMonth()) {
 					Button b = new Button(String.valueOf(dayOfMonth));
 					b.getStyleClass().add("calendar-day-button");
-					if (monthBeingViewed.getMonth() == date.getMonth() && dayOfMonth == date.getDayOfMonth()) {
+					if (monthBeingViewed.getMonth() == date.getMonth() && dayOfMonth == date.getDayOfMonth() && monthBeingViewed.getYear() == date.getYear()) {
 						b.getStyleClass().add("today");
 					}
 
@@ -509,11 +509,15 @@ public class JoeGUI extends Application {
 					}
 				}
 
+				String test_id = "";
 				if (editEvent != null) {
+					test_id = editEvent.getID();
+					System.out.println(test_id);
 					events.remove(editEvent);
-					removeEvent(editEvent);
+//					controller.updateEventInDatabase(editEvent);
+//					removeEvent(editEvent);
 				}
-				events.add(addEvent(EventType.valueOf(comboBox.getValue()), "", title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed, userName));
+				events.add(addEvent(EventType.valueOf(comboBox.getValue()), test_id, title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed, userName));
 				redrawCalendarView();
 				dialog.close();
 			}
@@ -681,7 +685,11 @@ public class JoeGUI extends Application {
 
 		EventGO e = new EventGO(type, id, title, date, ptime, pduration, ppriority, repeatDays, endRepeat, poffset, completed, userName);
 
-		e.setID(controller.addEventToDatabase(e));
+		if (id != "") {
+			controller.updateEventInDatabase(e);
+		} else {
+			e.setID(controller.addEventToDatabase(e));
+		}
 		//		events.add(e);
 		//		System.out.print("[");
 		//		for (int i = 0; i < 7; i++) {
