@@ -30,6 +30,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -38,6 +40,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -68,7 +71,36 @@ public class JoeGUI extends Application {
 
 	Boolean isCalendarView = true;
 
-
+	public class CalEventButton extends Button {
+		protected double startRatio = 0;
+		
+		protected EventGO baseEvent;
+		protected ClickHandler clickedHand;
+		
+		public final Color defColor = Color.CORNSILK;
+		
+		public CalEventButton() {
+			super();
+			clickedHand = new ClickHandler();
+			
+			setOnAction(clickedHand);
+			setBackground(new Background(new BackgroundFill(defColor, null, null)));
+		}
+		public CalEventButton(EventGO base) {
+			this();
+			baseEvent = base;
+			setText(base.getTitle());
+		}
+		
+		class ClickHandler implements EventHandler<ActionEvent> {
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Currently only testing output, implement editing later
+				addEventDialog(baseEvent);
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
 		events = getAllEvents();
 		//		System.out.println(events);

@@ -37,13 +37,6 @@ public class CalEventButton extends Button {
 		@Override
 		public void handle(ActionEvent event) {
 			// TODO Currently only testing output, implement editing later
-			
-			System.out.print("Event Time: ");
-			System.out.println(baseEvent.getTime());
-			
-			System.out.print("Event Duration: ");
-			System.out.print(baseEvent.getDuration().toMinutes());
-			System.out.println(" Minutes");
 		}
 	}
 }
