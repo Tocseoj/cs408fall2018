@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -716,16 +717,21 @@ public class JoeGUI extends Application {
 	}
 	
 	public static void pollToNotify() {
-		LocalDate checkDate = LocalDate.now();
-		LocalTime checkTime	= LocalTime.now();
+		LocalDateTime currCheck = LocalDateTime.now();
 		
 		for (int i = 0; i < events.size(); i++) {
-			if (!events.get(i).getNotificationOffset().isNegative() &&		/* Notifications enabled */
-					events.get(i).getDate().compareTo(checkDate) == 0)		/* Event is identical with TODAY */ 
+			LocalTime tmp = events.get(i).getTime();
+			LocalDateTime eventCheck = events.get(i).getDate().atTime(tmp);
+			
+			if (!events.get(i).getNotificationOffset().isNegative()		/* Notifications enabled */
+					&& events.get(i).getCompleted() == false) 
 			{
-				if (checkTime.plusMinutes(events.get(i).getNotificationOffset().toMinutes())
-						.compareTo(events.get(i).getTime()) == 0) {
-					System.out.println("NOTIFICATION ON EVENT!!");
+				if (eventCheck.minusMinutes(events.get(i).getNotificationOffset().toMinutes())
+						.compareTo(currCheck) >= 0)
+				{ /* Replace with GUI pop-up of necessary info */
+					System.out.printf("Event %s starts in %d minutes!\n", events.get(i).getTitle(),
+							events.get(i).getNotificationOffset().toMinutes());
+					events.get(i).setNotificationOffset(Duration.ofMinutes(-1));	// Disable so user isn't spammed
 				}
 			}
 		}

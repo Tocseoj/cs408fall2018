@@ -12,5 +12,4 @@ public class NotificationTimerSetup {
 		notificationTimer = new Timer();
 		notificationTimer.schedule(new NotifyTask(), 0);
 	}
-	
 }
