@@ -30,7 +30,6 @@ import com.mongodb.client.MongoDatabase;
 public class UserDBO {
 	private MongoClient mongoClient;
 	private MongoDatabase database;
-//	private String encryptionPassword;
 	
 	
 	public UserDBO() {
@@ -40,10 +39,12 @@ public class UserDBO {
 	}
 	
 	
+	/*
+	 * Main method TODO comments
+	 */
 	public static void main(String[] args) {
 		UserDBO dbuh = new UserDBO();
 		dbuh.getAllUsers();
-//		System.out.println(x);
 		
 	}
 	
@@ -56,6 +57,15 @@ public class UserDBO {
 	 */
 	public void insertUser(String username, String password, String semesterStart, String semesterEnd, String color) throws Exception {
 		// need to check if a user already exists with the given user name
+		if (username.length() == 0 || 
+				password.length() == 0 ||
+				semesterStart.length() == 0 ||
+				semesterEnd.length() == 0 || 
+				color.length() == 0) {
+			System.out.println("Invalid arguments were passed to the insertUser function");
+			return;
+		}
+		
 		Document oldUser = getUserByUsername(username);
 		if (oldUser != null) {
 			throw new java.lang.Error("User already exists");
@@ -94,7 +104,7 @@ public class UserDBO {
 	 * @return true 	if the user exists in the database
 	 * 		   false	if the user does not exist in the database
 	 */
-	boolean isValidUser(String username, String password) throws GeneralSecurityException, IOException {
+	public boolean isValidUser(String username, String password) throws GeneralSecurityException, IOException {
 		// get the user from the database with the given username
 		Document user = getUserByUsername(username);
 		
