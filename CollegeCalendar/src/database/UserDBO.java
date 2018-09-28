@@ -68,7 +68,8 @@ public class UserDBO {
 		
 		Document oldUser = getUserByUsername(username);
 		if (oldUser != null) {
-			throw new java.lang.Error("User already exists");
+			System.out.println("User already exists");
+			return;
 		}
 		
 		String encryptionPassword = "testing_password";
@@ -105,6 +106,12 @@ public class UserDBO {
 	 * 		   false	if the user does not exist in the database
 	 */
 	public boolean isValidUser(String username, String password) throws GeneralSecurityException, IOException {
+		// error checking for bad input
+		if (username.length() == 0 || username == null || password.length() == 0 || password == null) {
+			System.out.println("Bad input!");
+			return false;
+		}
+		
 		// get the user from the database with the given username
 		Document user = getUserByUsername(username);
 		
