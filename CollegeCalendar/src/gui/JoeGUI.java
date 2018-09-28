@@ -368,12 +368,6 @@ public class JoeGUI extends Application {
 		firstOfMonth = monthBeingViewed.minusDays((monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue()));
 		lastOfMonth = monthBeingViewed.plusDays((6 - (monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue())));
 		
-		EventHandler<ActionEvent> calendarDayEvent = new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent e) {
-				String dateClicked = ((Button)e.getSource()).getText();
-				viewDay(dateClicked, -1);
-			}
-		};
 		EventHandler<ActionEvent> weeklyTimeEvent = new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				int[] dateClicked = (int[])((Button)e.getSource()).getUserData();
@@ -401,11 +395,7 @@ public class JoeGUI extends Application {
 		for (int r = calendarRows[0]; (r <= calendarRows[1]) && (r < calendarRows[1]); r++) {
 			for (int c = calendarColumns[0]; c <= calendarColumns[1]; c++) {
 
-				int dayOfMonth = ((r - calendarRows[0]) * 7) + ((c - calendarColumns[0]) + 1) - (firstOfMonth.getDayOfWeek().getValue() == 7 ? 0 : firstOfMonth.getDayOfWeek().getValue());
-				
-				if (true) {
-					dayOfMonth = firstOfMonth.plusDays((c - calendarColumns[0])).getDayOfMonth();
-				}
+				int dayOfMonth = firstOfMonth.plusDays((c - calendarColumns[0])).getDayOfMonth();
 				
 				if ((dayOfMonth >= 1 && dayOfMonth <= lastOfMonth.getDayOfMonth()) || true) {
 					Button b = new Button(String.valueOf(dayOfMonth));
@@ -425,46 +415,33 @@ public class JoeGUI extends Application {
 					
 					b.getStyleClass().add("calendar-day-button");
 					if (monthBeingViewed.getMonth() == date.getMonth() && dayOfMonth == date.getDayOfMonth() && monthBeingViewed.getYear() == date.getYear()) {
-						if (true) {
-							int row = r - calendarRows[0];
-							LocalTime n = LocalTime.now();
-							if ((n.isAfter(times[row]) || n.equals(times[row])) && (n.isBefore(times[row + 1]))) {
-								b.getStyleClass().add("today");
-							}
-							
-						} else {
+						int row = r - calendarRows[0];
+						LocalTime n = LocalTime.now();
+						if ((n.isAfter(times[row]) || n.equals(times[row])) && (n.isBefore(times[row + 1]))) {
 							b.getStyleClass().add("today");
 						}
 					}
 
-					if (true) {
-						b.setOnAction(weeklyTimeEvent);
-					} else {
-						b.setOnAction(calendarDayEvent);
-					}
+					b.setOnAction(weeklyTimeEvent);
 					gridpane.add(b, c, r);
 
 					// Add events
 					LocalDate events_date = firstOfMonth.plusDays(dayOfMonth - 1);
 					ArrayList<EventGO> daysEvents;
-					if (true) {
-						events_date = firstOfMonth.plusDays((c - calendarColumns[0]));
-						daysEvents = getEventOnDay(events_date, r - calendarRows[0]);
-					} else {
-						daysEvents = getEventOnDay(events_date, -1);
-					}
+					events_date = firstOfMonth.plusDays((c - calendarColumns[0]));
+					daysEvents = getEventOnDay(events_date, r - calendarRows[0]);
 					
 					FlowPane dayView;
 					if (daysEvents.size() > 0) {
 						dayView = new FlowPane();
 						dayView.setMouseTransparent(true);
-						//			    			dayView.setPickOnBounds(false);
+
 						dayView.getStyleClass().add("day-view");
 						for (int i = 0; i < daysEvents.size() && i < 3; i++) {
 							EventGO e = daysEvents.get(i);
 							Button event = new Button(e.getTitle());
 							event.getStyleClass().add("calendar-day-events");
-							//				    			event.setMouseTransparent(false);
+
 							dayView.getChildren().add(event);
 						}
 						if (3 < daysEvents.size()) {
@@ -479,11 +456,7 @@ public class JoeGUI extends Application {
 			}
 		}
 
-		if (true) {
-			monthYear.setText(firstOfMonth.format(monthYearFormatter) + " Week " + firstOfMonth.format(weeklyFormatter));
-		} else {
-			monthYear.setText(monthBeingViewed.format(monthYearFormatter));
-		}
+		monthYear.setText(firstOfMonth.format(monthYearFormatter) + " Week " + firstOfMonth.format(weeklyFormatter));
 
 		Button addEvent = new Button("Add Event");
 		addEvent.getStyleClass().add("month-change-button");
