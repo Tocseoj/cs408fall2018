@@ -29,6 +29,50 @@ public class DbUserTests {
 	}
 	
 	/*
+	 * Tests whether values of length 0 cannot be added to the database
+	 */
+	public void insertUserWithBadValues() throws Exception {
+		UserDBO dbuh = new UserDBO();
+		
+		dbuh.insertUser("", "", "", "", "");
+		Document insertedUser = dbuh.getUserByUsername("testing_database_user");
+				
+		assertNull(insertedUser);
+	}
+	
+	/*
+	 * Tests whether a username and password can be checked against the database
+	 * Basically tests whether an individual user can be gotten from the database
+	 * 
+	 */
+	@Test
+	public void testIsValidUserWithValidCreds() throws Exception {
+		String username = "testing_user";
+		String password = "password";
+		
+		UserDBO dbuh = new UserDBO();
+		boolean isValid = dbuh.isValidUser(username, password);
+		
+		Assert.assertTrue(isValid);
+	}
+	
+	/*
+	 * Tests whether an invalid username and password leads to a failure from UserDBO.isValidUser
+	 * 
+	 * 
+	 */
+	@Test
+	public void testIsValidUserWithBadCreds() throws Exception {
+		String username = "bad_name";
+		String password = "bad_pass";
+		
+		UserDBO dbuh = new UserDBO();
+		boolean isValid = dbuh.isValidUser(username, password);
+		
+		Assert.assertFalse(isValid);
+	}
+	
+	/*
 	 * Tests whether the database successfully deletes a user.
 	 */
 	@Test
