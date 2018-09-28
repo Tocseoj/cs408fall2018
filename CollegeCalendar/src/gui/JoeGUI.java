@@ -75,8 +75,6 @@ public class JoeGUI extends Application {
 	public static void main(String[] args) {
 		events = getAllEvents();
 		//		System.out.println(events);
-
-		new NotificationTimerSetup();
 		launch(args);
 	}
 
@@ -199,6 +197,8 @@ public class JoeGUI extends Application {
 		primaryStage.setTitle("College Calendar");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		new NotificationTimerSetup(); /* Notification polling */
 	}
 
 	private void redrawCalendarView() {
