@@ -96,13 +96,14 @@ public class JoeGUI extends Application {
 			sizeRatio = baseEvent.getDuration().toMinutes();
 		}
 		
-		public void bindToEvent(Pane p) {
+		public void adjustSize(double parentHeight) {
 			DoubleProperty adjHeight;
 			NumberBinding product;
-			if (p == null)
-				return;
 			
-			this.setPrefHeight(sizeRatio * p.getHeight());
+			this.setPrefHeight(sizeRatio * parentHeight);
+		}
+		public void adjustPos(double parentHeight) {
+			this.setTranslateY(startRatio * parentHeight);
 		}
 		
 		class ClickHandler implements EventHandler<ActionEvent> {
