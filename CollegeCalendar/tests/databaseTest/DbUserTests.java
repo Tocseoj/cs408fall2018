@@ -42,7 +42,7 @@ public class DbUserTests {
 		
 //		dbuh.deleteUserByUsername("testing_database_user");
 				
-		assertNull(insertedUser);
+		assertNotNull(insertedUser);
 	}
 	
 	/*
@@ -85,6 +85,18 @@ public class DbUserTests {
 		
 		UserDBO dbuh = new UserDBO();
 		boolean isValid = dbuh.isValidUser(username, password);
+		
+		Assert.assertFalse(isValid);
+	}
+	
+	/*
+	 * Tests isValidUser with null strings
+	 */
+	@Test
+	public void testisValidUserWithNullInput() throws Exception {
+		UserDBO dbuh = new UserDBO();
+		
+		boolean isValid = dbuh.isValidUser(null, null);
 		
 		Assert.assertFalse(isValid);
 	}

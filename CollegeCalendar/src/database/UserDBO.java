@@ -107,7 +107,7 @@ public class UserDBO {
 	 */
 	public boolean isValidUser(String username, String password) throws GeneralSecurityException, IOException {
 		// error checking for bad input
-		if (username.length() == 0 || username == null || password.length() == 0 || password == null) {
+		if (username == null || username.length() == 0 || password == null || password.length() == 0 ) {
 			System.out.println("Bad input!");
 			return false;
 		}
