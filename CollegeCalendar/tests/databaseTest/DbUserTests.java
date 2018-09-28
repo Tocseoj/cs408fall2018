@@ -28,6 +28,23 @@ public class DbUserTests {
 		assertNotNull(insertedUser);
 	}
 	
+	
+	/*
+	 * Tests whether a duplicate username is barred from being added to the database
+	 * 
+	 */
+	@Test
+	public void testInsertDuplicateUser() throws Exception {
+		UserDBO dbuh = new UserDBO();
+		
+		dbuh.insertUser("testUser", "password", "9/1/2018", "12/18/2018", "black");
+		Document insertedUser = dbuh.getUserByUsername("testUser");
+		
+//		dbuh.deleteUserByUsername("testing_database_user");
+				
+		assertNull(insertedUser);
+	}
+	
 	/*
 	 * Tests whether values of length 0 cannot be added to the database
 	 */
@@ -35,7 +52,7 @@ public class DbUserTests {
 		UserDBO dbuh = new UserDBO();
 		
 		dbuh.insertUser("", "", "", "", "");
-		Document insertedUser = dbuh.getUserByUsername("testing_database_user");
+		Document insertedUser = dbuh.getUserByUsername("");
 				
 		assertNull(insertedUser);
 	}
