@@ -43,6 +43,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -728,12 +729,31 @@ public class JoeGUI extends Application {
 			{
 				if (eventCheck.minusMinutes(events.get(i).getNotificationOffset().toMinutes())
 						.compareTo(currCheck) >= 0)
-				{ /* Replace with GUI pop-up of necessary info */
-					System.out.printf("Event %s starts in %d minutes!\n", events.get(i).getTitle(),
-							events.get(i).getNotificationOffset().toMinutes());
-					events.get(i).setNotificationOffset(Duration.ofMinutes(-1));	// Disable so user isn't spammed
+				{
+					notificationDialog(events.get(i));
+					
+					/* Disabling Notification after showing it, Sprint 2, set reminder */
+					events.get(i).setNotificationOffset(Duration.ofMinutes(-1));
 				}
 			}
 		}
+	}
+	
+	private static void notificationDialog(EventGO event) {
+		Stage popUpStage = new Stage();
+		
+		popUpStage.setTitle("Event Notification");
+		String message = "Event: "+event.getTitle()+" starts in "
+				+event.getNotificationOffset().toMinutes() + " minutes!";
+		
+		Text displayText = new Text(10, 40, message);
+		displayText.setFont(new Font(20));
+		
+		Scene popUp = new Scene(new Group(displayText));
+		
+		popUpStage.setScene(popUp);
+		popUpStage.sizeToScene();
+		popUpStage.show();
+		
 	}
 }

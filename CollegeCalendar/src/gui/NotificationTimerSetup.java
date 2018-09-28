@@ -10,6 +10,6 @@ public class NotificationTimerSetup {
 	public NotificationTimerSetup() {
 		notificationToolkit = Toolkit.getDefaultToolkit();
 		notificationTimer = new Timer();
-		notificationTimer.schedule(new NotifyTask(), 0);
+		notificationTimer.schedule(new NotifyTask(), 0, 2*1000);
 	}
 }
