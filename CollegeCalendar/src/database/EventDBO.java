@@ -121,6 +121,10 @@ public class EventDBO {
 	public MongoCursor<Document> getAllEvents(String user){
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("userName", user);
+		if (findQuery == null) {
+			System.out.println("invalid username provided");
+			return null;
+		}
 		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
 		return dbObj;
 	}
