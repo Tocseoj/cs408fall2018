@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNull;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -28,7 +29,7 @@ public class Test_EventDBO {
 	// Testing whether events can be received from the database
 	public void getEvent_Exists() {
 		EventDBO edb = new EventDBO();
-		final String PERM_ID = "5baa92fde0fec84f582d29f6";
+		final String PERM_ID = "5bad5eede0fec85a237d3dd3"; // passing it the ID of the permanent event used for testing
 		Document event = edb.getEvent(PERM_ID);
 		assertNotNull(event);
 	}
@@ -208,4 +209,19 @@ public class Test_EventDBO {
 		Document doc = edb.getEvent(INVALID_ID);
 		assertNull(doc);
 	}
+	
+	
+	/*
+	 * Integration test for getting events, mocks the whole process of getting events.
+	 * GUI makes call to EventGO -> EventGO makes call to EventDBO -> EventDBO interfaces with DB ->
+	 * Returns information to GUI
+	 */
+	@Test
+	public void testGetAllEventsIntegration() throws Exception{
+		Controller controller = new Controller();
+		ArrayList<EventGO> all_events = controller.getAllEvents("permanentTester"); // using the permanentTEster to ensure something is received
+		assertNotNull(all_events);
+	}
+	
+	
 }
