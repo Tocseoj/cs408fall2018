@@ -150,7 +150,16 @@ public class UserDBO {
 	 * Updates the user given by the specified username
 	 */
 	public void updateUser(String username, String password, String semesterStart, String semesterEnd, String color) {
-		if (username.equals("")) {
+		if (username == null || 
+				username.equals("")||
+				password == null ||
+				password.length() == 0 ||
+				semesterStart == null ||
+				semesterStart.length() == 0 ||
+				semesterEnd == null ||
+				semesterEnd.length() == 0 ||
+				color == null ||
+				color.length() == 0) {
 			System.out.println("invalid arguments");
 			return;
 		}
