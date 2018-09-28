@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Toolkit;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -11,6 +12,8 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.bson.types.ObjectId;
 
@@ -73,6 +76,7 @@ public class JoeGUI extends Application {
 		events = getAllEvents();
 		//		System.out.println(events);
 
+		new NotificationTimerSetup();
 		launch(args);
 	}
 
@@ -709,5 +713,21 @@ public class JoeGUI extends Application {
 
 	private static String[] getNames(Class<? extends Enum<?>> e) {
 		return Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
+	}
+	
+	public static void pollToNotify() {
+		LocalDate checkDate = LocalDate.now();
+		LocalTime checkTime	= LocalTime.now();
+		
+		for (int i = 0; i < events.size(); i++) {
+			if (!events.get(i).getNotificationOffset().isNegative() &&		/* Notifications enabled */
+					events.get(i).getDate().compareTo(checkDate) == 0)		/* Event is identical with TODAY */ 
+			{
+				if (checkTime.plusMinutes(events.get(i).getNotificationOffset().toMinutes())
+						.compareTo(events.get(i).getTime()) == 0) {
+					System.out.println("NOTIFICATION ON EVENT!!");
+				}
+			}
+		}
 	}
 }
