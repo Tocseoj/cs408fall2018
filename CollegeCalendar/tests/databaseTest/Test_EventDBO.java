@@ -25,6 +25,7 @@ public class Test_EventDBO {
 	private final String INVALID_ID = "5ba7dcdde0fec83c8d000000";
 
 	@Test
+	// Testing whether events can be received from the database
 	public void getEvent_Exists() {
 		EventDBO edb = new EventDBO();
 		final String PERM_ID = "5baa92fde0fec84f582d29f6";
@@ -33,6 +34,7 @@ public class Test_EventDBO {
 	}
 
 	@Test
+	// Testing whether an invalid event id leads to a null element
 	public void getEvent_NonExistent() {
 		EventDBO edb = new EventDBO();
 		Document event = edb.getEvent(INVALID_ID);
@@ -40,6 +42,7 @@ public class Test_EventDBO {
 	}
 	
 	@Test
+	// Testing whether an invalid argument leads to a null event object
 	public void getEvent_InvalidArg() {
 		EventDBO edb = new EventDBO();
 		Document event = edb.getEvent("");
@@ -47,6 +50,7 @@ public class Test_EventDBO {
 	}
 
 	@Test
+	// 
 	public void getEvent_ActualValuesStoredCorrectly() {
 		EventDBO edb = new EventDBO();
 		int type = EventType.GENERIC.ordinal();
@@ -82,6 +86,7 @@ public class Test_EventDBO {
 	
 	
 	@Test
+	// Testing whether the permanent event test is able to be inserted
 	public void testInsertPermamnentEvent() {
 		EventDBO edb = new EventDBO();
 		int type = EventType.GENERIC.ordinal();
@@ -96,7 +101,7 @@ public class Test_EventDBO {
 		boolean completed = false;
 		String userName = "permanentTester";
 		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
-
+		assertNotNull(id);
 	}
 	 
 	@Test
