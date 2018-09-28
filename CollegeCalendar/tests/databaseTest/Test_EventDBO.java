@@ -217,10 +217,46 @@ public class Test_EventDBO {
 	 * Returns information to GUI
 	 */
 	@Test
-	public void testGetAllEventsIntegration() throws Exception{
+	public void testGetAllEvents() throws Exception{
 		Controller controller = new Controller();
 		ArrayList<EventGO> all_events = controller.getAllEvents("permanentTester"); // using the permanentTEster to ensure something is received
 		assertNotNull(all_events);
+	}
+	
+	
+	/*
+	 * Integration test for deleting events, also involves a test for adding, since we need to add a temporary
+	 * event to have something to remove.
+	 */
+	@Test
+	public void testDeleteEvent() throws Exception {
+		EventDBO edb = new EventDBO(); // create the EventDBO object to use
+		// make a bunch of dummy values to insert into the database
+		int type = EventType.GENERIC.ordinal();
+		String title = "event";
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		Duration duration = Duration.ofHours(1);
+		int priority = 2;
+		Boolean[] repeatDays = new Boolean[8];
+		LocalDate endRepeat = date.plusDays(1);
+		Duration notificationOffset = Duration.ofMinutes(15);
+		boolean completed = false;
+		String userName = "tester";
+		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
+
+		// check whether the event was actually inserted properly
+		assertNotNull(id);
+		
+		// at this point simulate a deletion request from the user
+
+		edb.deleteEvent(id); // run a delete on the event that was added
+		
+		Document event = edb.getEvent(id); // attempt to get the deleted event from the database
+		
+		assertNull(event);
+		
+		
 	}
 	
 	
