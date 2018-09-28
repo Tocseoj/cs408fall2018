@@ -216,19 +216,15 @@ public class JoeGUI extends Application {
 	}
 
 	private void redrawCalendarView() {
-		redrawMonthlyView();
+		if (isCalendarView)
+			redrawMonthView();
+		else
+			redrawWeekView();
 	}
-	private void redrawMonthlyView() {
+	private void redrawMonthView() {
 
 		LocalDate firstOfMonth = monthBeingViewed.with(TemporalAdjusters.firstDayOfMonth());
 		LocalDate lastOfMonth = monthBeingViewed.with(TemporalAdjusters.lastDayOfMonth());
-
-		if (!isCalendarView) {
-			firstOfMonth = monthBeingViewed.minusDays((monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue()));
-			lastOfMonth = monthBeingViewed.plusDays((6 - (monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue())));
-//			System.out.println(firstOfMonth.getDayOfMonth());
-//			System.out.println(lastOfMonth.getDayOfMonth());
-		}
 		
 		EventHandler<ActionEvent> calendarDayEvent = new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
@@ -268,56 +264,21 @@ public class JoeGUI extends Application {
 				//	    		}
 				int dayOfMonth = ((r - calendarRows[0]) * 7) + ((c - calendarColumns[0]) + 1) - (firstOfMonth.getDayOfWeek().getValue() == 7 ? 0 : firstOfMonth.getDayOfWeek().getValue());
 				
-				if (!isCalendarView) {
-					dayOfMonth = firstOfMonth.plusDays((c - calendarColumns[0])).getDayOfMonth();
-				}
-				
-				if ((dayOfMonth >= 1 && dayOfMonth <= lastOfMonth.getDayOfMonth()) || !isCalendarView) {
+				if ((dayOfMonth >= 1 && dayOfMonth <= lastOfMonth.getDayOfMonth())) {
 					Button b = new Button(String.valueOf(dayOfMonth));
-					
-					if (!isCalendarView && r - calendarRows[0] >= 0) {
-						int row = r - calendarRows[0];
-						
-						int[] data = {dayOfMonth, row};
-						b.setUserData(data);
-						
-						if (r - calendarRows[0] == 0) {
-							
-						} else {
-							b.setText(timeData[row]);
-						}
-					}
 					
 					b.getStyleClass().add("calendar-day-button");
 					if (monthBeingViewed.getMonth() == date.getMonth() && dayOfMonth == date.getDayOfMonth() && monthBeingViewed.getYear() == date.getYear()) {
-						if (!isCalendarView) {
-							int row = r - calendarRows[0];
-							LocalTime n = LocalTime.now();
-							if ((n.isAfter(times[row]) || n.equals(times[row])) && (n.isBefore(times[row + 1]))) {
-								b.getStyleClass().add("today");
-							}
-							
-						} else {
-							b.getStyleClass().add("today");
-						}
+						b.getStyleClass().add("today");
 					}
 
-					if (!isCalendarView) {
-						b.setOnAction(weeklyTimeEvent);
-					} else {
-						b.setOnAction(calendarDayEvent);
-					}
+					b.setOnAction(calendarDayEvent);
 					gridpane.add(b, c, r);
 
 					// Add events
 					LocalDate events_date = firstOfMonth.plusDays(dayOfMonth - 1);
 					ArrayList<EventGO> daysEvents;
-					if (!isCalendarView) {
-						events_date = firstOfMonth.plusDays((c - calendarColumns[0]));
-						daysEvents = getEventOnDay(events_date, r - calendarRows[0]);
-					} else {
-						daysEvents = getEventOnDay(events_date, -1);
-					}
+					daysEvents = getEventOnDay(events_date, -1);
 					
 					FlowPane dayView;
 					if (daysEvents.size() > 0) {
@@ -344,11 +305,7 @@ public class JoeGUI extends Application {
 			}
 		}
 
-		if (!isCalendarView) {
-			monthYear.setText(firstOfMonth.format(monthYearFormatter) + " Week " + firstOfMonth.format(weeklyFormatter));
-		} else {
-			monthYear.setText(monthBeingViewed.format(monthYearFormatter));
-		}
+		monthYear.setText(monthBeingViewed.format(monthYearFormatter));
 
 		Button addEvent = new Button("Add Event");
 		addEvent.getStyleClass().add("month-change-button");
