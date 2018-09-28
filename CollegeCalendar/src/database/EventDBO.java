@@ -44,6 +44,9 @@ public class EventDBO {
 	public String insertEvent(int type, String title, LocalDate date, LocalTime time, 
 								Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat,
 								Duration notificationOffset, Boolean completed, String userName) {
+		if(date == null || time == null || duration == null || endRepeat == null || notificationOffset == null) {
+			return "";
+		}
 		MongoCollection<Document> collection = database.getCollection("events");
 		ObjectId oid = new ObjectId();
 		Document newClass = new Document("eventType", type)
