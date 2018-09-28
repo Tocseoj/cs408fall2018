@@ -130,7 +130,7 @@ public class EventDBO {
 	 * 
 	 * @param id
 	 */
-	public void deleteEvent(String id) {
+	public void deleteEvent(String id) throws Exception {
 		ObjectId oid;
 		try {
 			oid = new ObjectId(id);
@@ -142,6 +142,9 @@ public class EventDBO {
 		Document dbObj = collection.find(findQuery).first();
 		if(dbObj != null) {
 			collection.deleteOne(dbObj);
+		}
+		else {
+			System.out.println("invalid id for deletion");
 		}
 	}
 }
