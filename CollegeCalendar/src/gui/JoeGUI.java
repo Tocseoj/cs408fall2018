@@ -255,7 +255,7 @@ public class JoeGUI extends Application {
 						dayView.getStyleClass().add("day-view");
 						for (int i = 0; i < daysEvents.size() && i < 3; i++) {
 							EventGO e = daysEvents.get(i);
-							Button event = new Button(e.getTitle());
+							Button event = new CalEventButton(e);
 							event.getStyleClass().add("calendar-day-events");
 							//				    			event.setMouseTransparent(false);
 							dayView.getChildren().add(event);
