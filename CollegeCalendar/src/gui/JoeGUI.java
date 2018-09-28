@@ -12,15 +12,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-import org.bson.types.ObjectId;
-
 import controller.Controller;
 import controller.EventType;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
+import javafx.beans.binding.NumberBinding;
+import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,13 +34,12 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -73,11 +70,12 @@ public class JoeGUI extends Application {
 
 	public class CalEventButton extends Button {
 		protected double startRatio = 0;
+		protected double sizeRatio = 0;
 		
 		protected EventGO baseEvent;
 		protected ClickHandler clickedHand;
 		
-		public final Color defColor = Color.CORNSILK;
+		public final Color defColor = Color.CORNSILK; // default color
 		
 		public CalEventButton() {
 			super();
@@ -90,6 +88,20 @@ public class JoeGUI extends Application {
 			this();
 			baseEvent = base;
 			setText(base.getTitle());
+			
+			// calculates where and how big the button should be drawn, relative to parent container //
+			LocalTime eTime = baseEvent.getTime(); 
+			startRatio = ((double) (eTime.getHour() * 60 + eTime.getMinute())) / 1440;
+			sizeRatio = baseEvent.getDuration().toMinutes();
+		}
+		
+		public void bindToEvent(Pane p) {
+			DoubleProperty adjHeight;
+			NumberBinding product;
+			if (p == null)
+				return;
+			
+			this.setPrefHeight(sizeRatio * p.getHeight());
 		}
 		
 		class ClickHandler implements EventHandler<ActionEvent> {
