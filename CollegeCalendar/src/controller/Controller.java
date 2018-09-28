@@ -73,12 +73,11 @@ public class Controller {
 		MongoCursor<Document> c = edb.getAllEvents(userName);
 		ArrayList<EventGO> al = new ArrayList<EventGO>();
 		Document doc;
-		if(c == null) {
-			return al;
-		}
-		while(c.hasNext()) {
-			doc  = c.next();
-			al.add(convertDocToEventGO(doc));
+		if(c != null) {
+			while(c.hasNext()) {
+				doc  = c.next();
+				al.add(convertDocToEventGO(doc));
+			}
 		}
 		return al;
 	}
