@@ -217,8 +217,8 @@ public class JoeGUI extends Application {
 		if (!isCalendarView) {
 			firstOfMonth = monthBeingViewed.minusDays((monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue()));
 			lastOfMonth = monthBeingViewed.plusDays((6 - (monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue())));
-			System.out.println(firstOfMonth.getDayOfMonth());
-			System.out.println(lastOfMonth.getDayOfMonth());
+//			System.out.println(firstOfMonth.getDayOfMonth());
+//			System.out.println(lastOfMonth.getDayOfMonth());
 		}
 		
 		EventHandler<ActionEvent> calendarDayEvent = new EventHandler<ActionEvent>() {
@@ -428,6 +428,7 @@ public class JoeGUI extends Application {
 		dialog.show();
 	}
 
+	// View event without modification, not implemented
 	private void viewEvent(EventGO e) {
 		int width = 300;
 		int height = 200;
