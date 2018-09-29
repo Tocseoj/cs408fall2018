@@ -181,6 +181,7 @@ public class Test_EventDBO {
 		MongoCursor<Document> events = edb.getAllEvents("invalid_tester");
 		assertFalse(events.hasNext());
 	}
+	
 	@Test
 	public void updateEvent_Exists() {
 		EventDBO edb = new EventDBO();

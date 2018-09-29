@@ -137,7 +137,7 @@ public class EventDBO {
 	 * 
 	 * @param id
 	 */
-	public void deleteEvent(String id) throws Exception {
+	public void deleteEvent(String id) {
 		ObjectId oid;
 		try {
 			oid = new ObjectId(id);
