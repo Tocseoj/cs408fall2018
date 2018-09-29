@@ -57,6 +57,8 @@ public class JoeGUI extends Application {
 	LocalDate monthBeingViewed;
 
 	static ArrayList<EventGO> events;
+	
+	NotificationTimerSetup notifications;
 
 	// Change these 4 lines to edit grid and add/subtract rows or columns
 	ColumnConstraints[] columnList = new ColumnConstraints[7];
@@ -221,6 +223,11 @@ public class JoeGUI extends Application {
 		new NotificationTimerSetup(); /* Notification polling */
 	}
 
+	@Override
+	public void stop() throws Exception {
+		notifications.timerExit();
+	}
+	
 	private void redrawCalendarView() {
 
 		LocalDate firstOfMonth = monthBeingViewed.with(TemporalAdjusters.firstDayOfMonth());
