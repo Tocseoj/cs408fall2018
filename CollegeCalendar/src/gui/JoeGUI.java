@@ -89,6 +89,7 @@ public class JoeGUI extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
 		this.primaryStage = primaryStage;
+		this.notifications= new NotificationTimerSetup();
 		//
 		// Setup Calendar Grid
 		//
