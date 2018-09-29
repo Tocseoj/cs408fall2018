@@ -220,8 +220,6 @@ public class JoeGUI extends Application {
 		primaryStage.setTitle("College Calendar");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
-		new NotificationTimerSetup(); /* Notification polling */
 	}
 
 	@Override

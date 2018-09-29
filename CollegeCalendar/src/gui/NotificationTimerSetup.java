@@ -5,7 +5,7 @@ import java.util.Timer;
 
 public class NotificationTimerSetup {
 	Timer		notificationTimer;
-	Toolkit		notificationToolkit;	
+	Toolkit		notificationToolkit;
 
 	public NotificationTimerSetup() {
 		notificationToolkit = Toolkit.getDefaultToolkit();
