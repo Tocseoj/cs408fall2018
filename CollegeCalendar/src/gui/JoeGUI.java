@@ -1,8 +1,10 @@
 package gui;
 
+import java.awt.Toolkit;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -11,6 +13,8 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import controller.Controller;
 import controller.EventType;
@@ -34,6 +38,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -69,7 +78,7 @@ public class JoeGUI extends Application {
 	public static void main(String[] args) {
 		events = getAllEvents();
 		//		System.out.println(events);
-		
+
 		launch(args);
 	}
 
@@ -207,6 +216,8 @@ public class JoeGUI extends Application {
 		primaryStage.setTitle("College Calendar");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		new NotificationTimerSetup(); /* Notification polling */
 	}
 
 	private void redrawCalendarView() {
@@ -803,5 +814,45 @@ public class JoeGUI extends Application {
 
 	private static String[] getNames(Class<? extends Enum<?>> e) {
 		return Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
+	}
+	
+	public static void pollToNotify() {
+		LocalDateTime currCheck = LocalDateTime.now();
+		
+		for (int i = 0; i < events.size(); i++) {
+			LocalTime tmp = events.get(i).getTime();
+			LocalDateTime eventCheck = events.get(i).getDate().atTime(tmp);
+			
+			if (!events.get(i).getNotificationOffset().isNegative()		/* Notifications enabled */
+					&& events.get(i).getCompleted() == false) 
+			{
+				if (eventCheck.minusMinutes(events.get(i).getNotificationOffset().toMinutes())
+						.compareTo(currCheck) >= 0)
+				{
+					notificationDialog(events.get(i));
+					
+					/* Disabling Notification after showing it, Sprint 2, set reminder */
+					events.get(i).setNotificationOffset(Duration.ofMinutes(-1));
+				}
+			}
+		}
+	}
+	
+	private static void notificationDialog(EventGO event) {
+		Stage popUpStage = new Stage();
+		
+		popUpStage.setTitle("Event Notification");
+		String message = "Event: "+event.getTitle()+" starts in "
+				+event.getNotificationOffset().toMinutes() + " minutes!";
+		
+		Text displayText = new Text(10, 40, message);
+		displayText.setFont(new Font(20));
+		
+		Scene popUp = new Scene(new Group(displayText));
+		
+		popUpStage.setScene(popUp);
+		popUpStage.sizeToScene();
+		popUpStage.show();
+		
 	}
 }
