@@ -30,7 +30,7 @@ public class Test_EventDBO {
 	public void getEvent_Exists() {
 		EventDBO edb = new EventDBO();
 
-		final String PERM_ID = "5bad5eede0fec85a237d3dd3"; // passing it the ID of the permanent event used for testing
+		final String PERM_ID = "5bae7a3918f63166c8c4f490"; // passing it the ID of the permanent event used for testing
 
 		Document event = edb.getEvent(PERM_ID);
 		assertNotNull(event);
@@ -249,13 +249,11 @@ public class Test_EventDBO {
 	 */
 	@Test
 	public void testDeleteEvent() throws Exception {
-		EventDBO edb = new EventDBO(); // create the EventDBO object to use
-		// make a bunch of dummy values to insert into the database
+		EventDBO edb = new EventDBO();
 		int type = EventType.GENERIC.ordinal();
 		String title = "event";
 		LocalDate date = LocalDate.now();
 		LocalTime time = LocalTime.now();
-
 		Duration duration = Duration.ofHours(1);
 		int priority = 2;
 		Boolean[] repeatDays = new Boolean[8];
@@ -263,25 +261,31 @@ public class Test_EventDBO {
 		Duration notificationOffset = Duration.ofMinutes(15);
 		boolean completed = false;
 		String userName = "tester";
-
-		String updatedTitle = "updatedEvent";
-		ObjectId oid = new ObjectId("5bad5eede0fec85a237d3dd3");
-		edb.updateEvent(oid, type, updatedTitle, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
-		Document doc = edb.getEvent("5bad5eede0fec85a237d3dd3");
-		assertEquals("permanentEventDon'tDelete", doc.getString("title"));
 		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
-
-		// check whether the event was actually inserted properly
-		assertNotNull(id);
+		edb.deleteEvent(id);
+		Document insertedEvent = edb.getEvent(id);
+		assertNull(insertedEvent);
 		
-		// at this point simulate a deletion request from the user
-
-		edb.deleteEvent(id); // run a delete on the event that was added
-		
-		Document event = edb.getEvent(id); // attempt to get the deleted event from the database
-		
-		assertNull(event);
-		
-		
+	}
+	
+	@Test
+	public void updateEvent_InvalidInputs() {
+		EventDBO edb = new EventDBO();
+		int type = EventType.GENERIC.ordinal();
+		String title = "event";
+		LocalDate date = LocalDate.now();
+		LocalTime time = null;
+		Duration duration = Duration.ofHours(1);
+		int priority = 2;
+		Boolean[] repeatDays = new Boolean[8];
+		LocalDate endRepeat = date.plusDays(1);
+		Duration notificationOffset = Duration.ofMinutes(15);
+		boolean completed = false;
+		String userName = "tester";
+		String updatedTitle = "updatedEvent";
+		ObjectId oid = new ObjectId("5bae7a3918f63166c8c4f490");
+		edb.updateEvent(oid, type, updatedTitle, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
+		Document doc = edb.getEvent("5bae7a3918f63166c8c4f490");
+		assertEquals("permanentEventDon'tDelete", doc.getString("title"));
 	}
 }
