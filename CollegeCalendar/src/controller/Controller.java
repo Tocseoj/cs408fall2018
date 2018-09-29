@@ -129,6 +129,7 @@ public class Controller {
 	/**
 	 * Deletes event from database
 	 * @param Object id
+	 * @throws Exception 
 	 */
 	public void deleteEventFromDatabase(String id) {
 		if(id != null) {

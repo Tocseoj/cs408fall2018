@@ -28,6 +28,79 @@ public class DbUserTests {
 		assertNotNull(insertedUser);
 	}
 	
+	
+	/*
+	 * Tests whether a duplicate username is barred from being added to the database
+	 * 
+	 */
+	@Test
+	public void testInsertDuplicateUser() throws Exception {
+		UserDBO dbuh = new UserDBO();
+		
+		dbuh.insertUser("testUser", "password", "9/1/2018", "12/18/2018", "black");
+		Document insertedUser = dbuh.getUserByUsername("testUser");
+		
+//		dbuh.deleteUserByUsername("testing_database_user");
+				
+		assertNotNull(insertedUser);
+	}
+	
+	/*
+	 * Tests whether values of length 0 cannot be added to the database
+	 */
+	public void insertUserWithBadValues() throws Exception {
+		UserDBO dbuh = new UserDBO();
+		
+		dbuh.insertUser("", "", "", "", "");
+		Document insertedUser = dbuh.getUserByUsername("");
+				
+		assertNull(insertedUser);
+	}
+	
+	/*
+	 * Tests whether a username and password can be checked against the database
+	 * Basically tests whether an individual user can be gotten from the database
+	 * 
+	 */
+	@Test
+	public void testIsValidUserWithValidCreds() throws Exception {
+		String username = "testing_user";
+		String password = "password";
+		
+		UserDBO dbuh = new UserDBO();
+		boolean isValid = dbuh.isValidUser(username, password);
+		
+		Assert.assertTrue(isValid);
+	}
+	
+	/*
+	 * Tests whether an invalid username and password leads to a failure from UserDBO.isValidUser
+	 * 
+	 * 
+	 */
+	@Test
+	public void testIsValidUserWithBadCreds() throws Exception {
+		String username = "bad_name";
+		String password = "bad_pass";
+		
+		UserDBO dbuh = new UserDBO();
+		boolean isValid = dbuh.isValidUser(username, password);
+		
+		Assert.assertFalse(isValid);
+	}
+	
+	/*
+	 * Tests isValidUser with null strings
+	 */
+	@Test
+	public void testisValidUserWithNullInput() throws Exception {
+		UserDBO dbuh = new UserDBO();
+		
+		boolean isValid = dbuh.isValidUser(null, null);
+		
+		Assert.assertFalse(isValid);
+	}
+	
 	/*
 	 * Tests whether the database successfully deletes a user.
 	 */
@@ -100,6 +173,31 @@ public class DbUserTests {
 		
 		
 		Assert.assertFalse(isNotChanged);
+	}
+	
+	/*
+	 * Tests whether the update function fails when provided with invalid inputs
+	 */
+	@Test
+	public void testUpdateUserWithBadInput() throws Exception {
+		UserDBO dbuh = new UserDBO();
+		
+		// insert the user used for testing
+		dbuh.insertUser("testing_database_user", "password", "9/1/2018", "12/18/2018", "black");
+		dbuh.updateUser("", null, "9/1/2018", "12/12/2018", "green");
+		// get the user from the database
+		Document insertedUser = dbuh.getUserByUsername("testing_database_user");
+		String changed_color = insertedUser.get("color", String.class);  
+		
+		boolean isNotChanged = "black".equals(changed_color);
+		
+//		System.out.println(isNotChanged);
+		
+		// delete the user used for testing, leaving the db untouched
+		dbuh.deleteUserByUsername("testing_database_user");
+		
+		
+		Assert.assertTrue(isNotChanged);
 	}
 	
 	

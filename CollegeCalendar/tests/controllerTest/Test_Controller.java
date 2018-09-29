@@ -97,7 +97,7 @@ private Controller c = new Controller();
 	
 	@Test
 	public void testGetEvent_Success() {
-		assertNotNull(c.getEventInDatabase("5baa92fde0fec84f582d29f6"));
+		assertNotNull(c.getEventInDatabase("5bad5eede0fec85a237d3dd3"));
 	}
 	
 	@Test
@@ -107,14 +107,14 @@ private Controller c = new Controller();
 	
 	@Test
 	public void testUpdateEvent_Success() {
-		EventGO e = c.getEventInDatabase("5baa92fde0fec84f582d29f6");
+		EventGO e = c.getEventInDatabase("5bad5eede0fec85a237d3dd3");
 		if(e.getCompleted()) {
 			e.setCompleted(false);
 		}else {
 			e.setCompleted(true);
 		}
 		c.updateEventInDatabase(e);
-		EventGO d = c.getEventInDatabase("5baa92fde0fec84f582d29f6");
+		EventGO d = c.getEventInDatabase("5bad5eede0fec85a237d3dd3");
 		assertEquals(d.getCompleted(), e.getCompleted());
 	}
 	
