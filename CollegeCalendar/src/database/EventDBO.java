@@ -78,7 +78,7 @@ public class EventDBO {
 	public void updateEvent(ObjectId id, int type, String title, LocalDate date, LocalTime time, 
 							Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat,
 							Duration notificationOffset, Boolean completed, String userName) {
-		if (title.equals("")) {
+		if (title.equals("")|| date == null || time == null || duration == null || endRepeat == null || notificationOffset == null) {
 			System.out.println("invalid arguments");
 			return;
 		}
@@ -124,6 +124,10 @@ public class EventDBO {
 	public MongoCursor<Document> getAllEvents(String user){
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("userName", user);
+		if (findQuery == null) {
+			System.out.println("invalid username provided");
+			return null;
+		}
 		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
 		return dbObj;
 	}
@@ -145,6 +149,9 @@ public class EventDBO {
 		Document dbObj = collection.find(findQuery).first();
 		if(dbObj != null) {
 			collection.deleteOne(dbObj);
+		}
+		else {
+			System.out.println("invalid id for deletion");
 		}
 	}
 }
