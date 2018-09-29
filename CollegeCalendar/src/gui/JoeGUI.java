@@ -222,16 +222,15 @@ public class JoeGUI extends Application {
 	}
 
 	private void redrawCalendarView() {
+		if (isCalendarView)
+			redrawMonthView();
+		else
+			redrawWeekView();
+	}
+	private void redrawMonthView() {
 
 		LocalDate firstOfMonth = monthBeingViewed.with(TemporalAdjusters.firstDayOfMonth());
 		LocalDate lastOfMonth = monthBeingViewed.with(TemporalAdjusters.lastDayOfMonth());
-
-		if (!isCalendarView) {
-			firstOfMonth = monthBeingViewed.minusDays((monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue()));
-			lastOfMonth = monthBeingViewed.plusDays((6 - (monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue())));
-//			System.out.println(firstOfMonth.getDayOfMonth());
-//			System.out.println(lastOfMonth.getDayOfMonth());
-		}
 		
 		EventHandler<ActionEvent> calendarDayEvent = new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
@@ -239,16 +238,7 @@ public class JoeGUI extends Application {
 				viewDay(dateClicked, -1);
 			}
 		};
-		EventHandler<ActionEvent> weeklyTimeEvent = new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent e) {
-				int[] dateClicked = (int[])((Button)e.getSource()).getUserData();
-				String day = dateClicked[0] + "";
-				int time = dateClicked[1];
-				
-				viewDay(day, time);
-			}
-		};
-
+		
 		ArrayList<Node> toRemove = new ArrayList<>();
 		for (Node node : gridpane.getChildren()) {
 			int r = GridPane.getRowIndex(node);
@@ -271,56 +261,21 @@ public class JoeGUI extends Application {
 				//	    		}
 				int dayOfMonth = ((r - calendarRows[0]) * 7) + ((c - calendarColumns[0]) + 1) - (firstOfMonth.getDayOfWeek().getValue() == 7 ? 0 : firstOfMonth.getDayOfWeek().getValue());
 				
-				if (!isCalendarView) {
-					dayOfMonth = firstOfMonth.plusDays((c - calendarColumns[0])).getDayOfMonth();
-				}
-				
-				if ((dayOfMonth >= 1 && dayOfMonth <= lastOfMonth.getDayOfMonth()) || !isCalendarView) {
+				if ((dayOfMonth >= 1 && dayOfMonth <= lastOfMonth.getDayOfMonth())) {
 					Button b = new Button(String.valueOf(dayOfMonth));
-					
-					if (!isCalendarView && r - calendarRows[0] >= 0) {
-						int row = r - calendarRows[0];
-						
-						int[] data = {dayOfMonth, row};
-						b.setUserData(data);
-						
-						if (r - calendarRows[0] == 0) {
-							
-						} else {
-							b.setText(timeData[row]);
-						}
-					}
 					
 					b.getStyleClass().add("calendar-day-button");
 					if (monthBeingViewed.getMonth() == date.getMonth() && dayOfMonth == date.getDayOfMonth() && monthBeingViewed.getYear() == date.getYear()) {
-						if (!isCalendarView) {
-							int row = r - calendarRows[0];
-							LocalTime n = LocalTime.now();
-							if ((n.isAfter(times[row]) || n.equals(times[row])) && (n.isBefore(times[row + 1]))) {
-								b.getStyleClass().add("today");
-							}
-							
-						} else {
-							b.getStyleClass().add("today");
-						}
+						b.getStyleClass().add("today");
 					}
 
-					if (!isCalendarView) {
-						b.setOnAction(weeklyTimeEvent);
-					} else {
-						b.setOnAction(calendarDayEvent);
-					}
+					b.setOnAction(calendarDayEvent);
 					gridpane.add(b, c, r);
 
 					// Add events
 					LocalDate events_date = firstOfMonth.plusDays(dayOfMonth - 1);
 					ArrayList<EventGO> daysEvents;
-					if (!isCalendarView) {
-						events_date = firstOfMonth.plusDays((c - calendarColumns[0]));
-						daysEvents = getEventOnDay(events_date, r - calendarRows[0]);
-					} else {
-						daysEvents = getEventOnDay(events_date, -1);
-					}
+					daysEvents = getEventOnDay(events_date, -1);
 					
 					FlowPane dayView;
 					if (daysEvents.size() > 0) {
@@ -347,11 +302,7 @@ public class JoeGUI extends Application {
 			}
 		}
 
-		if (!isCalendarView) {
-			monthYear.setText(firstOfMonth.format(monthYearFormatter) + " Week " + firstOfMonth.format(weeklyFormatter));
-		} else {
-			monthYear.setText(monthBeingViewed.format(monthYearFormatter));
-		}
+		monthYear.setText(monthBeingViewed.format(monthYearFormatter));
 
 		Button addEvent = new Button("Add Event");
 		addEvent.getStyleClass().add("month-change-button");
@@ -363,6 +314,112 @@ public class JoeGUI extends Application {
 		gridpane.add(addEvent, 6, 7);
 	}
 
+	private void redrawWeekView() {
+
+		LocalDate firstOfMonth = monthBeingViewed.minusDays((monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue()));
+		LocalDate lastOfMonth = monthBeingViewed.plusDays((6 - (monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue())));
+
+		EventHandler<ActionEvent> weeklyTimeEvent = new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent e) {
+				int[] dateClicked = (int[])((Button)e.getSource()).getUserData();
+				String day = dateClicked[0] + "";
+				int time = dateClicked[1];
+				
+				viewDay(day, time);
+			}
+		};
+
+		ArrayList<Node> toRemove = new ArrayList<>();
+		for (Node node : gridpane.getChildren()) {
+			int r = GridPane.getRowIndex(node);
+			int c = GridPane.getColumnIndex(node);
+			if (calendarRows[0] <= r && r <= calendarRows[1]) {
+				if (calendarColumns[0] <= c && c <= calendarColumns[1]) {
+					toRemove.add(node);
+				}
+			}
+		}
+		for (Node node : toRemove) {
+			gridpane.getChildren().remove(node);
+		}
+
+		for (int r = calendarRows[0]; (r <= calendarRows[1]) && (r < calendarRows[1]); r++) {
+			for (int c = calendarColumns[0]; c <= calendarColumns[1]; c++) {
+
+				int dayOfMonth = firstOfMonth.plusDays((c - calendarColumns[0])).getDayOfMonth();
+				
+				if ((dayOfMonth >= 1 && dayOfMonth <= lastOfMonth.getDayOfMonth()) || true) {
+					Button b = new Button(String.valueOf(dayOfMonth));
+					
+					if (true && r - calendarRows[0] >= 0) {
+						int row = r - calendarRows[0];
+						
+						int[] data = {dayOfMonth, row};
+						b.setUserData(data);
+						
+						if (r - calendarRows[0] == 0) {
+							
+						} else {
+							b.setText(timeData[row]);
+						}
+					}
+					
+					b.getStyleClass().add("calendar-day-button");
+					if (monthBeingViewed.getMonth() == date.getMonth() && dayOfMonth == date.getDayOfMonth() && monthBeingViewed.getYear() == date.getYear()) {
+						int row = r - calendarRows[0];
+						LocalTime n = LocalTime.now();
+						if ((n.isAfter(times[row]) || n.equals(times[row])) && (n.isBefore(times[row + 1]))) {
+							b.getStyleClass().add("today");
+						}
+					}
+
+					b.setOnAction(weeklyTimeEvent);
+					gridpane.add(b, c, r);
+
+					// Add events
+					LocalDate events_date = firstOfMonth.plusDays(dayOfMonth - 1);
+					ArrayList<EventGO> daysEvents;
+					events_date = firstOfMonth.plusDays((c - calendarColumns[0]));
+					daysEvents = getEventOnDay(events_date, r - calendarRows[0]);
+					
+					FlowPane dayView;
+					if (daysEvents.size() > 0) {
+						dayView = new FlowPane();
+						dayView.setMouseTransparent(true);
+
+						dayView.getStyleClass().add("day-view");
+						for (int i = 0; i < daysEvents.size() && i < 3; i++) {
+							EventGO e = daysEvents.get(i);
+							Button event = new Button(e.getTitle());
+							event.getStyleClass().add("calendar-day-events");
+
+							dayView.getChildren().add(event);
+						}
+						if (3 < daysEvents.size()) {
+							Label temp = new Label("...");
+							temp.setMouseTransparent(true);
+							temp.getStyleClass().add("event-ellipses");
+							dayView.getChildren().add(temp);
+						}
+						gridpane.add(dayView, c, r);
+					}
+				}
+			}
+		}
+
+		monthYear.setText(firstOfMonth.format(monthYearFormatter) + " Week " + firstOfMonth.format(weeklyFormatter));
+
+		Button addEvent = new Button("Add Event");
+		addEvent.getStyleClass().add("month-change-button");
+		addEvent.setOnAction(new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent e) {
+				addEventDialog(null);
+			}
+		});
+		gridpane.add(addEvent, 6, 7);
+	}
+
+	
 	private ArrayList<EventGO> getEventOnDay(LocalDate day, int time) {
 		ArrayList<EventGO> e = new ArrayList<>();
 		for (int i = 0; i < events.size(); i++) {
@@ -395,7 +452,7 @@ public class JoeGUI extends Application {
 		}
 		return e;
 	}
-
+	
 	private void viewDay(String day, int time) {
 		// TODO Auto-generated method stub
 		//		System.out.println("Viewing day " + day);
@@ -620,11 +677,14 @@ public class JoeGUI extends Application {
 //					controller.updateEventInDatabase(editEvent);
 //					removeEvent(editEvent);
 				}
+
 				EventGO eventToBeAdded = addEvent(EventType.valueOf(comboBox.getValue()), test_id, title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed, userName);
 				if(!eventToBeAdded.getID().equals("")) {
 					events.add(eventToBeAdded);
 				}
+
 				redrawCalendarView();
+				
 				dialog.close();
 			}
 		});
