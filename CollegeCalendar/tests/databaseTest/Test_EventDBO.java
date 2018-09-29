@@ -28,7 +28,7 @@ public class Test_EventDBO {
 	// Testing whether events can be received from the database
 	public void getEvent_Exists() {
 		EventDBO edb = new EventDBO();
-		final String PERM_ID = "5baa92fde0fec84f582d29f6";
+		final String PERM_ID = "5bad5eede0fec85a237d3dd3";
 		Document event = edb.getEvent(PERM_ID);
 		assertNotNull(event);
 	}
@@ -223,5 +223,26 @@ public class Test_EventDBO {
 		edb.updateEvent(invalidId, type, updatedTitle, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
 		Document doc = edb.getEvent(INVALID_ID);
 		assertNull(doc);
+	}
+	
+	@Test
+	public void updateEvent_InvalidInputs() {
+		EventDBO edb = new EventDBO();
+		int type = EventType.GENERIC.ordinal();
+		String title = "event";
+		LocalDate date = LocalDate.now();
+		LocalTime time = null;
+		Duration duration = Duration.ofHours(1);
+		int priority = 2;
+		Boolean[] repeatDays = new Boolean[8];
+		LocalDate endRepeat = date.plusDays(1);
+		Duration notificationOffset = Duration.ofMinutes(15);
+		boolean completed = false;
+		String userName = "tester";
+		String updatedTitle = "updatedEvent";
+		ObjectId oid = new ObjectId("5bad5eede0fec85a237d3dd3");
+		edb.updateEvent(oid, type, updatedTitle, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
+		Document doc = edb.getEvent("5bad5eede0fec85a237d3dd3");
+		assertEquals("permanentEventDon'tDelete", doc.getString("title"));
 	}
 }
