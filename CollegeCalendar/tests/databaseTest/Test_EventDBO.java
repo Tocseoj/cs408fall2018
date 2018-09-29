@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNull;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -28,7 +29,8 @@ public class Test_EventDBO {
 	// Testing whether events can be received from the database
 	public void getEvent_Exists() {
 		EventDBO edb = new EventDBO();
-		final String PERM_ID = "5bad5eede0fec85a237d3dd3";
+
+		final String PERM_ID = "5bad5eede0fec85a237d3dd3"; // passing it the ID of the permanent event used for testing
 		Document event = edb.getEvent(PERM_ID);
 		assertNotNull(event);
 	}
@@ -180,6 +182,7 @@ public class Test_EventDBO {
 		MongoCursor<Document> events = edb.getAllEvents("invalid_tester");
 		assertFalse(events.hasNext());
 	}
+	
 	@Test
 	public void updateEvent_Exists() {
 		EventDBO edb = new EventDBO();
@@ -225,13 +228,31 @@ public class Test_EventDBO {
 		assertNull(doc);
 	}
 	
+	/*
+	 * Integration test for getting events, mocks the whole process of getting events.
+	 * GUI makes call to EventGO -> EventGO makes call to EventDBO -> EventDBO interfaces with DB ->
+	 * Returns information to GUI
+	 */
 	@Test
-	public void updateEvent_InvalidInputs() {
-		EventDBO edb = new EventDBO();
+	public void testGetAllEvents() throws Exception{
+		Controller controller = new Controller();
+		ArrayList<EventGO> all_events = controller.getAllEvents("permanentTester"); // using the permanentTEster to ensure something is received
+		assertNotNull(all_events);
+	}
+	
+	
+	/*
+	 * Integration test for deleting events, also involves a test for adding, since we need to add a temporary
+	 * event to have something to remove.
+	 */
+	@Test
+	public void testDeleteEvent() throws Exception {
+		EventDBO edb = new EventDBO(); // create the EventDBO object to use
+		// make a bunch of dummy values to insert into the database
 		int type = EventType.GENERIC.ordinal();
 		String title = "event";
 		LocalDate date = LocalDate.now();
-		LocalTime time = null;
+		LocalTime time = LocalTime.now();
 		Duration duration = Duration.ofHours(1);
 		int priority = 2;
 		Boolean[] repeatDays = new Boolean[8];
@@ -239,10 +260,19 @@ public class Test_EventDBO {
 		Duration notificationOffset = Duration.ofMinutes(15);
 		boolean completed = false;
 		String userName = "tester";
-		String updatedTitle = "updatedEvent";
-		ObjectId oid = new ObjectId("5bad5eede0fec85a237d3dd3");
-		edb.updateEvent(oid, type, updatedTitle, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
-		Document doc = edb.getEvent("5bad5eede0fec85a237d3dd3");
-		assertEquals("permanentEventDon'tDelete", doc.getString("title"));
+		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
+
+		// check whether the event was actually inserted properly
+		assertNotNull(id);
+		
+		// at this point simulate a deletion request from the user
+
+		edb.deleteEvent(id); // run a delete on the event that was added
+		
+		Document event = edb.getEvent(id); // attempt to get the deleted event from the database
+		
+		assertNull(event);
+		
+		
 	}
 }
