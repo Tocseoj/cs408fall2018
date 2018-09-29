@@ -29,6 +29,7 @@ public class Test_EventDBO {
 	// Testing whether events can be received from the database
 	public void getEvent_Exists() {
 		EventDBO edb = new EventDBO();
+
 		final String PERM_ID = "5bad5eede0fec85a237d3dd3"; // passing it the ID of the permanent event used for testing
 		Document event = edb.getEvent(PERM_ID);
 		assertNotNull(event);
@@ -227,7 +228,6 @@ public class Test_EventDBO {
 		assertNull(doc);
 	}
 	
-	
 	/*
 	 * Integration test for getting events, mocks the whole process of getting events.
 	 * GUI makes call to EventGO -> EventGO makes call to EventDBO -> EventDBO interfaces with DB ->
@@ -275,6 +275,4 @@ public class Test_EventDBO {
 		
 		
 	}
-	
-	
 }

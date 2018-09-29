@@ -793,7 +793,7 @@ public class JoeGUI extends Application {
 		return controller.getAllEvents(userName);
 	}
 
-	private EventGO addEvent(EventType type,
+	public EventGO addEvent(EventType type,
 			String id,
 			String title,
 			LocalDate date,
