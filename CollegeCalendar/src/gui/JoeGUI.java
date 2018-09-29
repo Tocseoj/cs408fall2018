@@ -232,16 +232,7 @@ public class JoeGUI extends Application {
 				viewDay(dateClicked, -1);
 			}
 		};
-		EventHandler<ActionEvent> weeklyTimeEvent = new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent e) {
-				int[] dateClicked = (int[])((Button)e.getSource()).getUserData();
-				String day = dateClicked[0] + "";
-				int time = dateClicked[1];
-				
-				viewDay(day, time);
-			}
-		};
-
+		
 		ArrayList<Node> toRemove = new ArrayList<>();
 		for (Node node : gridpane.getChildren()) {
 			int r = GridPane.getRowIndex(node);
@@ -319,12 +310,9 @@ public class JoeGUI extends Application {
 
 	private void redrawWeekView() {
 
-		LocalDate firstOfMonth = monthBeingViewed.with(TemporalAdjusters.firstDayOfMonth());
-		LocalDate lastOfMonth = monthBeingViewed.with(TemporalAdjusters.lastDayOfMonth());
+		LocalDate firstOfMonth = monthBeingViewed.minusDays((monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue()));
+		LocalDate lastOfMonth = monthBeingViewed.plusDays((6 - (monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue())));
 
-		firstOfMonth = monthBeingViewed.minusDays((monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue()));
-		lastOfMonth = monthBeingViewed.plusDays((6 - (monthBeingViewed.getDayOfWeek().getValue() == 7 ? 0 : monthBeingViewed.getDayOfWeek().getValue())));
-		
 		EventHandler<ActionEvent> weeklyTimeEvent = new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				int[] dateClicked = (int[])((Button)e.getSource()).getUserData();
