@@ -12,4 +12,8 @@ public class NotificationTimerSetup {
 		notificationTimer = new Timer();
 		notificationTimer.schedule(new NotifyTask(), 0, 2*1000);
 	}
+	
+	public void timerExit() {
+		notificationTimer.cancel();
+	}
 }
