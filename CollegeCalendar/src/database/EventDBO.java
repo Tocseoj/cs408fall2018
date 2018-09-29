@@ -44,6 +44,9 @@ public class EventDBO {
 	public String insertEvent(int type, String title, LocalDate date, LocalTime time, 
 								Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat,
 								Duration notificationOffset, Boolean completed, String userName) {
+		if(date == null || time == null || duration == null || endRepeat == null || notificationOffset == null) {
+			return "";
+		}
 		MongoCollection<Document> collection = database.getCollection("events");
 		ObjectId oid = new ObjectId();
 		Document newClass = new Document("eventType", type)
@@ -121,6 +124,10 @@ public class EventDBO {
 	public MongoCursor<Document> getAllEvents(String user){
 		MongoCollection<Document> collection = database.getCollection("events");
 		Document findQuery = new Document("userName", user);
+		if (findQuery == null) {
+			System.out.println("invalid username provided");
+			return null;
+		}
 		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
 		return dbObj;
 	}
@@ -130,7 +137,7 @@ public class EventDBO {
 	 * 
 	 * @param id
 	 */
-	public void deleteEvent(String id) {
+	public void deleteEvent(String id) throws Exception {
 		ObjectId oid;
 		try {
 			oid = new ObjectId(id);
@@ -142,6 +149,9 @@ public class EventDBO {
 		Document dbObj = collection.find(findQuery).first();
 		if(dbObj != null) {
 			collection.deleteOne(dbObj);
+		}
+		else {
+			System.out.println("invalid id for deletion");
 		}
 	}
 }
