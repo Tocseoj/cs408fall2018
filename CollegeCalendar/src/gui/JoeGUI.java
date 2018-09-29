@@ -701,7 +701,7 @@ public class JoeGUI extends Application {
 			title.setText(editEvent.getTitle());
 			datePicker.setValue(editEvent.getDate());
 			time.setText(editEvent.getTime().toString());
-			duration.setText(editEvent.getDuration().toString());
+			duration.setText(Long.toString(editEvent.getDuration().toMinutes()));
 			priority.setText(editEvent.getPriority() + "");
 			notify.setSelected(!(editEvent.getNotificationOffset().isZero()));
 			if (notify.isSelected()) {
