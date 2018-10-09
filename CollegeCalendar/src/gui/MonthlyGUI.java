@@ -1,12 +1,17 @@
 package gui;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import controller.Controller;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -14,17 +19,23 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 public class MonthlyGUI implements CalendarViews {
 	
 	private Controller controller;
 	
+	private GUIController guiController;
+	
 	private ArrayList<ArrayList<EventGO>> viewingEvents;
+	
+	private VBox[][] dayBlocks;
 	
 	private GridPane calendarGrid;
 	
-	public MonthlyGUI(Controller controller) {
+	public MonthlyGUI(Controller controller, GUIController guiController) {
 		this.controller = controller;
+		this.guiController = guiController;
 	}
 
 	@Override
@@ -67,6 +78,8 @@ public class MonthlyGUI implements CalendarViews {
 		//
 		// Populate GridPane
 		//
+		dayBlocks = new VBox[columnCount][rowCount];
+		
 		ArrayList<ArrayList<EventGO>> monthList = new ArrayList<>();
 		if (username != null) {
 			monthList = controller.getEventsOnMonth(username, date);
@@ -78,37 +91,58 @@ public class MonthlyGUI implements CalendarViews {
 				int dayOfMonth = (r * 7) + (c + 1) - dayOfFirst;				
 				
 				VBox day = new VBox();
+				
+//				Rectangle rect = new Rectangle(200, 150);
+//				rect.heightProperty().bind(day.heightProperty());
+//				rect.widthProperty().bind(day.widthProperty());
+//				day.setClip(rect);
+				
 				Button dayButton = new Button(dayOfMonth + "");
+				
+				dayBlocks[c][r] = day;
 				
 				ArrayList<EventGO> eventList = new ArrayList<>();
 				
-				if (dayOfMonth < 1 || dayOfMonth > date.lengthOfMonth()) {
+				if (dayOfMonth < 1 || dayOfMonth > date.lengthOfMonth()) {					
 					int otherDay = date.withDayOfMonth(1).plusDays(dayOfMonth - 1).getDayOfMonth();
 					dayButton.setText(otherDay + "");
 					day.getStyleClass().add("other-month");
 					if (username != null) {
-						eventList = controller.getEventsOnDay(username, date.withDayOfMonth(1).plusDays(dayOfMonth - 1));
+						eventList = new ArrayList<EventGO>();
+//						eventList = controller.getEventsOnDay(username, date.withDayOfMonth(1).plusDays(dayOfMonth - 1));
 						if (dayOfMonth <= 0) {
 							viewingEvents.add(0, eventList);
 						} else {
 							viewingEvents.add(eventList);
 						}
 					}
+					
+					continue;
 				} else {
 					if (username != null) {
-						eventList = monthList.get(dayOfMonth - 1);
+						eventList = monthList.get(dayOfMonth);
 					}
 				}
 				
-				day.getChildren().add(dayButton);
+//				day.getChildren().add(dayButton);
 				
 				for (EventGO event : eventList) {
 					Button e = new Button(event.getTitle());
 					
+					e.setUserData(event);
+					e.setOnAction(this::viewEventPopup);
+					
 					day.getChildren().add(e);
 				}
 				
-				calendarGrid.add(day, c, r);
+				VBox dayContainer = new VBox();
+				ScrollPane sp = new ScrollPane();
+				sp.setContent(day);
+				VBox.setVgrow(sp, Priority.ALWAYS);
+				
+				dayContainer.getChildren().addAll(dayButton, sp);
+				
+				calendarGrid.add(dayContainer, c, r);
 				
 			}
 		}
@@ -134,18 +168,86 @@ public class MonthlyGUI implements CalendarViews {
 	@Override
 	public void removeEventFromView(EventGO e) {
 		// TODO Auto-generated method stub
+		int r, c;
+		
 		if (dateTime.getViewingDate().getMonth().equals(e.getDate().getMonth())) {
-			calendarGrid.get
-			viewingEvents.get(e.getDate().getDayOfMonth()).remove(e);
-		} else {
 			
+			int dayOfFirst = e.getDate().withDayOfMonth(1).getDayOfWeek().getValue();
+			dayOfFirst = dayOfFirst == 7 ? 0 : dayOfFirst;
+
+			int day = e.getDate().getDayOfMonth();
+			r = (day + dayOfFirst) / 7;
+			c = e.getDate().getDayOfWeek().getValue() == 7 ? 0 : e.getDate().getDayOfWeek().getValue();	
+			
+		} else {
+			r = 0;
+			c = 0;
 		}
+		
+		VBox dayContainer = dayBlocks[c][r];
+		
+		Node toRemove = null;
+		for (Node b : dayContainer.getChildren()) {
+			EventGO event = (EventGO)b.getUserData();
+			if (event.equals(e)) {
+				toRemove = b;
+				break;
+			}
+		}
+		if (toRemove != null) {
+			dayContainer.getChildren().remove(toRemove);
+		}
+//		dayContainer.getChildren().remove(e);
+		
+//		if (dateTime.getViewingDate().getMonth().equals(e.getDate().getMonth())) {
+//			
+////			viewingEvents.get(e.getDate().getDayOfMonth()).remove(e);
+//		} else {
+//			
+//		}
 	}
 
 	@Override
 	public void addEventToView(EventGO e) {
-		// TODO Auto-generated method stub
-		
-	}
 
+		int r, c;
+		
+		if (dateTime.getViewingDate().getMonth().equals(e.getDate().getMonth())) {
+			
+			int dayOfFirst = e.getDate().withDayOfMonth(1).getDayOfWeek().getValue();
+			dayOfFirst = dayOfFirst == 7 ? 0 : dayOfFirst;
+
+			int day = e.getDate().getDayOfMonth();
+			r = (day + dayOfFirst) / 7;
+			c = e.getDate().getDayOfWeek().getValue() == 7 ? 0 : e.getDate().getDayOfWeek().getValue();	
+			
+		} else {
+			r = 0;
+			c = 0;
+		}
+		
+//		System.out.println("c:" + c + " r:" + r);
+		VBox dayContainer = dayBlocks[c][r];
+		Button b = new Button(e.getTitle());
+		b.setUserData(e);
+		b.setOnAction(this::viewEventPopup);
+		
+		Boolean added = false;
+		
+		for (int i = 0; i < dayContainer.getChildren().size(); i++) {
+			LocalTime dt = ((EventGO)(dayContainer.getChildren().get(i).getUserData())).getTime();
+			if (dt.isAfter(e.getTime())) {
+				dayContainer.getChildren().add(i, b);
+				added = true;
+				break;
+			}
+		}
+		if (!added) {
+			dayContainer.getChildren().add(b);
+		}
+	}
+	
+	private void viewEventPopup(ActionEvent event) {
+		guiController.showEventPopup((EventGO)((Button)(event.getSource())).getUserData());
+	}
 }

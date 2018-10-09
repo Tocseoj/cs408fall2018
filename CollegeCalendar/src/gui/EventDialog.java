@@ -233,8 +233,8 @@ public class EventDialog {
 					break;
 				}
 			}
-			System.out.println(editEvent.getEndRepeat());
-			System.out.println(editEvent.getDate());
+//			System.out.println(editEvent.getEndRepeat());
+//			System.out.println(editEvent.getDate());
 			repeat.setSelected(((editEvent.getEndRepeat() != editEvent.getDate())) || is_checked);
 			if (repeat.isSelected()) {
 				CheckBox self = repeat;
@@ -277,10 +277,16 @@ public class EventDialog {
 			Button delete = new Button("Delete Event");
 			delete.setOnAction(new EventHandler<ActionEvent>() {
 				@Override public void handle(ActionEvent e) {
+					
+					if (editEvent != null) {
+						guiController.removeEventFromView(editEvent);
+						controller.deleteEventFromDatabase(editEvent.getID());
+					}
 					//							events.remove(editEvent);
 					//							removeEvent(editEvent);
 					//							redrawCalendarView();
-					//							dialog.close();
+					dialog.close();
+					
 				}
 			});
 			containerPane.getChildren().add(delete);

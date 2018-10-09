@@ -9,9 +9,11 @@ import javafx.scene.layout.Pane;
 public class WeeklyGUI implements CalendarViews {
 	
 	private Controller controller;
+	private GUIController guiController;
 	
-	public WeeklyGUI(Controller controller) {
+	public WeeklyGUI(Controller controller, GUIController guiController) {
 		this.controller = controller;
+		this.guiController = guiController;
 	}
 	
 	@Override

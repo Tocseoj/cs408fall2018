@@ -39,7 +39,7 @@ public class GUIController {
 		
 		controller = new Controller();
 		
-		calendarView = new MonthlyGUI(controller);
+		calendarView = new MonthlyGUI(controller, this);
 		date = new DateAndTimeManager();
 		username = "tester";
 		
@@ -123,14 +123,14 @@ public class GUIController {
 			if (calendarView instanceof MonthlyGUI) {
 				return;
 			}
-			calendarView = new MonthlyGUI(controller);
+			calendarView = new MonthlyGUI(controller, this);
 			updateDynamicPane();
 		}
 		else if (viewName.equals("Weekly View")) {
 			if (calendarView instanceof WeeklyGUI) {
 				return;
 			}
-			calendarView = new WeeklyGUI(controller);
+			calendarView = new WeeklyGUI(controller, this);
 			updateDynamicPane();
 		}
 	}
@@ -162,11 +162,15 @@ public class GUIController {
 	}
 	
 	public void addEventToView(EventGO event) {
-		calendarView.removeFromView(event);
+		calendarView.addEventToView(event);
 	}
 	
 	public void removeEventFromView(EventGO event) {
-		
+		calendarView.removeEventFromView(event);
+	}
+	
+	public void showEventPopup(EventGO event) {
+		new EventDialog(primaryStage, event, username, controller, this);
 	}
 	
 }
