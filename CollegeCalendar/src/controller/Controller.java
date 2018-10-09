@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -19,7 +20,6 @@ public class Controller {
 
 
 	private static final String EVENT_NAME_KEY = "title";
-
 
 	public Controller() {
 		this.edb = new EventDBO();
@@ -81,6 +81,49 @@ public class Controller {
 			al.add(convertDocToEventGO(doc));
 		}
 		return al;
+	}
+	
+	public ArrayList<ArrayList<EventGO>> getEventsOnMonth(String username, LocalDate date) {
+		ArrayList<EventGO> allEvents = getAllEvents(username);
+		ArrayList<ArrayList<EventGO>> monthList = new ArrayList<>();
+		for (int i = 0; i < date.lengthOfMonth(); i++) {
+			monthList.add(new ArrayList<EventGO>());
+		}
+		
+		for (EventGO e : allEvents) {
+			if (e.getDate().getMonth().equals(date.getMonth())) {
+				monthList.get(e.getDate().getDayOfMonth() - 1).add(e);
+			}
+		}
+		
+		for (ArrayList<EventGO> eventList : monthList) {
+			eventList.sort(new Comparator<EventGO>() {
+		        @Override public int compare(EventGO e1, EventGO e2) {
+		            return e1.getTime().compareTo(e2.getTime()); // Ascending
+		        }
+		    });
+		}
+		
+		return monthList;
+	}
+	
+	public ArrayList<EventGO> getEventsOnDay(String username, LocalDate date) {
+		ArrayList<EventGO> allEvents = getAllEvents(username);
+		ArrayList<EventGO> eventList = new ArrayList<>();
+		
+		for (EventGO e : allEvents) {
+			if (e.getDate().equals(date)) {
+				eventList.add(e);
+			}
+		}
+		
+		eventList.sort(new Comparator<EventGO>() {
+	        @Override public int compare(EventGO e1, EventGO e2) {
+	            return e1.getTime().compareTo(e2.getTime()); // Ascending
+	        }
+	    });
+		
+		return eventList;
 	}
 
 	/**
