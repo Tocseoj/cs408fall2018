@@ -10,7 +10,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -42,8 +41,6 @@ public class InitGUI extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		guiController = new GUIController(primaryStage, sceneWidth, sceneHeight, backgroundColor);
-		
 		/*
 		 * 		Initialize Static GUI Elements
 		 */
@@ -72,15 +69,21 @@ public class InitGUI extends Application {
 		//
 		// Container 2 Elements
 		//
-		Pane calendarPane									// Will display selected event view (is dynamic)
-								= guiController.getDynamicPane();
+		StackPane calendarPane	= new StackPane();			// Will display selected event view (is dynamic)
 		VBox actionList			= new VBox();				// Will be list of actions available (add event, view analysis, etc.)
+		
+		//
+		// Setup GUIController
+		//
+		guiController = new GUIController(primaryStage, calendarPane);
 		
 		//
 		// ActionList Elements
 		//
 		Button addEventButton	= new Button("Add Event");	// Adds event from dialog to calendar
-		
+		Region sideBarPadding	= new Region();				// Fills extra space
+		Button changeAccountButton 							// Let's you select your username
+								= new Button("Change Account");
 		
 		//
 		// Setup Event Handlers
@@ -91,6 +94,7 @@ public class InitGUI extends Application {
 		viewSelector.setOnAction(this::viewDropdown);
 		
 		addEventButton.setOnAction(this::addEventButton);
+		changeAccountButton.setOnAction(this::changeAccount);
 		
 		/*
 		 * 		Initialize Standard Scene and Stage
@@ -98,13 +102,14 @@ public class InitGUI extends Application {
 		
 		// Grow styling
 		HBox.setHgrow(topBarPadding, Priority.ALWAYS);
+		VBox.setVgrow(sideBarPadding, Priority.ALWAYS);
 		VBox.setVgrow(container2, Priority.ALWAYS);
 		HBox.setHgrow(calendarPane, Priority.ALWAYS);
 		
 		//
 		// Add elements to Scene
 		//
-		actionList.getChildren().addAll(addEventButton);
+		actionList.getChildren().addAll(addEventButton, sideBarPadding, changeAccountButton);
 		
 		container2.getChildren().addAll(calendarPane, actionList);
 		topBarContainer.getChildren().addAll(leftArrow, rightArrow, todayButton, topBarPadding, viewSelector);
@@ -116,7 +121,7 @@ public class InitGUI extends Application {
 		//	
 		StackPane root = new StackPane();
 		root.getChildren().add(container1);
-		actionList.setBackground(new Background(new BackgroundFill(Color.SLATEGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+//		calendarPane.setBackground(new Background(new BackgroundFill(Color.SLATEGRAY, CornerRadii.EMPTY, Insets.EMPTY))); //TODO
 
 		Scene scene = new Scene(root, sceneWidth, sceneHeight, backgroundColor);
 //		scene.getStylesheets().add("gui/joe-gui.css"); TODO: Add styling
@@ -125,7 +130,7 @@ public class InitGUI extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-//		guiController.showUsernamePopup(); //DEBUG
+//		changeAccount(null); TODO
 	}
 	
 	private void leftArrow(ActionEvent event) {
@@ -138,10 +143,14 @@ public class InitGUI extends Application {
 		guiController.todayButton();
 	}
 	private void viewDropdown(ActionEvent event) {
+		@SuppressWarnings("unchecked")
 		ComboBox<String> cb = (ComboBox<String>)event.getSource();
 		guiController.switchView(cb.getValue());
 	}
 	private void addEventButton(ActionEvent event) {
 		guiController.addEventButton();
+	}
+	private void changeAccount(ActionEvent event) {
+		guiController.showUsernamePopup();
 	}
 }

@@ -17,7 +17,7 @@ public class WeeklyGUI implements CalendarViews {
 	}
 	
 	@Override
-	public Pane getCalendarView(LocalDate date, String username) {
+	public Pane getCalendarView(LocalDate date) {
 		// TODO: implement weekly view
 		System.out.println("Replace with weekly");
 		return new Pane();
@@ -36,6 +36,12 @@ public class WeeklyGUI implements CalendarViews {
 
 	@Override
 	public void addEventToView(EventGO e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateEvents() {
 		// TODO Auto-generated method stub
 		
 	}

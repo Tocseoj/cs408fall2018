@@ -2,20 +2,16 @@ package gui;
 
 import java.time.LocalDate;
 
-import controller.Controller;
-import controller.DateAndTimeManager;
 import javafx.scene.layout.Pane;
 
 public interface CalendarViews {
+		
+	Pane getCalendarView(LocalDate date);
 	
-	DateAndTimeManager dateTime = new DateAndTimeManager();
+//	void removeEventFromView(EventGO e);
+//	
+//	void addEventToView(EventGO e);
 	
-	Pane getCalendarView(LocalDate date, String username);
-	
-	void removeEventFromView(EventGO e);
-	
-	void addEventToView(EventGO e);
-	
-	String getDateFormat(LocalDate date);
-	
+	void updateEvents();
+		
 }

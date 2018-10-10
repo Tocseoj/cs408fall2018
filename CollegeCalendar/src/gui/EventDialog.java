@@ -27,13 +27,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class EventDialog {
+	
+	private GUIController guiController;
 
-	private Controller controller;
+	public EventDialog(Stage primaryStage, EventGO editEvent, GUIController guiController) {
 
-	public EventDialog(Stage primaryStage, EventGO editEvent, String username, Controller controller, GUIController guiController) {
-
-		this.controller = controller;
-
+		this.guiController = guiController;
+		
 		// Setup Dialog
 		final Stage dialog = new Stage();
 		dialog.initModality(Modality.APPLICATION_MODAL);
@@ -191,10 +191,10 @@ public class EventDialog {
 //					//							removeEvent(editEvent);
 				}
 
-				EventGO eventToBeAdded = addEvent(EventType.valueOf(comboBox.getValue()), test_id, title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed, username);
+				EventGO eventToBeAdded = addEvent(EventType.valueOf(comboBox.getValue()), test_id, title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed);
 //				if(!eventToBeAdded.getID().equals("")) {
 					
-				guiController.addEventToView(eventToBeAdded);
+//				guiController.addEventToView(eventToBeAdded);
 					//							events.add(eventToBeAdded); TODO
 //				}
 
@@ -228,14 +228,13 @@ public class EventDialog {
 			Boolean is_checked = false;
 			for (int i = 0; i < editEvent.getRepeatDays().length; i++) {
 				if (editEvent.getRepeatDays()[i]) {
-					//					System.out.println("TRUE");
+					System.out.println("TRUE");
 					is_checked = true;
 					break;
 				}
 			}
-//			System.out.println(editEvent.getEndRepeat());
-//			System.out.println(editEvent.getDate());
-			repeat.setSelected(((editEvent.getEndRepeat() != editEvent.getDate())) || is_checked);
+
+			repeat.setSelected((( !editEvent.getDate().isEqual(editEvent.getEndRepeat()) )) || is_checked);
 			if (repeat.isSelected()) {
 				CheckBox self = repeat;
 				if (self.isSelected()) {
@@ -279,8 +278,9 @@ public class EventDialog {
 				@Override public void handle(ActionEvent e) {
 					
 					if (editEvent != null) {
-						guiController.removeEventFromView(editEvent);
-						controller.deleteEventFromDatabase(editEvent.getID());
+//						guiController.removeEventFromView(editEvent);
+//						System.out.println("BALEETED!");
+						guiController.deleteEvent(editEvent);
 					}
 					//							events.remove(editEvent);
 					//							removeEvent(editEvent);
@@ -316,8 +316,7 @@ public class EventDialog {
 			Boolean[] repeatDays,
 			LocalDate endRepeat,						// If endRepeat == date then no repeat
 			String notificationOffset,			// If negative, then notifications off
-			Boolean completed,
-			String userName) {		
+			Boolean completed) {		
 
 		LocalTime ptime = LocalTime.now();
 		if (!time.equals("")) {
@@ -362,12 +361,13 @@ public class EventDialog {
 			title = "(No Title)";
 		}
 
-		EventGO e = new EventGO(type, id, title, date, ptime, pduration, ppriority, repeatDays, endRepeat, poffset, completed, userName);
+		EventGO e = new EventGO(type, id, title, date, ptime, pduration, ppriority, repeatDays, endRepeat, poffset, completed, guiController.getUsername());
 
 		if (id != "") {
-			controller.updateEventInDatabase(e);
+//			controller.updateEventInDatabase(e);
+			guiController.updateEvent(e);
 		} else {
-			e.setID(controller.addEventToDatabase(e));
+			guiController.addEvent(e);
 		}
 		//		events.add(e);
 		//		System.out.print("[");
