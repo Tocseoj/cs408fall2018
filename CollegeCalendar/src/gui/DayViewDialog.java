@@ -51,7 +51,7 @@ public class DayViewDialog {
 		// Add Event Button
 		Button b = new Button("Add Event");
 		b.setOnAction((event) -> {
-			EventGO e = new EventGO(EventType.GENERIC, "",  "", day, DateAndTimeManager.getCurrentTime(), Duration.ZERO, 0, new Boolean[0], day, Duration.ZERO, false, guiController.getUsername());
+			EventGO e = new EventGO(EventType.GENERIC, "",  "", day, DateAndTimeManager.getCurrentTime(), Duration.ZERO, 0, new Boolean[0], day, Duration.ZERO, false, guiController.getUsername(), false, false);
 		    new EventDialog(primaryStage, e, guiController);
 		    dialog.close();
 		});
