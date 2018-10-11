@@ -23,6 +23,7 @@ public class InitGUI extends Application {
 	private static double 			sceneHeight;
 	private static Color			backgroundColor;
 	private static GUIController	guiController;
+	private static PopUpController	popUpController;
 	
 	public static void main(String[] args) {
 		
