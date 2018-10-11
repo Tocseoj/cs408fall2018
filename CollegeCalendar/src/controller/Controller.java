@@ -60,7 +60,9 @@ public class Controller {
 		Boolean completed = doc.getBoolean("completed");
 		String user = doc.getString("userName");
 		String id = oid.toString();
-		return new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, user);
+		Boolean allottedTimeUp = doc.getBoolean("allottedTimeUp");
+		Boolean constantReminder = doc.getBoolean("constantReminder");
+		return new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, user, allottedTimeUp, constantReminder);
 	}
 
 	/**
@@ -164,7 +166,9 @@ public class Controller {
 		Duration notificationOffset = e.getNotificationOffset();
 		Boolean completed = e.getCompleted();
 		String userName = e.getUserName();
-		String idResult = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
+		Boolean allottedTimeUp = e.getAllottedTimeUp();
+		Boolean constantReminder = e.getConstantReminder();
+		String idResult = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
 		e.setID(idResult);
 		return idResult;
 	}
@@ -200,7 +204,9 @@ public class Controller {
 		Duration notificationOffset = e.getNotificationOffset();
 		Boolean completed = e.getCompleted();
 		String userName = e.getUserName();
-		edb.updateEvent(oid, type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName);
+		Boolean allottedTimeUp = e.getAllottedTimeUp();
+		Boolean constantReminder = e.getConstantReminder();
+		edb.updateEvent(oid, type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
 	}
 
 	/**

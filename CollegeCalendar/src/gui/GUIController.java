@@ -1,6 +1,8 @@
 package gui;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 import java.util.ArrayList;
@@ -197,6 +199,7 @@ public class GUIController {
 		calendarView.updateEvents();
 		updatePane();
 	}
+
 	// Called when press "Add Event" button
 	// creates an empty EventDialog
 	public void addEventButton() {

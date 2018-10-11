@@ -37,7 +37,7 @@ public class InitGUI extends Application {
 		// Needed for JavaFX
 		launch(args);
 	}
-
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		

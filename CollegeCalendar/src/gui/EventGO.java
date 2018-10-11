@@ -19,6 +19,8 @@ public class EventGO {
 	private Duration notificationOffset;				// If negative, then notifications off
 	private Boolean completed;
 	private String userName;
+	private Boolean allottedTimeUp;
+	private Boolean constantReminder;
 	
 
 	public EventGO(String title, String userName) {
@@ -34,6 +36,8 @@ public class EventGO {
 		this.setNotificationOffset(Duration.ofMinutes(10));
 		this.completed = false;
 		this.userName = userName;
+		this.setConstantReminder(false);
+		this.setAllottedTimeUp(false);
 	}
 
 	public EventGO(String id, String title, String userName) {
@@ -68,7 +72,7 @@ public class EventGO {
 
 	}
 	
-	public EventGO(EventType type, String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat, Duration notificationOffset, boolean completed,String userName) {
+	public EventGO(EventType type, String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat, Duration notificationOffset, boolean completed,String userName, Boolean allottedTimeUp, Boolean constantReminder) {
 		this.setType(type);
 		this.id = id;
 		this.title = title;
@@ -160,6 +164,22 @@ public class EventGO {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public Boolean getAllottedTimeUp() {
+		return allottedTimeUp;
+	}
+
+	public void setAllottedTimeUp(Boolean allottedTimeUp) {
+		this.allottedTimeUp = allottedTimeUp;
+	}
+
+	public Boolean getConstantReminder() {
+		return constantReminder;
+	}
+
+	public void setConstantReminder(Boolean constantReminder) {
+		this.constantReminder = constantReminder;
 	}
 	
 }
