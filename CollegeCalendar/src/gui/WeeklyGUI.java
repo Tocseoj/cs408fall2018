@@ -3,16 +3,13 @@ package gui;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import controller.Controller;
 import javafx.scene.layout.Pane;
 
 public class WeeklyGUI implements CalendarViews {
 	
-	private Controller controller;
 	private GUIController guiController;
 	
-	public WeeklyGUI(Controller controller, GUIController guiController) {
-		this.controller = controller;
+	public WeeklyGUI(GUIController guiController) {
 		this.guiController = guiController;
 	}
 	
