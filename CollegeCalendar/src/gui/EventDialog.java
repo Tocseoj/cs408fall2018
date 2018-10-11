@@ -269,7 +269,20 @@ public class EventDialog {
 //					//							removeEvent(editEvent);
 				}
 
-				addEvent(EventType.valueOf(comboBox.getValue()), test_id, title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed, allottedTimeUp, constantReminder);
+				// call helper method to add the current event to the database
+				addEvent(EventType.valueOf(comboBox.getValue()), 
+						test_id, 
+						title.getText(), 
+						datePicker.getValue(), 
+						time.getText(), 
+						duration.getText(), 
+						priority.getText(), 
+						rpt, 
+						edrpt, 
+						no, 
+						is_completed, 
+						allottedTimeUp, 
+						constantReminder);
 
 //				if(!eventToBeAdded.getID().equals("")) {
 					
