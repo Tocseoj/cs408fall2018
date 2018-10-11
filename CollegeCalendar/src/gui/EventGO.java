@@ -92,6 +92,31 @@ public class EventGO {
 		this.userName = userName;
 	}
 	
+	/*
+	 * Constructor for the different Event Presets
+	 */
+	public EventGO(EventType type, String id, String title, LocalDate date, LocalTime time, Duration duration, 
+			int priority, Boolean[] repeatDays, LocalDate endRepeat, Duration notificationOffset, boolean completed,
+			String userName, Boolean allottedTimeUp, Boolean constantReminder, String profName, String subjectName,
+			String meetingPersonName) {
+		this.setType(type);
+		this.id = id;
+		this.title = title;
+		this.date = date;
+		this.time = time;
+		this.duration = duration;
+		this.priority = priority;
+		this.repeatDays = repeatDays;
+		this.setEndRepeat(endRepeat);
+		this.setNotificationOffset(notificationOffset);
+		this.completed = completed;
+		this.userName = userName;
+		this.profName = profName;
+		this.subjectName = subjectName;
+		this.meetingPersonName = meetingPersonName;
+	}
+	
+	
 	public String getID() {
 		return id;
 	}

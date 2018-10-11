@@ -282,7 +282,10 @@ public class EventDialog {
 						no, 
 						is_completed, 
 						allottedTimeUp, 
-						constantReminder);
+						constantReminder,
+						profNameField.getText(),
+						subjectField.getText(),
+						meetingPersonField.getText());
 
 //				if(!eventToBeAdded.getID().equals("")) {
 					
@@ -410,7 +413,10 @@ public class EventDialog {
 			String notificationOffset,			// If negative, then notifications off
 			Boolean completed, 
 			Boolean allottedTimeUp,
-			Boolean constantReminder) {		
+			Boolean constantReminder,
+			String profName,
+			String subjectName,
+			String meetingPersonName) {		
 
 		LocalTime ptime = LocalTime.now();
 		if (!time.equals("")) {
@@ -455,7 +461,9 @@ public class EventDialog {
 			title = "(No Title)";
 		}
 
-		EventGO e = new EventGO(type, id, title, date, ptime, pduration, ppriority, repeatDays, endRepeat, poffset, completed, guiController.getUsername(), allottedTimeUp, constantReminder);
+		EventGO e = new EventGO(type, id, title, date, ptime, pduration, ppriority, repeatDays, endRepeat, 
+								poffset, completed, guiController.getUsername(), allottedTimeUp, constantReminder,
+								profName, subjectName, meetingPersonName);
 
 		if (id != "") {
 //			controller.updateEventInDatabase(e);
