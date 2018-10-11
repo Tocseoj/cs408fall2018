@@ -471,15 +471,6 @@ public class EventDialog {
 		} else {
 			guiController.addEvent(e);
 		}
-		//		events.add(e);
-		//		System.out.print("[");
-		//		for (int i = 0; i < 7; i++) {
-		//			if (i + 1 < 7) {
-		//				System.out.print(e.getRepeatDays()[i] + ", ");
-		//			} else {
-		//				System.out.print(e.getRepeatDays()[i] + "]\n");
-		//			}
-		//		}
 
 		return e;
 	}
