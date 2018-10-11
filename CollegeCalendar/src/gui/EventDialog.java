@@ -183,7 +183,7 @@ public class EventDialog {
 				if (editEvent != null) {
 					test_id = editEvent.getID();
 					
-					guiController.removeEventFromView(editEvent);
+//					guiController.removeEventFromView(editEvent);
 					
 //					System.out.println(test_id);
 //					//							events.remove(editEvent); TODO

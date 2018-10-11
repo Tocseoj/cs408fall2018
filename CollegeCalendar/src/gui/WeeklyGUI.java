@@ -23,22 +23,21 @@ public class WeeklyGUI implements CalendarViews {
 		return new Pane();
 	}
 
-	@Override
-	public String getDateFormat(LocalDate date) {
+	private String getDateFormat(LocalDate date) {
 		return date.format(DateTimeFormatter.ofPattern("MMMM yyyy 'Week' W"));
 	}
 
-	@Override
-	public void removeEventFromView(EventGO e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addEventToView(EventGO e) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void removeEventFromView(EventGO e) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void addEventToView(EventGO e) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	@Override
 	public void updateEvents() {
