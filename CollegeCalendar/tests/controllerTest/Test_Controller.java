@@ -35,7 +35,12 @@ private Controller c = new Controller();
 		String userName = "permanentTester";
 		boolean allottedTimeUp = false;
 		boolean constantReminder = false;
-		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		String profName = "";
+		String subjectName = "";
+		String meetingPersonName = "";
+		String id = edb.insertEvent(type, title, date, time, duration, priority, 
+				repeatDays, endRepeat, notificationOffset, completed, userName, 
+				allottedTimeUp, constantReminder, profName, subjectName, meetingPersonName);
 		
 		ArrayList<EventGO> events = c.getAllEvents("permanentTester");
 		assertEquals(2, events.size());

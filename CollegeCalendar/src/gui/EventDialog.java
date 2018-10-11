@@ -57,8 +57,22 @@ public class EventDialog {
 		comboBox.getItems().addAll(getNames(EventType.class));
 		comboBox.setValue("GENERIC");
 
+		// preset fields for homework events
 		Label completedL = new Label("Homework Completed?");
 		CheckBox completed = new CheckBox();
+		
+		// preset fields for Class events
+		Label profNameLabel = new Label("Professor Name");
+		TextField profNameField = new TextField();
+		
+		// preset fields for Exam events
+		Label subjectLabel = new Label("Subject");
+		TextField subjectField = new TextField();
+		
+		
+		// preset fields for Meeting events
+		Label meetingPersonLabel = new Label("Who is the meeting with?");
+		TextField meetingPersonField = new TextField();
 
 		Label dateL = new Label("Event Date");
 
@@ -71,7 +85,56 @@ public class EventDialog {
 					containerPane.getChildren().add(index + 1, completed);
 					containerPane.getChildren().add(index + 1, completedL);
 					dateL.setText("Due Date");
-				} else {
+				}
+				else if (self.getValue().equals("MEETING")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, meetingPersonLabel);
+					containerPane.getChildren().add(index + 2, meetingPersonField);
+					
+
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					
+					dateL.setText("Meeting Date");
+				}
+				else if (self.getValue().equals("CLASS")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, profNameLabel);
+					containerPane.getChildren().add(index + 2, profNameField);
+					
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					dateL.setText("Class Date");
+				}
+				else if (self.getValue().equals("EXAM")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, subjectLabel);
+					containerPane.getChildren().add(index + 2, subjectField);
+					
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					dateL.setText("Exam Date");
+				}
+				else {
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
 					containerPane.getChildren().remove(completedL);
 					containerPane.getChildren().remove(completed);
 					dateL.setText("Event Date");
@@ -206,7 +269,23 @@ public class EventDialog {
 //					//							removeEvent(editEvent);
 				}
 
-				addEvent(EventType.valueOf(comboBox.getValue()), test_id, title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed, allottedTimeUp, constantReminder);
+				// call helper method to add the current event to the database
+				addEvent(EventType.valueOf(comboBox.getValue()), 
+						test_id, 
+						title.getText(), 
+						datePicker.getValue(), 
+						time.getText(), 
+						duration.getText(), 
+						priority.getText(), 
+						rpt, 
+						edrpt, 
+						no, 
+						is_completed, 
+						allottedTimeUp, 
+						constantReminder,
+						profNameField.getText(),
+						subjectField.getText(),
+						meetingPersonField.getText());
 
 //				if(!eventToBeAdded.getID().equals("")) {
 					
@@ -282,6 +361,64 @@ public class EventDialog {
 				} else {
 					containerPane.getChildren().remove(completedL);
 					containerPane.getChildren().remove(completed);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(meetingPersonField);
+					containerPane.getChildren().remove(meetingPersonLabel);
+					dateL.setText("Event Date");
+				}
+			}
+			else if (editEvent.getType() == EventType.CLASS) {
+				// do some stuff for class preset
+				ComboBox<String> self = comboBox;
+				if (self.getValue().equals("CLASS")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, profNameLabel);
+					containerPane.getChildren().add(index + 2, profNameField);
+					dateL.setText("Class Date");
+				} else {
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+					dateL.setText("Event Date");
+				}
+			}
+			else if (editEvent.getType() == EventType.EXAM) {
+				// do some stuff for EXAM preset
+				ComboBox<String> self = comboBox;
+				if (self.getValue().equals("CLASS")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, subjectLabel);
+					containerPane.getChildren().add(index + 2, subjectField);
+					dateL.setText("Class Date");
+				} else {
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+					dateL.setText("Event Date");
+				}
+			}
+			else if (editEvent.getType() == EventType.MEETING) {
+				// do some stuff for MEETING preset
+				ComboBox<String> self = comboBox;
+				if (self.getValue().equals("MEETING")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, meetingPersonLabel);
+					containerPane.getChildren().add(index + 2, meetingPersonField);
+					dateL.setText("Meeting Date");
+				} else {
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
 					dateL.setText("Event Date");
 				}
 			}
@@ -334,7 +471,10 @@ public class EventDialog {
 			String notificationOffset,			// If negative, then notifications off
 			Boolean completed, 
 			Boolean allottedTimeUp,
-			Boolean constantReminder) {		
+			Boolean constantReminder,
+			String profName,
+			String subjectName,
+			String meetingPersonName) {		
 
 		LocalTime ptime = LocalTime.now();
 		if (!time.equals("")) {
@@ -379,7 +519,9 @@ public class EventDialog {
 			title = "(No Title)";
 		}
 
-		EventGO e = new EventGO(type, id, title, date, ptime, pduration, ppriority, repeatDays, endRepeat, poffset, completed, guiController.getUsername(), allottedTimeUp, constantReminder);
+		EventGO e = new EventGO(type, id, title, date, ptime, pduration, ppriority, repeatDays, endRepeat, 
+								poffset, completed, guiController.getUsername(), allottedTimeUp, constantReminder,
+								profName, subjectName, meetingPersonName);
 
 		if (id != "") {
 //			controller.updateEventInDatabase(e);
@@ -387,15 +529,6 @@ public class EventDialog {
 		} else {
 			guiController.addEvent(e);
 		}
-		//		events.add(e);
-		//		System.out.print("[");
-		//		for (int i = 0; i < 7; i++) {
-		//			if (i + 1 < 7) {
-		//				System.out.print(e.getRepeatDays()[i] + ", ");
-		//			} else {
-		//				System.out.print(e.getRepeatDays()[i] + "]\n");
-		//			}
-		//		}
 
 		return e;
 	}
