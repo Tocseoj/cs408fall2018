@@ -130,6 +130,8 @@ public class EventDialog {
 				}
 			}
 		});
+		
+		
 
 		//        containerPane.getChildren().add(endRepeatL);
 		//        containerPane.getChildren().add(endRepeat);
@@ -155,6 +157,15 @@ public class EventDialog {
 		containerPane.getChildren().add(notify);
 		containerPane.getChildren().add(new Label("Repeat"));
 		containerPane.getChildren().add(repeat);
+		
+		CheckBox NotifyWhenEventOver = new CheckBox();
+		containerPane.getChildren().add(new Label("NotifyWhenEventOver"));
+		containerPane.getChildren().add(NotifyWhenEventOver);
+		
+		CheckBox ConstantReminderDuringEvent = new CheckBox();
+		containerPane.getChildren().add(new Label("ConstantReminderDuringEvent"));
+		containerPane.getChildren().add(ConstantReminderDuringEvent);
+		
 		Button submit = new Button("Add Event");
 		submit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
@@ -178,6 +189,10 @@ public class EventDialog {
 						//	    				System.out.println((i) + ": " + c.isSelected());
 					}
 				}
+				
+				//Gus added notification Vars
+				Boolean allottedTimeUp = NotifyWhenEventOver.isSelected();
+				Boolean constantReminder = ConstantReminderDuringEvent.isSelected();
 
 				String test_id = "";
 				if (editEvent != null) {
@@ -191,7 +206,7 @@ public class EventDialog {
 //					//							removeEvent(editEvent);
 				}
 
-				EventGO eventToBeAdded = addEvent(EventType.valueOf(comboBox.getValue()), test_id, title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed);
+				EventGO eventToBeAdded = addEvent(EventType.valueOf(comboBox.getValue()), test_id, title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed, allottedTimeUp, constantReminder);
 //				if(!eventToBeAdded.getID().equals("")) {
 					
 //				guiController.addEventToView(eventToBeAdded);
@@ -316,7 +331,9 @@ public class EventDialog {
 			Boolean[] repeatDays,
 			LocalDate endRepeat,						// If endRepeat == date then no repeat
 			String notificationOffset,			// If negative, then notifications off
-			Boolean completed) {		
+			Boolean completed, 
+			Boolean allottedTimeUp,
+			Boolean constantReminder) {		
 
 		LocalTime ptime = LocalTime.now();
 		if (!time.equals("")) {
@@ -361,7 +378,7 @@ public class EventDialog {
 			title = "(No Title)";
 		}
 
-		EventGO e = new EventGO(type, id, title, date, ptime, pduration, ppriority, repeatDays, endRepeat, poffset, completed, guiController.getUsername());
+		EventGO e = new EventGO(type, id, title, date, ptime, pduration, ppriority, repeatDays, endRepeat, poffset, completed, guiController.getUsername(), allottedTimeUp, constantReminder);
 
 		if (id != "") {
 //			controller.updateEventInDatabase(e);

@@ -5,6 +5,6 @@ import java.util.TimerTask;
 public class NotifyTask extends TimerTask {
 	
 	public void run() {
-		JoeGUI.pollToNotify();
+		//InitGUI.pollToNotify();
 	}
 }
