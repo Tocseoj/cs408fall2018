@@ -67,7 +67,12 @@ public class Test_EventDBO {
 		String userName = "tester";
 		boolean allottedTimeUp = false;
 		boolean constantReminder = false;
-		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		String profName = "";
+		String meetingName = "";
+		String subjectName = "";
+		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, 
+				notificationOffset, completed, userName, allottedTimeUp, constantReminder,
+				profName, subjectName, meetingName);
 
 		Document doc = edb.getEvent(id);
 		EventGO ego = Controller.convertDocToEventGO(doc);
@@ -125,7 +130,10 @@ public class Test_EventDBO {
 		String userName = "tester";
 		boolean allottedTimeUp = false;
 		boolean constantReminder = false;
-		String id = edb.insertEvent(type, title, null, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		
+		String id = edb.insertEvent(type, title, null, time, duration, priority, repeatDays, endRepeat,
+				notificationOffset, completed, userName, allottedTimeUp, constantReminder,
+				"", "", "");
 		assertEquals("", id);
 	}
 	@Test
@@ -144,7 +152,9 @@ public class Test_EventDBO {
 		String userName = "tester";
 		boolean allottedTimeUp = false;
 		boolean constantReminder = false;
-		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, 
+				notificationOffset, completed, userName, allottedTimeUp, constantReminder,
+				"","","");
 		Document insertedEvent = edb.getEvent(id);
 		assertNotNull(insertedEvent);
 		edb.deleteEvent(id);
@@ -166,7 +176,9 @@ public class Test_EventDBO {
 		String userName = "tester";
 		boolean allottedTimeUp = false;
 		boolean constantReminder = false;
-		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, 
+				notificationOffset, completed, userName, allottedTimeUp, constantReminder,
+				"","","");
 		edb.deleteEvent(id);
 		Document insertedEvent = edb.getEvent(id);
 		assertNull(insertedEvent);
@@ -209,7 +221,9 @@ public class Test_EventDBO {
 		String userName = "tester";
 		boolean allottedTimeUp = false;
 		boolean constantReminder = false;
-		String sid = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		String sid = edb.insertEvent(type, title, date, time, duration, priority,
+				repeatDays, endRepeat, notificationOffset, completed, userName, 
+				allottedTimeUp, constantReminder, "", "", "");
 		ObjectId oid = new ObjectId(sid);
 		String updatedTitle = "updatedEvent";
 		edb.updateEvent(oid, type, updatedTitle, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
@@ -276,7 +290,9 @@ public class Test_EventDBO {
 		String userName = "tester";
 		boolean allottedTimeUp = false;
 		boolean constantReminder = false;
-		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, 
+				notificationOffset, completed, userName, allottedTimeUp, constantReminder,
+				"","","");
 		edb.deleteEvent(id);
 		Document insertedEvent = edb.getEvent(id);
 		assertNull(insertedEvent);
