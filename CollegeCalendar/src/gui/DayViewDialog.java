@@ -1,9 +1,11 @@
 package gui;
 
+import java.time.Duration;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 
+import controller.DateAndTimeManager;
+import controller.EventType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -45,9 +47,20 @@ public class DayViewDialog {
 			dialogVbox.getChildren().add(new Label("No Events on Day " + day.getDayOfMonth()));
 		}
 		scroll.setContent(dialogVbox);
+		
+		// Add Event Button
+		Button b = new Button("Add Event");
+		b.setOnAction((event) -> {
+			EventGO e = new EventGO(EventType.GENERIC, "",  "", day, DateAndTimeManager.getCurrentTime(), Duration.ZERO, 0, new Boolean[0], day, Duration.ZERO, false, guiController.getUsername());
+		    new EventDialog(primaryStage, e, guiController);
+		    dialog.close();
+		});
+		
+		// Container
+		VBox container = new VBox();
+		container.getChildren().addAll(scroll, b);
 
-
-		Scene dialogScene = new Scene(scroll, width, height);
+		Scene dialogScene = new Scene(container, width, height);
 		dialog.setScene(dialogScene);
 		dialog.setTitle("Viewing Events on Day " + day);
 		dialog.show();

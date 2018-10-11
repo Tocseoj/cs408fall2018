@@ -9,7 +9,6 @@ import java.time.format.TextStyle;
 import java.util.Arrays;
 import java.util.Locale;
 
-import controller.Controller;
 import controller.EventType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -65,6 +64,7 @@ public class EventDialog {
 
 		comboBox.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
+				@SuppressWarnings("unchecked")
 				ComboBox<String> self = (ComboBox<String>)e.getSource();
 				if (self.getValue().equals("HOMEWORK")) {
 					int index = containerPane.getChildren().indexOf(self);
@@ -191,7 +191,7 @@ public class EventDialog {
 //					//							removeEvent(editEvent);
 				}
 
-				EventGO eventToBeAdded = addEvent(EventType.valueOf(comboBox.getValue()), test_id, title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed);
+				addEvent(EventType.valueOf(comboBox.getValue()), test_id, title.getText(), datePicker.getValue(), time.getText(), duration.getText(), priority.getText(), rpt, edrpt, no, is_completed);
 //				if(!eventToBeAdded.getID().equals("")) {
 					
 //				guiController.addEventToView(eventToBeAdded);

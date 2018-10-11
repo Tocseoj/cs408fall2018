@@ -59,7 +59,8 @@ public class EventGO {
 		this.time = LocalTime.of(0, 0);
 		this.duration = Duration.ofHours(0);
 		this.priority = 0;
-		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
+//		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
+		this.repeatDays = new Boolean[7];
 		this.setEndRepeat(this.date);
 		this.setNotificationOffset(Duration.ofMinutes(10));
 		this.completed = false;
