@@ -43,7 +43,8 @@ public class EventDBO {
 	 */
 	public String insertEvent(int type, String title, LocalDate date, LocalTime time, 
 								Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat,
-								Duration notificationOffset, Boolean completed, String userName, Boolean allottedTimeUp, Boolean constantReminder) {
+								Duration notificationOffset, Boolean completed, String userName, Boolean allottedTimeUp,
+								Boolean constantReminder, String profName, String subjectName, String meetingPersonName) {
 		if(date == null || time == null || duration == null || endRepeat == null || notificationOffset == null) {
 			return "";
 		}
@@ -63,6 +64,15 @@ public class EventDBO {
 				.append("userName", userName)
 				.append("allottedTimeUp", allottedTimeUp)
 				.append("constantReminder", constantReminder);
+		if (profName.length() != 0) {
+			newClass.append("profName", profName);
+		}
+		else if (subjectName.length() != 0) {
+			newClass.append("subjectName", subjectName);
+		}
+		else if (meetingPersonName.length() != 0) {
+			newClass.append("meetingPersonName", meetingPersonName);
+		}
 		collection.insertOne(newClass);
 		return oid.toString();
 	}

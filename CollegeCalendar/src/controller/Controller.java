@@ -173,7 +173,7 @@ public class Controller {
 		String meetingPersonName = e.getMeetingPersonName();
 		String idResult = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, 
 										endRepeat, notificationOffset, completed, userName, allottedTimeUp, 
-										constantReminder);
+										constantReminder, profName, subjectName, meetingPersonName);
 		e.setID(idResult);
 		return idResult;
 	}
