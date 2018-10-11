@@ -57,8 +57,22 @@ public class EventDialog {
 		comboBox.getItems().addAll(getNames(EventType.class));
 		comboBox.setValue("GENERIC");
 
+		// preset fields for homework events
 		Label completedL = new Label("Homework Completed?");
 		CheckBox completed = new CheckBox();
+		
+		// preset fields for Class events
+		Label profNameLabel = new Label("Professor Name");
+		TextField profNameField = new TextField();
+		
+		// preset fields for Exam events
+		Label subjectLabel = new Label("Subject");
+		TextField subjectField = new TextField();
+		
+		
+		// preset fields for Meeting events
+		Label meetingPersonLabel = new Label("Who is the meeting with?");
+		TextField meetingPersonField = new TextField();
 
 		Label dateL = new Label("Event Date");
 
@@ -71,7 +85,56 @@ public class EventDialog {
 					containerPane.getChildren().add(index + 1, completed);
 					containerPane.getChildren().add(index + 1, completedL);
 					dateL.setText("Due Date");
-				} else {
+				}
+				else if (self.getValue().equals("MEETING")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, meetingPersonLabel);
+					containerPane.getChildren().add(index + 2, meetingPersonField);
+					
+
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					
+					dateL.setText("Meeting Date");
+				}
+				else if (self.getValue().equals("CLASS")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, profNameLabel);
+					containerPane.getChildren().add(index + 2, profNameField);
+					
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					dateL.setText("Class Date");
+				}
+				else if (self.getValue().equals("EXAM")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, subjectLabel);
+					containerPane.getChildren().add(index + 2, subjectField);
+					
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					dateL.setText("Exam Date");
+				}
+				else {
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
 					containerPane.getChildren().remove(completedL);
 					containerPane.getChildren().remove(completed);
 					dateL.setText("Event Date");
