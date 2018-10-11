@@ -226,7 +226,9 @@ public class Test_EventDBO {
 				allottedTimeUp, constantReminder, "", "", "");
 		ObjectId oid = new ObjectId(sid);
 		String updatedTitle = "updatedEvent";
-		edb.updateEvent(oid, type, updatedTitle, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		edb.updateEvent(oid, type, updatedTitle, date, time, duration, priority, repeatDays, 
+				endRepeat, notificationOffset, completed, userName, allottedTimeUp,
+				constantReminder, "", "", "");
 		Document doc = edb.getEvent(sid);
 		edb.deleteEvent(sid);
 		assertEquals("updatedEvent", doc.getString("title"));
@@ -251,7 +253,8 @@ public class Test_EventDBO {
 
 		String updatedTitle = "updatedEvent";
 
-		edb.updateEvent(invalidId, type, updatedTitle, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		edb.updateEvent(invalidId, type, updatedTitle, date, time, duration, priority, repeatDays, 
+				endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder, "", "", "");
 		Document doc = edb.getEvent(INVALID_ID);
 		assertNull(doc);
 	}
@@ -317,7 +320,9 @@ public class Test_EventDBO {
 		String userName = "tester";
 		String updatedTitle = "updatedEvent";
 		ObjectId oid = new ObjectId("5bae7a3918f63166c8c4f490");
-		edb.updateEvent(oid, type, updatedTitle, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		edb.updateEvent(oid, type, updatedTitle, date, time, duration, priority, repeatDays, 
+				endRepeat, notificationOffset, completed, userName, allottedTimeUp, 
+				constantReminder, "", "", "");
 		Document doc = edb.getEvent("5bae7a3918f63166c8c4f490");
 		assertEquals("permanentEventDon'tDelete", doc.getString("title"));
 	}

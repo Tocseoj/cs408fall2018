@@ -361,6 +361,64 @@ public class EventDialog {
 				} else {
 					containerPane.getChildren().remove(completedL);
 					containerPane.getChildren().remove(completed);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(meetingPersonField);
+					containerPane.getChildren().remove(meetingPersonLabel);
+					dateL.setText("Event Date");
+				}
+			}
+			else if (editEvent.getType() == EventType.CLASS) {
+				// do some stuff for class preset
+				ComboBox<String> self = comboBox;
+				if (self.getValue().equals("CLASS")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, profNameLabel);
+					containerPane.getChildren().add(index + 2, profNameField);
+					dateL.setText("Class Date");
+				} else {
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+					dateL.setText("Event Date");
+				}
+			}
+			else if (editEvent.getType() == EventType.EXAM) {
+				// do some stuff for EXAM preset
+				ComboBox<String> self = comboBox;
+				if (self.getValue().equals("CLASS")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, subjectLabel);
+					containerPane.getChildren().add(index + 2, subjectField);
+					dateL.setText("Class Date");
+				} else {
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+					dateL.setText("Event Date");
+				}
+			}
+			else if (editEvent.getType() == EventType.MEETING) {
+				// do some stuff for MEETING preset
+				ComboBox<String> self = comboBox;
+				if (self.getValue().equals("MEETING")) {
+					int index = containerPane.getChildren().indexOf(self);
+					containerPane.getChildren().add(index + 1, meetingPersonLabel);
+					containerPane.getChildren().add(index + 2, meetingPersonField);
+					dateL.setText("Meeting Date");
+				} else {
+					containerPane.getChildren().remove(completedL);
+					containerPane.getChildren().remove(completed);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
 					dateL.setText("Event Date");
 				}
 			}

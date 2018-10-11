@@ -89,7 +89,8 @@ public class EventDBO {
 	 */
 	public void updateEvent(ObjectId id, int type, String title, LocalDate date, LocalTime time, 
 							Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat,
-							Duration notificationOffset, Boolean completed, String userName, Boolean allottedTimeUp, Boolean constantReminder) {
+							Duration notificationOffset, Boolean completed, String userName, Boolean allottedTimeUp, 
+							Boolean constantReminder, String profName, String subjectName, String meetingPersonName) {
 		if (title.equals("")|| date == null || time == null || duration == null || endRepeat == null || notificationOffset == null) {
 			System.out.println("invalid arguments");
 			return;
@@ -106,6 +107,16 @@ public class EventDBO {
 				.append("endRepeat", endRepeat.toString())
 				.append("notificationOffset", notificationOffset.toString())
 				.append("completed", completed);
+		
+		if (profName.length() != 0) {
+			updatedHomework.append("profName", profName);
+		}
+		else if (subjectName.length() != 0) {
+			updatedHomework.append("subjectName", subjectName);
+		}
+		else if (meetingPersonName.length() != 0) {
+			updatedHomework.append("meetingPersonName", meetingPersonName);
+		}
 		collection.updateOne(eq("_id", id), new Document("$set", updatedHomework));
 	}
 
