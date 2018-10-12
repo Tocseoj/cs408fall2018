@@ -13,13 +13,14 @@ public class PopUpController {
 	
 	public PopUpController() {
 		popUpStage = new Stage();
-		
 	}
 	
-	public static void notifyUpcomingEvent(EventGO e) {
-		popUpStage.setTitle("Event Notification");
-		String message = "Event: "+e.getTitle()+" starts in "
-				+e.getNotificationOffset().toMinutes() + " minutes!";
+	/*
+	 * Simple GUI pop-up for completed event reminder 
+	 */
+	public void eventCompleted(EventGO e) {
+		popUpStage.setTitle("Event Completion");
+		String message = "Event: "+e.getTitle()+" has just ended!";
 		
 		Text displayText = new Text(10, 40, message);
 		displayText.setFont(new Font(20));
@@ -31,7 +32,10 @@ public class PopUpController {
 		popUpStage.show();
 	}
 	
-	public static void remindUser(EventGO e) {
+	/*
+	 * Simple GUI pop-up for current event reminder 
+	 */
+	public void remindUser(EventGO e) {
 		popUpStage.setTitle("Event Reminder");
 		String message = "Event: "+e.getTitle()+" is going on!";
 		
@@ -45,9 +49,13 @@ public class PopUpController {
 		popUpStage.show();
 	}
 	
-	public static void eventCompleted(EventGO e) {
-		popUpStage.setTitle("Event Completion");
-		String message = "Event: "+e.getTitle()+" has just ended!";
+	/*
+	 * Simple GUI pop-up for upcoming event reminder 
+	 */
+	public void notifyUpcomingEvent(EventGO e) {
+		popUpStage.setTitle("Event Notification");
+		String message = "Event: "+e.getTitle()+" starts in "
+				+e.getNotificationOffset().toMinutes() + " minutes!";
 		
 		Text displayText = new Text(10, 40, message);
 		displayText.setFont(new Font(20));

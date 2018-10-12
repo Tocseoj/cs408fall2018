@@ -30,6 +30,8 @@ public class GUIController {
 
 	private StackPane calendarPane;
 
+	private static PopUpController	popUpController;
+	
 	private Controller controller;
 	private ArrayList<EventGO> eventList;
 
@@ -46,6 +48,7 @@ public class GUIController {
 		eventList = controller.getAllEvents(username);
 
 		calendarView = new MonthlyGUI(this);
+		popUpController = new PopUpController();
 
 		updatePane();
 
@@ -221,7 +224,48 @@ public class GUIController {
 	public void showEventPopup(EventGO event) {
 		new EventDialog(primaryStage, event, this);
 	}
-
+	
+	/*
+	 * PopUp checker for all events. Handles prior events,
+	 * current reminders and completed events
+	 */
+	public void handlePopUps() {
+		
+		for (int i = 0; i < eventList.size(); i++) 
+		{
+			/* Handle already completed events */ /* Handle better precision? */
+			if (eventList.get(i).getCompleted() == true) {
+				if (eventList.get(i).getAllottedTimeUp() == false) {
+					popUpController.eventCompleted(eventList.get(i));
+					eventList.get(i).setAllottedTimeUp(true);
+				}
+				break;
+			}
+			
+			/* Prep comparison objects for later checks */
+			LocalTime tmp = eventList.get(i).getTime();
+			LocalDateTime eventCheck = eventList.get(i).getDate().atTime(tmp);
+			
+			int ret;
+			/* Handle current events */
+			if ((ret = date.getCurrentDateTime().compareTo(eventCheck)) >= 0) {
+				if (eventList.get(i).getConstantReminder() == true) {
+					popUpController.remindUser(eventList.get(i));
+				}
+				break;
+			}
+			
+			/* Handle prior events */
+			if (ret < 0) {
+				if (!eventList.get(i).getNotificationOffset().isNegative()
+						&& eventCheck.minusMinutes(eventList.get(i)
+								.getNotificationOffset().toMinutes())
+						.compareTo(date.getCurrentDateTime()) >= 0) {
+					popUpController.notifyUpcomingEvent(eventList.get(i));
+				}
+			}
+		}
+	}
 
 	/*
 	 * Getters/ Setters

@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -23,7 +24,6 @@ public class InitGUI extends Application {
 	private static double 			sceneHeight;
 	private static Color			backgroundColor;
 	private static GUIController	guiController;
-	private static PopUpController	popUpController;
 	
 	public static void main(String[] args) {
 		
@@ -132,6 +132,13 @@ public class InitGUI extends Application {
 		primaryStage.show();
 		
 //		changeAccount(null); TODO
+		
+		new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                guiController.handlePopUps();
+            }
+        }.start();
 	}
 	
 	private void leftArrow(ActionEvent event) {
