@@ -245,8 +245,9 @@ public class EventDialog {
 						}
 					}
 					if(ppriority > 3) {
-						System.out.println("Prio > 3 and has duration");
+						//TODO: just suggest closest time that is available
 					}else {
+						//TODO: suggest closest time that has hours < 8
 						datePicker.setValue(LocalDate.now());
 					}
 				}

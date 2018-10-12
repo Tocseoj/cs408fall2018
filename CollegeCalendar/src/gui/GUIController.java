@@ -1,5 +1,6 @@
 package gui;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -94,6 +95,23 @@ public class GUIController {
 
 		return getEvents(start, finish, length);
 
+	}
+	
+	public LocalDate suggestDate(Duration duration) {
+		LocalDate start = LocalDate.now();
+		LocalDate finish = start;
+		long plannedHours = 0;
+		long maxHours = 8;
+		ArrayList<EventGO> eventsInDay;
+		do {
+			eventsInDay = getEvents(start, finish, 1).get(0);
+			for(EventGO event : eventsInDay) {
+				plannedHours = plannedHours + event.getDuration().toHours();
+			}
+			start = start.plusDays(1);
+			finish = start;
+		}while(plannedHours > maxHours);
+		return start;
 	}
 
 	//
