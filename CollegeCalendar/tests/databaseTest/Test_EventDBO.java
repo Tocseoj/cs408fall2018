@@ -135,6 +135,7 @@ public class Test_EventDBO {
 				notificationOffset, completed, userName, allottedTimeUp, constantReminder,
 				"", "", "");
 		assertEquals("", id);
+		
 	}
 	@Test
 	public void testInsertEvent() throws Exception {
@@ -155,6 +156,92 @@ public class Test_EventDBO {
 		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, 
 				notificationOffset, completed, userName, allottedTimeUp, constantReminder,
 				"","","");
+		Document insertedEvent = edb.getEvent(id);
+		assertNotNull(insertedEvent);
+		edb.deleteEvent(id);
+	}
+	
+	
+	
+	/*
+	 * Tests inserting a Class event into the database
+	 */
+	@Test
+	public void testInsertClass() throws Exception {
+		EventDBO edb = new EventDBO();
+		int type = EventType.GENERIC.ordinal();
+		String title = "event";
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		Duration duration = Duration.ofHours(1);
+		int priority = 2;
+		Boolean[] repeatDays = new Boolean[8];
+		LocalDate endRepeat = date.plusDays(1);
+		Duration notificationOffset = Duration.ofMinutes(15);
+		boolean completed = false;
+		String userName = "tester";
+		boolean allottedTimeUp = false;
+		boolean constantReminder = false;
+		String profName = "Zhang";
+		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, 
+				notificationOffset, completed, userName, allottedTimeUp, constantReminder,
+				profName,"","");
+		Document insertedEvent = edb.getEvent(id);
+		assertNotNull(insertedEvent);
+		edb.deleteEvent(id);
+	}
+	
+	/*
+	 * Tests inserting a Class event into the database
+	 */
+	@Test
+	public void testInsertExam() throws Exception {
+		EventDBO edb = new EventDBO();
+		int type = EventType.GENERIC.ordinal();
+		String title = "event";
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		Duration duration = Duration.ofHours(1);
+		int priority = 2;
+		Boolean[] repeatDays = new Boolean[8];
+		LocalDate endRepeat = date.plusDays(1);
+		Duration notificationOffset = Duration.ofMinutes(15);
+		boolean completed = false;
+		String userName = "tester";
+		boolean allottedTimeUp = false;
+		boolean constantReminder = false;
+		String subject = "CS408";
+		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, 
+				notificationOffset, completed, userName, allottedTimeUp, constantReminder,
+				"",subject,"");
+		Document insertedEvent = edb.getEvent(id);
+		assertNotNull(insertedEvent);
+		edb.deleteEvent(id);
+	}
+	
+	/*
+	 * Tests inserting a Class event into the database
+	 */
+	@Test
+	public void testInsertMeeting() throws Exception {
+		EventDBO edb = new EventDBO();
+		int type = EventType.GENERIC.ordinal();
+		String title = "event";
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		Duration duration = Duration.ofHours(1);
+		int priority = 2;
+		Boolean[] repeatDays = new Boolean[8];
+		LocalDate endRepeat = date.plusDays(1);
+		Duration notificationOffset = Duration.ofMinutes(15);
+		boolean completed = false;
+		String userName = "tester";
+		boolean allottedTimeUp = false;
+		boolean constantReminder = false;
+		String meetingPersonName = "Zhang";
+		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, 
+				notificationOffset, completed, userName, allottedTimeUp, constantReminder,
+				"","",meetingPersonName);
 		Document insertedEvent = edb.getEvent(id);
 		assertNotNull(insertedEvent);
 		edb.deleteEvent(id);
