@@ -116,9 +116,17 @@ public class GUIController {
 	}
 
 	public LocalTime suggestTime(LocalDate date, Duration duration) {
+		LocalDate nowDate = LocalDate.now();
 		ArrayList<EventGO> eventsInDay = getEvents(date, date, 1).get(0);
 		if(eventsInDay.size() == 0) {
-			return LocalTime.parse("08:00");
+			LocalTime noOtherEvents = LocalTime.parse("08:00");
+			while(noOtherEvents.isBefore(LocalTime.parse("21:00"))) {
+				if(!date.equals(nowDate) || noOtherEvents.isAfter(LocalTime.now())) {
+					return noOtherEvents;
+				}
+				noOtherEvents = noOtherEvents.plusHours(1);
+			}
+			return suggestTime(date.plusDays(1), duration);
 		}
 		EventGO earliest = eventsInDay.get(0);
 		for(EventGO event : eventsInDay) {
@@ -128,7 +136,9 @@ public class GUIController {
 		}
 		LocalTime earliestTime = earliest.getTime().minus(duration);
 		if(earliestTime.getHour() >= 8) {
-			return earliestTime;
+			if(!date.equals(nowDate) || earliestTime.isAfter(LocalTime.now())) {
+				return earliestTime;
+			}
 		}
 		if(eventsInDay.size() > 1) {
 			for(EventGO event : eventsInDay) {
@@ -145,7 +155,9 @@ public class GUIController {
 				LocalTime endOfEvent = event.getTime().plus(event.getDuration());
 
 				if(endOfEvent.until(closest.getTime(), ChronoUnit.MINUTES) >= duration.toMinutes()) {
-					return endOfEvent;
+					if(!date.equals(nowDate) || endOfEvent.isAfter(LocalTime.now())) {
+						return endOfEvent;
+					}
 				}
 			}
 		}
@@ -156,7 +168,11 @@ public class GUIController {
 			}
 		}
 		LocalTime latestTime = latest.getTime().plus(latest.getDuration());
-		return latestTime;
+		if(!date.equals(nowDate) || latestTime.isAfter(LocalTime.now())) {
+			return latestTime;
+		}
+		System.out.print("here");
+		return suggestTime(date.plusDays(1), duration);
 	}
 
 	//

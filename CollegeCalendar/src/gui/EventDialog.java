@@ -245,9 +245,11 @@ public class EventDialog {
 						}
 					}
 					if(ppriority > 3) {
-						//TODO: just suggest closest time that is available
+						LocalDate suggestedDate = LocalDate.now().plusDays(1);
+						datePicker.setValue(suggestedDate);
+						LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
+						time.setText(suggestedTime.toString());
 					}else {
-						//TODO: suggest closest time that has hours < 8
 						LocalDate suggestedDate = guiController.suggestDate(pduration);
 						datePicker.setValue(suggestedDate);
 						LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
