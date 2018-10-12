@@ -25,6 +25,8 @@ public class InitGUI extends Application {
 	private static Color			backgroundColor;
 	private static GUIController	guiController;
 	
+	private static AnimationTimer	popUp;
+	
 	public static void main(String[] args) {
 		
 		//
@@ -133,12 +135,17 @@ public class InitGUI extends Application {
 		
 //		changeAccount(null); TODO
 		
-		new AnimationTimer() {
+		/* 
+		 * Initialize and start running popUp checker
+		 */
+		popUp = new AnimationTimer() {
             @Override
             public void handle(long now) {
+            	/* Set Timer callback handler to popUp handler */
                 guiController.handlePopUps();
             }
-        }.start();
+        };
+        popUp.start();
 	}
 	
 	private void leftArrow(ActionEvent event) {
