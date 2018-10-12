@@ -16,4 +16,15 @@ public class Test_ContactDBO {
 		Document event = cdb.getContact(PERM_ID);
 		assertNotNull(event);
 	}
+	
+	@Test
+	public void testInsertEvent() throws Exception {
+		ContactDBO cdb = new ContactDBO();
+		String contactName = "Mitch Zimmer";
+		String userName = "tester";
+		String id = cdb.insertContact(userName, contactName);
+		Document insertedEvent = cdb.getContact(id);
+		assertNotNull(insertedEvent);
+		cdb.deleteContact(id);
+	}
 }

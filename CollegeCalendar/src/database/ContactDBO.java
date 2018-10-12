@@ -42,6 +42,17 @@ public class ContactDBO {
 		if(userName == null || contactName == null) {
 			return "";
 		}
+		MongoCursor<Document> mc = getAllContacts(userName);
+		Document doc;
+		if(mc!= null) {
+			while(mc.hasNext()) {
+				doc = mc.next();
+				if(doc.getString("contactName").equals(contactName)) {
+					return "";
+				}
+			}
+		}
+		
 		MongoCollection<Document> collection = database.getCollection("contacts");
 		ObjectId oid = new ObjectId();
 		Document newClass = new Document("userName", userName)
