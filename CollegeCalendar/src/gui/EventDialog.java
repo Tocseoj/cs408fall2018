@@ -250,6 +250,8 @@ public class EventDialog {
 						//TODO: suggest closest time that has hours < 8
 						LocalDate suggestedDate = guiController.suggestDate(pduration);
 						datePicker.setValue(suggestedDate);
+						LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
+						time.setText(suggestedTime.toString());
 					}
 				}
 			}
