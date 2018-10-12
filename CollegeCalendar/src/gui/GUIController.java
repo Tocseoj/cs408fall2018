@@ -241,7 +241,7 @@ public class GUIController {
 	}
 	
 	//
-	// Helper method to get all events in dame week of specified day
+	// Helper method to get all events in same week of specified day
 	public ArrayList<ArrayList<EventGO>> getWeekEvents(LocalDate day) {
 		
 		int length = 7;
@@ -252,6 +252,7 @@ public class GUIController {
 		
 		return getEvents(start, finish, length);
 	}
+	 
 	
 	//
 	// Get events between two dates with provided length between the dates

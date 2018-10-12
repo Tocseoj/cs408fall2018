@@ -219,7 +219,39 @@ public class EventDialog {
 			}
 		});
 		containerPane.getChildren().add(submit);
-
+		
+		Button suggest = new Button("Suggest");
+		suggest.setOnAction(new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent e) {
+				Duration pduration = Duration.ofMinutes(0);
+				if (!duration.getText().equals("")) {
+					try {
+						pduration = Duration.ofMinutes(Long.parseLong(duration.getText()));
+					}
+					catch (Exception ex) {
+						System.out.println("Duration Invalid");
+					}
+				}
+				if(pduration.equals(Duration.ofMinutes(0))) {
+					duration.setText("Needs Duration");
+				}else {
+					int ppriority = 0;
+					if (!priority.getText().equals("")) {
+						try {
+							ppriority = Integer.parseInt(priority.getText());
+						} catch (Exception ex) {
+							System.err.println("Priority invalid");
+						}
+					}
+					if(ppriority > 3) {
+						System.out.println("Prio > 3 and has duration");
+					}else {
+						datePicker.setValue(LocalDate.now());
+					}
+				}
+			}
+		});
+		containerPane.getChildren().add(suggest);
 		if (editEvent != null) {
 			comboBox.setValue(editEvent.getType().toString());
 			title.setText(editEvent.getTitle());
