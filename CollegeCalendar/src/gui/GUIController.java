@@ -101,9 +101,12 @@ public class GUIController {
 		LocalDate start = LocalDate.now();
 		LocalDate finish = start;
 		long plannedHours = 0;
-		long maxHours = 8;
+		long maxHours = 8 - duration.toHours();
 		ArrayList<EventGO> eventsInDay;
+		LocalDate result = start;
 		do {
+			plannedHours = 0;
+			result = start;
 			eventsInDay = getEvents(start, finish, 1).get(0);
 			for(EventGO event : eventsInDay) {
 				plannedHours = plannedHours + event.getDuration().toHours();
@@ -111,7 +114,7 @@ public class GUIController {
 			start = start.plusDays(1);
 			finish = start;
 		}while(plannedHours > maxHours);
-		return start;
+		return result;
 	}
 
 	//
