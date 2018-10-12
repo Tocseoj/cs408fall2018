@@ -159,6 +159,34 @@ public class Test_EventDBO {
 		assertNotNull(insertedEvent);
 		edb.deleteEvent(id);
 	}
+	
+	/*
+	 * Tests inserting a Class event into the database
+	 */
+	@Test
+	public void testInsertClass() throws Exception {
+		EventDBO edb = new EventDBO();
+		int type = EventType.GENERIC.ordinal();
+		String title = "event";
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		Duration duration = Duration.ofHours(1);
+		int priority = 2;
+		Boolean[] repeatDays = new Boolean[8];
+		LocalDate endRepeat = date.plusDays(1);
+		Duration notificationOffset = Duration.ofMinutes(15);
+		boolean completed = false;
+		String userName = "tester";
+		boolean allottedTimeUp = false;
+		boolean constantReminder = false;
+		String profName = "Zhang";
+		String id = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, 
+				notificationOffset, completed, userName, allottedTimeUp, constantReminder,
+				profName,"","");
+		Document insertedEvent = edb.getEvent(id);
+		assertNotNull(insertedEvent);
+		edb.deleteEvent(id);
+	}
 
 	@Test
 	public void testDeleteEvent_Exists() {
