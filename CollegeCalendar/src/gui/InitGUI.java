@@ -25,7 +25,8 @@ public class InitGUI extends Application {
 	private static Color			backgroundColor;
 	private static GUIController	guiController;
 	
-	private static AnimationTimer	popUp;
+	//private static AnimationTimer	popUp;
+	PopUpTimerSetup 	popUp;
 	
 	public static void main(String[] args) {
 		
@@ -138,14 +139,21 @@ public class InitGUI extends Application {
 		/* 
 		 * Initialize and start running popUp checker
 		 */
-		popUp = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-            	/* Set Timer callback handler to popUp handler */
-                guiController.handlePopUps();
-            }
-        };
-        popUp.start();
+		popUp = new PopUpTimerSetup(guiController);
+		//popUp = new AnimationTimer() {
+        //    @Override
+        //    public void handle(long now) {
+        //    	/* Set Timer callback handler to popUp handler */
+        //        guiController.handlePopUps();
+        //    }
+        //};
+        //popUp.start();
+       
+	}
+	
+	@Override
+	public void stop() throws Exception {
+		popUp.timerExit();
 	}
 	
 	private void leftArrow(ActionEvent event) {
