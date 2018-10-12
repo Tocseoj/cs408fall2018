@@ -299,7 +299,45 @@ public class EventDialog {
 			}
 		});
 		containerPane.getChildren().add(submit);
-
+		
+		Button suggest = new Button("Suggest");
+		suggest.setOnAction(new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent e) {
+				Duration pduration = Duration.ofMinutes(0);
+				if (!duration.getText().equals("")) {
+					try {
+						pduration = Duration.ofMinutes(Long.parseLong(duration.getText()));
+					}
+					catch (Exception ex) {
+						System.out.println("Duration Invalid");
+					}
+				}
+				if(pduration.equals(Duration.ofMinutes(0))) {
+					duration.setText("Needs Duration");
+				}else {
+					int ppriority = 0;
+					if (!priority.getText().equals("")) {
+						try {
+							ppriority = Integer.parseInt(priority.getText());
+						} catch (Exception ex) {
+							System.err.println("Priority invalid");
+						}
+					}
+					if(ppriority > 3) {
+						LocalDate suggestedDate = LocalDate.now().plusDays(1);
+						datePicker.setValue(suggestedDate);
+						LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
+						time.setText(suggestedTime.toString());
+					}else {
+						LocalDate suggestedDate = guiController.suggestDate(pduration);
+						datePicker.setValue(suggestedDate);
+						LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
+						time.setText(suggestedTime.toString());
+					}
+				}
+			}
+		});
+		containerPane.getChildren().add(suggest);
 		if (editEvent != null) {
 			comboBox.setValue(editEvent.getType().toString());
 			title.setText(editEvent.getTitle());

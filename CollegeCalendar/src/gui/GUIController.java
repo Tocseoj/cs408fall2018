@@ -1,10 +1,9 @@
 package gui;
 
+import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-
 import java.util.ArrayList;
 
 import controller.Controller;
@@ -58,7 +57,7 @@ public class GUIController {
 		dynamicPane = calendarView.getCalendarView(date.getViewingDate());
 		calendarPane.getChildren().add(dynamicPane);
 	}
-	
+
 	// GUI Controller sends data to database and adds it to view
 	// EventGO event will NOT have id set
 	public void addEvent(EventGO event) {
@@ -96,8 +95,88 @@ public class GUIController {
 
 	}
 
+	public LocalDate suggestDate(Duration duration) {
+		LocalDate start = LocalDate.now();
+		LocalDate finish = start;
+		long plannedHours = 0;
+		long maxHours = 8 - duration.toHours();
+		ArrayList<EventGO> eventsInDay;
+		LocalDate result = start;
+		do {
+			plannedHours = 0;
+			result = start;
+			eventsInDay = getEvents(start, finish, 1).get(0);
+			for(EventGO event : eventsInDay) {
+				plannedHours = plannedHours + event.getDuration().toHours();
+			}
+			start = start.plusDays(1);
+			finish = start;
+		}while(plannedHours > maxHours);
+		return result;
+	}
+
+	public LocalTime suggestTime(LocalDate date, Duration duration) {
+		LocalDate nowDate = LocalDate.now();
+		ArrayList<EventGO> eventsInDay = getEvents(date, date, 1).get(0);
+		if(eventsInDay.size() == 0) {
+			LocalTime noOtherEvents = LocalTime.parse("08:00");
+			while(noOtherEvents.isBefore(LocalTime.parse("21:00"))) {
+				if(!date.equals(nowDate) || noOtherEvents.isAfter(LocalTime.now())) {
+					return noOtherEvents;
+				}
+				noOtherEvents = noOtherEvents.plusHours(1);
+			}
+			return suggestTime(date.plusDays(1), duration);
+		}
+		EventGO earliest = eventsInDay.get(0);
+		for(EventGO event : eventsInDay) {
+			if(event.getTime().isBefore(earliest.getTime())) {
+				earliest = event;
+			}
+		}
+		LocalTime earliestTime = earliest.getTime().minus(duration);
+		if(earliestTime.getHour() >= 8) {
+			if(!date.equals(nowDate) || earliestTime.isAfter(LocalTime.now())) {
+				return earliestTime;
+			}
+		}
+		if(eventsInDay.size() > 1) {
+			for(EventGO event : eventsInDay) {
+				EventGO closest = event;
+				for(EventGO event1 : eventsInDay) {
+					if(event1.getTime().isAfter(event.getTime())) {
+						if(closest.getTime().compareTo(event.getTime()) == 0) {
+							closest = event1;
+						}else if(closest.getTime().compareTo(event1.getTime()) > 0) {
+							closest = event1;
+						}
+					}
+				}
+				LocalTime endOfEvent = event.getTime().plus(event.getDuration());
+
+				if(endOfEvent.until(closest.getTime(), ChronoUnit.MINUTES) >= duration.toMinutes()) {
+					if(!date.equals(nowDate) || endOfEvent.isAfter(LocalTime.now())) {
+						return endOfEvent;
+					}
+				}
+			}
+		}
+		EventGO latest = eventsInDay.get(0);
+		for(EventGO event : eventsInDay) {
+			if(event.getTime().isAfter(latest.getTime())) {
+				latest = event;
+			}
+		}
+		LocalTime latestTime = latest.getTime().plus(latest.getDuration());
+		if(!date.equals(nowDate) || latestTime.isAfter(LocalTime.now())) {
+			return latestTime;
+		}
+		System.out.print("here");
+		return suggestTime(date.plusDays(1), duration);
+	}
+
 	//
-	// Helper method to get all events in dame week of specified day
+	// Helper method to get all events in same week of specified day
 	public ArrayList<ArrayList<EventGO>> getWeekEvents(LocalDate day) {
 
 		int length = 7;
@@ -145,11 +224,11 @@ public class GUIController {
 		return returnList;
 	}
 
-	
+
 	/*
 	 * Called by button handlers 
 	 */
-	
+
 	// Called by switch view dropdown
 	// creates new selected view and updates
 	public void switchView(String viewName) {
@@ -206,7 +285,7 @@ public class GUIController {
 		new EventDialog(primaryStage, null, this);
 	}
 
-	
+
 	/*
 	 * Dialog Creation
 	 */
