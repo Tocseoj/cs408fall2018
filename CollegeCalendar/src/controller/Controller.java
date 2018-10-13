@@ -11,18 +11,22 @@ import org.bson.types.ObjectId;
 
 import com.mongodb.client.MongoCursor;
 
+import database.ContactDBO;
 import database.EventDBO;
+import gui.ContactGO;
 import gui.EventGO;
 
 public class Controller {
 
 	private EventDBO edb;
+	private ContactDBO cdb;
 
 
 	private static final String EVENT_NAME_KEY = "title";
 
 	public Controller() {
 		this.edb = new EventDBO();
+		this.cdb = new ContactDBO();
 	}
 
 	/**
@@ -81,6 +85,25 @@ public class Controller {
 		while(c.hasNext()) {
 			doc  = c.next();
 			al.add(convertDocToEventGO(doc));
+		}
+		return al;
+	}
+	
+	public ArrayList<ContactGO> getAllContacts(String userName){
+		MongoCursor<Document> c = cdb.getAllContacts(userName);
+		ArrayList<ContactGO> al = new ArrayList<ContactGO>();
+		Document doc;
+		if(c == null) {
+			return al;
+		}
+		while(c.hasNext()) {
+			doc  = c.next();
+			ObjectId oid = doc.getObjectId("_id");
+			String id = oid.toString();
+			String user = doc.getString("userName");
+			String contactName = doc.getString("contactName");
+			ContactGO temp = new ContactGO(id, user, contactName);
+			al.add(temp);
 		}
 		return al;
 	}
