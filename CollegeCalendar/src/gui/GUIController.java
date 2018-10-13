@@ -239,11 +239,11 @@ public class GUIController {
 			LocalDateTime eventCheck = eventList.get(i).getDate().atTime(tmp);
 			
 			/* Handle already completed events */
-			if (eventList.get(i).getAllottedTimeUp() == false) {
+			if (Boolean.TRUE.equals(eventList.get(i).getAllottedTimeUp())) {
 				if (eventCheck.plusMinutes(eventList.get(i).getDuration().toMinutes())
 						.compareTo(currTime) <= 0) {
 					eventList.get(i).setCompleted(true); // Might be redundant
-					eventList.get(i).setAllottedTimeUp(true);
+					eventList.get(i).setAllottedTimeUp(false);
 					popUpController.eventCompleted(eventList.get(i));
 					continue;
 				}
@@ -252,7 +252,7 @@ public class GUIController {
 			int ret, min = currTime.getMinute();
 			/* Handle current events */
 			if ((ret = currTime.compareTo(eventCheck)) >= 0) {
-				if (eventList.get(i).getConstantReminder() == true) {
+				if (Boolean.TRUE.equals(eventList.get(i).getConstantReminder())) {
 					if (min == 00 || min == 15 || min == 30 || min == 45) {
 						popUpController.remindUser(eventList.get(i));
 					}

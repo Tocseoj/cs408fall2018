@@ -1,18 +1,17 @@
 package gui;
 
 
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class PopUpController {
 	
-	public static Stage popUpStage;
+	//public static Stage popUpStage;
+	public static JFrame popUpStage;
 	
 	public PopUpController() {
-		popUpStage = new Stage();
+		//popUpStage = new Stage();
+		popUpStage = new JFrame();
 	}
 	
 	/*
@@ -22,14 +21,7 @@ public class PopUpController {
 		popUpStage.setTitle("Event Completion");
 		String message = "Event: "+e.getTitle()+" has just ended!";
 		
-		Text displayText = new Text(10, 40, message);
-		displayText.setFont(new Font(20));
-		
-		Scene popUp = new Scene(new Group(displayText));
-		
-		popUpStage.setScene(popUp);
-		popUpStage.sizeToScene();
-		popUpStage.show();
+		JOptionPane.showMessageDialog(popUpStage, message);
 	}
 	
 	/*
@@ -38,15 +30,8 @@ public class PopUpController {
 	public void remindUser(EventGO e) {
 		popUpStage.setTitle("Event Reminder");
 		String message = "Event: "+e.getTitle()+" is going on!";
-		
-		Text displayText = new Text(10, 40, message);
-		displayText.setFont(new Font(20));
-		
-		Scene popUp = new Scene(new Group(displayText));
-		
-		popUpStage.setScene(popUp);
-		popUpStage.sizeToScene();
-		popUpStage.show();
+	
+		JOptionPane.showMessageDialog(popUpStage, message);
 	}
 	
 	/*
@@ -57,13 +42,6 @@ public class PopUpController {
 		String message = "Event: "+e.getTitle()+" starts in "
 				+e.getNotificationOffset().toMinutes() + " minutes!";
 		
-		Text displayText = new Text(10, 40, message);
-		displayText.setFont(new Font(20));
-		
-		Scene popUp = new Scene(new Group(displayText));
-		
-		popUpStage.setScene(popUp);
-		popUpStage.sizeToScene();
-		popUpStage.show();
+		JOptionPane.showMessageDialog(popUpStage, message);
 	}
 }
