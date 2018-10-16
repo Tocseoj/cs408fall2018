@@ -81,6 +81,7 @@ public class InitGUI extends Application {
 		// ActionList Elements
 		//
 		Button addEventButton	= new Button("Add Event");	// Adds event from dialog to calendar
+		Button addContactButton = new Button("Add Contact");
 		Region sideBarPadding	= new Region();				// Fills extra space
 		Button changeAccountButton 							// Let's you select your username
 								= new Button("Change Account");
@@ -94,6 +95,7 @@ public class InitGUI extends Application {
 		viewSelector.setOnAction(this::viewDropdown);
 		
 		addEventButton.setOnAction(this::addEventButton);
+		addContactButton.setOnAction(this::addContactButton);
 		changeAccountButton.setOnAction(this::changeAccount);
 		
 		/*
@@ -109,7 +111,7 @@ public class InitGUI extends Application {
 		//
 		// Add elements to Scene
 		//
-		actionList.getChildren().addAll(addEventButton, sideBarPadding, changeAccountButton);
+		actionList.getChildren().addAll(addEventButton, addContactButton, sideBarPadding, changeAccountButton);
 		
 		container2.getChildren().addAll(calendarPane, actionList);
 		topBarContainer.getChildren().addAll(leftArrow, rightArrow, todayButton, topBarPadding, viewSelector);
@@ -165,6 +167,9 @@ public class InitGUI extends Application {
 		@SuppressWarnings("unchecked")
 		ComboBox<String> cb = (ComboBox<String>)event.getSource();
 		guiController.switchView(cb.getValue());
+	}
+	private void addContactButton(ActionEvent event) {
+		guiController.addContactButton();
 	}
 	private void addEventButton(ActionEvent event) {
 		guiController.addEventButton();

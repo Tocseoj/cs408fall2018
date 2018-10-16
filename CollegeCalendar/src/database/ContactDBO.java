@@ -52,7 +52,6 @@ public class ContactDBO {
 				}
 			}
 		}
-		
 		MongoCollection<Document> collection = database.getCollection("contacts");
 		ObjectId oid = new ObjectId();
 		Document newClass = new Document("userName", userName)

@@ -200,6 +200,23 @@ public class Controller {
 		e.setID(idResult);
 		return idResult;
 	}
+	
+	public String addContactToDatabase(ContactGO c) {
+		if(c == null) {
+			return "";
+		}
+		String userName = c.getUserName();
+		String contactName = c.getContactName();
+		String idResult = cdb.insertContact(userName, contactName);
+		c.setID(idResult);
+		return idResult;
+	}
+	
+	public void deleteContactFromDatabase(String id) {
+		if(id != null) {
+			cdb.deleteContact(id);
+		}
+	}
 
 	/**
 	 * Deletes event from database
