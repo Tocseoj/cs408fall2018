@@ -34,6 +34,7 @@ public class GUIController {
 	
 	private Controller controller;
 	private ArrayList<EventGO> eventList;
+	private ArrayList<ContactGO> contactList;
 
 	public GUIController (Stage primaryStage, StackPane calendarPane) {
 
@@ -46,9 +47,12 @@ public class GUIController {
 
 		controller = new Controller();
 		eventList = controller.getAllEvents(username);
+		contactList = controller.getAllContacts(username);
 
 		calendarView = new MonthlyGUI(this);
+
 		popUpController = new PopUpController();
+
 
 		updatePane();
 
@@ -60,6 +64,23 @@ public class GUIController {
 		calendarPane.getChildren().remove(dynamicPane);
 		dynamicPane = calendarView.getCalendarView(date.getViewingDate());
 		calendarPane.getChildren().add(dynamicPane);
+	}
+
+	public void checkAndAddContactEvents() {
+		for(ContactGO cgo : contactList) {
+			boolean check = true;
+			for(EventGO ego : eventList) {
+				String compare = "Contact " + cgo.getContactName();
+				if(ego.getTitle().equals(compare)) {
+					check = false;
+				}
+			}
+			if(check) {
+				//TODO: add event to contact
+			}else {
+				check = true;
+			}
+		}
 	}
 
 	// GUI Controller sends data to database and adds it to view
