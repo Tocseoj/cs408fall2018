@@ -309,7 +309,28 @@ public class GUIController {
 	public void addEventButton() {
 		new EventDialog(primaryStage, null, this);
 	}
-
+	
+	public void addContactButton() {
+		new ContactDialog(primaryStage, null, this);
+	}
+	
+	public void addToContactList(ContactGO cgo) {
+		contactList.add(cgo);
+	}
+	
+	public String removeFromContactList(String userName, String contactName) {
+		for(ContactGO c: contactList) {
+			if(c.getContactName().equals(contactName) && c.getUserName().equals(userName)) {
+				String sid = c.getID();
+				System.out.println("removing");
+				System.out.println(c.getContactName());
+				System.out.println(c.getUserName());
+				contactList.remove(c);
+				return sid;
+			}
+		}
+		return null;
+	}
 
 	/*
 	 * Dialog Creation
