@@ -2,6 +2,7 @@ package gui;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class GUIController {
 
 	private StackPane calendarPane;
 
+	private static PopUpController	popUpController;
+	
 	private Controller controller;
 	private ArrayList<EventGO> eventList;
 	private ArrayList<ContactGO> contactList;
@@ -47,6 +50,10 @@ public class GUIController {
 		contactList = controller.getAllContacts(username);
 
 		calendarView = new MonthlyGUI(this);
+
+		popUpController = new PopUpController();
+
+
 		updatePane();
 
 	}
@@ -318,7 +325,52 @@ public class GUIController {
 	public void showEventPopup(EventGO event) {
 		new EventDialog(primaryStage, event, this);
 	}
-
+	
+	/*
+	 * PopUp checker for all events. Handles prior events,
+	 * current reminders and completed events
+	 */
+	public void handlePopUps() {
+		LocalDateTime currTime = date.getCurrentDateTime();
+		
+		for (int i = 0; i < eventList.size(); i++) 
+		{
+			/* Prep comparison object for checks */
+			LocalTime tmp = eventList.get(i).getTime();
+			LocalDateTime eventCheck = eventList.get(i).getDate().atTime(tmp);
+			
+			/* Handle already completed events */
+			if (Boolean.TRUE.equals(eventList.get(i).getAllottedTimeUp())) {
+				if (eventCheck.plusMinutes(eventList.get(i).getDuration().toMinutes())
+						.compareTo(currTime) <= 0) {
+					eventList.get(i).setCompleted(true); // Might be redundant
+					eventList.get(i).setAllottedTimeUp(false);
+					popUpController.eventCompleted(eventList.get(i));
+					continue;
+				}
+			}
+			
+			int ret, min = currTime.getMinute();
+			/* Handle current events */
+			if ((ret = currTime.compareTo(eventCheck)) >= 0) {
+				if (Boolean.TRUE.equals(eventList.get(i).getConstantReminder())) {
+					if (min == 00 || min == 15 || min == 30 || min == 45) {
+						popUpController.remindUser(eventList.get(i));
+					}
+				}
+				continue;
+			}
+			
+			/* Handle prior events */
+			if (!eventList.get(i).getNotificationOffset().isNegative()) {
+				if (eventCheck.minusMinutes(eventList.get(i)
+						.getNotificationOffset().toMinutes())
+						.compareTo(currTime) <= 0) {
+					popUpController.notifyUpcomingEvent(eventList.get(i));
+				}
+			}
+		}
+	}
 
 	/*
 	 * Getters/ Setters

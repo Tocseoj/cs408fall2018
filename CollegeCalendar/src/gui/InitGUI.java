@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -19,6 +20,9 @@ public class InitGUI extends Application {
 	private static double 			sceneHeight;
 	private static Color			backgroundColor;
 	private static GUIController	guiController;
+	
+	//private static AnimationTimer	popUp;
+	PopUpTimerSetup 	popUp;
 	
 	public static void main(String[] args) {
 		
@@ -127,6 +131,25 @@ public class InitGUI extends Application {
 		primaryStage.show();
 		
 //		changeAccount(null); TODO
+		
+		/* 
+		 * Initialize and start running popUp checker
+		 */
+		popUp = new PopUpTimerSetup(guiController);
+		//popUp = new AnimationTimer() {
+        //    @Override
+        //    public void handle(long now) {
+        //    	/* Set Timer callback handler to popUp handler */
+        //        guiController.handlePopUps();
+        //    }
+        //};
+        //popUp.start();
+       
+	}
+	
+	@Override
+	public void stop() throws Exception {
+		popUp.timerExit();
 	}
 	
 	private void leftArrow(ActionEvent event) {

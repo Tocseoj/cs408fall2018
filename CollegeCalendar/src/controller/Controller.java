@@ -191,7 +191,12 @@ public class Controller {
 		String userName = e.getUserName();
 		Boolean allottedTimeUp = e.getAllottedTimeUp();
 		Boolean constantReminder = e.getConstantReminder();
-		String idResult = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		String profName = e.getProfName();
+		String subjectName = e.getSubjectName();
+		String meetingPersonName = e.getMeetingPersonName();
+		String idResult = edb.insertEvent(type, title, date, time, duration, priority, repeatDays, 
+										endRepeat, notificationOffset, completed, userName, allottedTimeUp, 
+										constantReminder, profName, subjectName, meetingPersonName);
 		e.setID(idResult);
 		return idResult;
 	}
@@ -229,7 +234,12 @@ public class Controller {
 		String userName = e.getUserName();
 		Boolean allottedTimeUp = e.getAllottedTimeUp();
 		Boolean constantReminder = e.getConstantReminder();
-		edb.updateEvent(oid, type, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, userName, allottedTimeUp, constantReminder);
+		String profName = e.getProfName();
+		String subjectName = e.getSubjectName();
+		String meetingPersonName = e.getMeetingPersonName();
+		edb.updateEvent(oid, type, title, date, time, duration, priority, repeatDays, 
+				endRepeat, notificationOffset, completed, userName, allottedTimeUp, 
+				constantReminder, profName, subjectName, meetingPersonName);
 	}
 
 	/**

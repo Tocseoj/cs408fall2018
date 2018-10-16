@@ -22,6 +22,11 @@ public class EventGO {
 	private Boolean allottedTimeUp;
 	private Boolean constantReminder;
 	
+	// some class specific fields
+	private String profName;
+	private String subjectName;
+	private String meetingPersonName;
+	
 
 	public EventGO(String title, String userName) {
 		this.id = "";
@@ -86,6 +91,31 @@ public class EventGO {
 		this.completed = completed;
 		this.userName = userName;
 	}
+	
+	/*
+	 * Constructor for the different Event Presets
+	 */
+	public EventGO(EventType type, String id, String title, LocalDate date, LocalTime time, Duration duration, 
+			int priority, Boolean[] repeatDays, LocalDate endRepeat, Duration notificationOffset, boolean completed,
+			String userName, Boolean allottedTimeUp, Boolean constantReminder, String profName, String subjectName,
+			String meetingPersonName) {
+		this.setType(type);
+		this.id = id;
+		this.title = title;
+		this.date = date;
+		this.time = time;
+		this.duration = duration;
+		this.priority = priority;
+		this.repeatDays = repeatDays;
+		this.setEndRepeat(endRepeat);
+		this.setNotificationOffset(notificationOffset);
+		this.completed = completed;
+		this.userName = userName;
+		this.profName = profName;
+		this.subjectName = subjectName;
+		this.meetingPersonName = meetingPersonName;
+	}
+	
 	
 	public String getID() {
 		return id;
@@ -180,6 +210,42 @@ public class EventGO {
 
 	public void setConstantReminder(Boolean constantReminder) {
 		this.constantReminder = constantReminder;
+	}
+
+	/*
+	 * Getters and setters for the person with whom the user is meeting with.
+	 * Only specified in the Meeting preset.
+	 */
+	public String getMeetingPersonName() {
+		return meetingPersonName;
+	}
+
+	public void setMeetingPersonName(String meetingPersonName) {
+		this.meetingPersonName = meetingPersonName;
+	}
+
+	/*
+	 * Getters and setters for the subject name.
+	 * Only specified in the Exam preset.
+	 */
+	public String getSubjectName() {
+		return subjectName;
+	}
+
+	public void setSubjectName(String subjectName) {
+		this.subjectName = subjectName;
+	}
+
+	/*
+	 * Getters and setters for the professor name.
+	 * Only specified in the class preset
+	 */
+	public String getProfName() {
+		return profName;
+	}
+
+	public void setProfName(String profName) {
+		this.profName = profName;
 	}
 	
 }
