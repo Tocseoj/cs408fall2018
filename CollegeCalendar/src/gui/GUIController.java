@@ -352,7 +352,6 @@ public class GUIController {
 	 * current reminders and completed events
 	 */
 	public void handlePopUps() {
-		System.out.println("PopUPP Preloop");
 		LocalDateTime currTime = date.getCurrentDateTime();
 		LocalTime tmp = null;
 		LocalDateTime eventCheck = null;
@@ -361,7 +360,6 @@ public class GUIController {
 		int size = eventList.size();
 		for (int i = 0; i < size; i++) 
 		{
-			System.out.printf("PopUP Looping: Event[%d]: %s ...\n", i, eventList.get(i).getTitle());
 			/* Prep comparison object for checks */
 			tmp = eventList.get(i).getTime();
 			eventCheck = eventList.get(i).getDate().atTime(tmp);
@@ -374,7 +372,11 @@ public class GUIController {
 					/* Update in database */
 					eventList.get(i).setCompleted(true);
 					eventList.get(i).setAllottedTimeUp(false);
-					controller.updateEventInDatabase(eventList.get(i));
+					try {
+						controller.updateEventInDatabase(eventList.get(i));
+					} catch (NullPointerException e) {
+						continue;
+					}
 				}
 				continue;
 			}
@@ -396,7 +398,11 @@ public class GUIController {
 						.compareTo(currTime) <= 0) {
 					popUpController.notifyUpcomingEvent(eventList.get(i));
 					eventList.get(i).setNotificationOffset(Duration.ofMinutes(-1));
-					controller.updateEventInDatabase(eventList.get(i));
+					try {
+						controller.updateEventInDatabase(eventList.get(i));
+					} catch (NullPointerException e) {
+						continue;
+					}
 				}
 			}
 		}
