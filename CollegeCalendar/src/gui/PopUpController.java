@@ -1,17 +1,18 @@
 package gui;
 
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class PopUpController {
 	
-	//public static Stage popUpStage;
-	public static JFrame popUpStage;
+	public static JDialog popUpStage;
 	
 	public PopUpController() {
-		//popUpStage = new Stage();
-		popUpStage = new JFrame();
+		popUpStage = new JDialog();
+		popUpStage.setAlwaysOnTop(true);
+		popUpStage.setModalityType(null);
 	}
 	
 	/*
@@ -29,7 +30,7 @@ public class PopUpController {
 	 */
 	public void remindUser(EventGO e) {
 		popUpStage.setTitle("Event Reminder");
-		String message = "Event: "+e.getTitle()+" is going on!";
+		String message = "Event: "+e.getTitle()+" is going on right now!";
 	
 		JOptionPane.showMessageDialog(popUpStage, message);
 	}
@@ -39,7 +40,7 @@ public class PopUpController {
 	 */
 	public void notifyUpcomingEvent(EventGO e) {
 		popUpStage.setTitle("Event Notification");
-		String message = "Event: "+e.getTitle()+" starts in "
+		String message = "Event: "+e.getTitle()+" starts in (or less than) "
 				+e.getNotificationOffset().toMinutes() + " minutes!";
 		
 		JOptionPane.showMessageDialog(popUpStage, message);
