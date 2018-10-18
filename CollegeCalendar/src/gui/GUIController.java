@@ -387,6 +387,7 @@ public class GUIController {
 				if (eventCheck.minusMinutes(eventList.get(i)
 						.getNotificationOffset().toMinutes())
 						.compareTo(currTime) <= 0) {
+					eventList.get(i).setNotificationOffset(Duration.ofMinutes(-1));
 					popUpController.notifyUpcomingEvent(eventList.get(i));
 				}
 			}

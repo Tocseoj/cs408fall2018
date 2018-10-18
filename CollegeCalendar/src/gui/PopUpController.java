@@ -19,7 +19,7 @@ public class PopUpController {
 	 */
 	public void eventCompleted(EventGO e) {
 		popUpStage.setTitle("Event Completion");
-		String message = "Event: "+e.getTitle()+" has just ended!";
+		String message = "Event: "+e.getTitle()+" has ended!";
 		
 		JOptionPane.showMessageDialog(popUpStage, message);
 	}
