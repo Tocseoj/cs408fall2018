@@ -138,15 +138,6 @@ public class InitGUI extends Application {
 		 * Initialize and start running popUp checker
 		 */
 		popUp = new PopUpTimerSetup(guiController);
-		//popUp = new AnimationTimer() {
-        //    @Override
-        //    public void handle(long now) {
-        //    	/* Set Timer callback handler to popUp handler */
-        //        guiController.handlePopUps();
-        //    }
-        //};
-        //popUp.start();
-       
 	}
 	
 	@Override
