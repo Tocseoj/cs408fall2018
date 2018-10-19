@@ -1,9 +1,9 @@
 package gui;
 
 public class ContactGO {
-	String userName;
-	String contactName;
-	String id;
+	private String userName;
+	private String contactName;
+	private String id;
 	public ContactGO(String id, String userName, String contactName) {
 		this.id = id;
 		this.userName = userName;

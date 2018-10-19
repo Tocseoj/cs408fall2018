@@ -61,15 +61,17 @@ public class ContactDialog {
 	}
 	
 	private void addContact(String userName, String contactName) {
+		//TODO: add event representing contact within two weeks
 		ContactGO cgo = new ContactGO("", userName, contactName);
 		c.addContactToDatabase(cgo);
 		if(!cgo.getID().equals("")) {
-			System.out.println("Adding: " + cgo.getContactName());
 			guiController.addToContactList(cgo);
+			guiController.addContactEvent(cgo);
 		}
 	}
 	
 	private void deleteContact(String userName, String contactName) {
+		//TODO remove event representing contact
 		String sid = guiController.removeFromContactList(userName, contactName);
 		c.deleteContactFromDatabase(sid);
 	}
