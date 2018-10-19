@@ -61,7 +61,7 @@ public class GUIController {
 
 	//
 	// Refresh the calendar view from CalendarViews interface
-	private void updatePane() {
+	public void updatePane() {
 		calendarPane.getChildren().remove(dynamicPane);
 		dynamicPane = calendarView.getCalendarView(date.getViewingDate());
 		calendarPane.getChildren().add(dynamicPane);
@@ -133,7 +133,16 @@ public class GUIController {
         controller.addEventToDatabase(e);
         if(e.getID() != "") {
         	eventList.add(e);
+        	calendarView.updateEvents();
+			updatePane();
         }
+	}
+	
+	public void deleteContactEventFromDbAndLocal(String title, String userName) {
+		controller.deleteContactEventsFromDatabase(title, userName);
+		eventList = controller.getAllEvents(username);
+		calendarView.updateEvents();
+		updatePane();
 	}
 
 	public LocalDate suggestDate(Duration duration) {
@@ -232,7 +241,6 @@ public class GUIController {
 		if(!date.equals(nowDate) || latestTime.isAfter(LocalTime.now())) {
 			return latestTime;
 		}
-		System.out.print("here");
 		return suggestTime(date.plusDays(1), duration);
 	}
 
@@ -358,9 +366,6 @@ public class GUIController {
 		for(ContactGO c: contactList) {
 			if(c.getContactName().equals(contactName) && c.getUserName().equals(userName)) {
 				String sid = c.getID();
-				System.out.println("removing");
-				System.out.println(c.getContactName());
-				System.out.println(c.getUserName());
 				contactList.remove(c);
 				return sid;
 			}

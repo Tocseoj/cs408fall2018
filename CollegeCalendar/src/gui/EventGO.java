@@ -71,6 +71,9 @@ public class EventGO {
 		this.duration = duration;
 		this.setPriority(0);
 		this.repeatDays = new Boolean[7];
+		for(int i = 0; i < 7; i++) {
+			this.repeatDays[i] = false;
+		}
 		this.setEndRepeat(this.date);
 		this.setNotificationOffset(Duration.ofMinutes(10));
 		this.completed = false;
