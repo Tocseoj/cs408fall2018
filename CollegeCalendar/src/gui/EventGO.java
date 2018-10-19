@@ -60,21 +60,24 @@ public class EventGO {
 		this.userName = userName;
 	}
 	
-	public EventGO(String id, String title, LocalDate date, String userName) {
-		this.id = id;
+	public EventGO(String title, String userName, Duration duration, LocalDate date, LocalTime time) {
+		this.id = "";
 		this.setType(EventType.GENERIC);
 		this.title = title;
 		this.date = date;
-		this.time = LocalTime.of(0, 0);
-		this.duration = Duration.ofHours(0);
-		this.priority = 0;
-//		this.repeatDays[this.date.getDayOfWeek().getValue()] = true;
+		this.time = time;
+		this.duration = duration;
+		this.setPriority(0);
 		this.repeatDays = new Boolean[7];
 		this.setEndRepeat(this.date);
 		this.setNotificationOffset(Duration.ofMinutes(10));
 		this.completed = false;
 		this.userName = userName;
-
+		this.setConstantReminder(false);
+		this.setAllottedTimeUp(false);
+		this.profName = "";
+		this.subjectName = "";
+		this.meetingPersonName = "";
 	}
 	
 	public EventGO(EventType type, String id, String title, LocalDate date, LocalTime time, Duration duration, int priority, Boolean[] repeatDays, LocalDate endRepeat, Duration notificationOffset, boolean completed,String userName, Boolean allottedTimeUp, Boolean constantReminder) {

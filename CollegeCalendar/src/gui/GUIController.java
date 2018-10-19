@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Random;
 
 import controller.Controller;
 import controller.DateAndTimeManager;
@@ -119,12 +120,47 @@ public class GUIController {
 		return getEvents(start, finish, length);
 
 	}
+	
+	public void addContactEvent(ContactGO c) {
+		Random random = new Random();
+        int rand = random.nextInt(14 + 1);
+        LocalDate randDate = LocalDate.now().plusDays(rand);
+        Duration d = Duration.ofMinutes(15);
+        LocalDate date = suggestDateForContact(d,randDate);
+        LocalTime time = suggestTime(date, d);
+        String title = "Contact " + c.getContactName();
+        EventGO e = new EventGO(title, username, d, date, time);
+        controller.addEventToDatabase(e);
+        if(e.getID() != "") {
+        	eventList.add(e);
+        }
+	}
 
 	public LocalDate suggestDate(Duration duration) {
 		LocalDate start = LocalDate.now();
 		LocalDate finish = start;
 		long plannedHours = 0;
 		long maxHours = 8 - duration.toHours();
+		ArrayList<EventGO> eventsInDay;
+		LocalDate result = start;
+		do {
+			plannedHours = 0;
+			result = start;
+			eventsInDay = getEvents(start, finish, 1).get(0);
+			for(EventGO event : eventsInDay) {
+				plannedHours = plannedHours + event.getDuration().toHours();
+			}
+			start = start.plusDays(1);
+			finish = start;
+		}while(plannedHours > maxHours);
+		return result;
+	}
+	
+	public LocalDate suggestDateForContact(Duration duration, LocalDate date) {
+		LocalDate start = date;
+		LocalDate finish = start;
+		long plannedHours = 0;
+		long maxHours = 10 - duration.toHours();
 		ArrayList<EventGO> eventsInDay;
 		LocalDate result = start;
 		do {
