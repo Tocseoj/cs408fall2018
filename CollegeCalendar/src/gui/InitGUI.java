@@ -1,6 +1,5 @@
 package gui;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
