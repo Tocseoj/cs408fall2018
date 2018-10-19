@@ -140,7 +140,11 @@ public class InitGUI extends Application {
 		popUp = new PopUpTimerSetup(guiController);
 	}
 	
+	
 	@Override
+	/*
+	 * Shut down PopUp thread along with main JavaFX thread
+	 */
 	public void stop() throws Exception {
 		popUp.timerExit();
 	}

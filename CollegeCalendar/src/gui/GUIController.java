@@ -392,7 +392,7 @@ public class GUIController {
 		LocalTime tmp = null;
 		LocalDateTime eventCheck = null;
 		
-		boolean updateDB = false;	/* Update Flag */
+		int lastRemind = -1;
 		int size = eventList.size();
 		for (int i = 0; i < size; i++) 
 		{
@@ -421,8 +421,10 @@ public class GUIController {
 			int ret, min = currTime.getMinute();
 			if ((ret = currTime.compareTo(eventCheck)) >= 0) {
 				if (Boolean.TRUE.equals(eventList.get(i).getConstantReminder())) {
-					if (min == 00 || min == 15 || min == 30 || min == 45)
+					if (lastRemind != min && (min == 00 || min == 15 || min == 30 || min == 45)) {
 						popUpController.remindUser(eventList.get(i));
+						lastRemind = min;
+					}
 				}
 				continue;
 			}
