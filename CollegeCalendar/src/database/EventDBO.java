@@ -177,24 +177,4 @@ public class EventDBO {
 			System.out.println("invalid id for deletion");
 		}
 	}
-	
-	public void deleteContactEvents(String title, String userName) {
-		MongoCollection<Document> collection = database.getCollection("contacts");
-		System.out.println("Finding: " + title + " and " + userName);
-		Document findQuery = new Document();
-		findQuery.append("title", title);
-		findQuery.append("userName", userName);
-		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
-		System.out.println(dbObj);
-		Document doc;
-		if(dbObj != null) {
-			System.out.println("not null");
-			while(dbObj.hasNext()) {
-				System.out.println("not empty");
-				doc  = dbObj.next();
-				System.out.println(doc);
-				collection.deleteOne(doc);
-			}
-		}
-	}
 }

@@ -81,7 +81,7 @@ public class InitGUI extends Application {
 		// ActionList Elements
 		//
 		Button addEventButton	= new Button("Add Event");	// Adds event from dialog to calendar
-		Button addContactButton = new Button("Add Contact");
+		Button addContactButton = new Button("Manage Contacts");
 		Region sideBarPadding	= new Region();				// Fills extra space
 		Button changeAccountButton 							// Let's you select your username
 								= new Button("Change Account");
