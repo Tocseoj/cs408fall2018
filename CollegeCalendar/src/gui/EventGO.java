@@ -58,6 +58,8 @@ public class EventGO {
 		this.setNotificationOffset(Duration.ofMinutes(10));
 		this.completed = false;
 		this.userName = userName;
+		this.setConstantReminder(false);
+		this.setAllottedTimeUp(false);
 	}
 	
 	public EventGO(String title, String userName, Duration duration, LocalDate date, LocalTime time) {
@@ -93,6 +95,8 @@ public class EventGO {
 		this.setNotificationOffset(notificationOffset);
 		this.completed = completed;
 		this.userName = userName;
+		this.setConstantReminder(constantReminder);
+		this.setAllottedTimeUp(allottedTimeUp);
 	}
 	
 	/*
@@ -114,6 +118,8 @@ public class EventGO {
 		this.setNotificationOffset(notificationOffset);
 		this.completed = completed;
 		this.userName = userName;
+		this.setConstantReminder(constantReminder);
+		this.setAllottedTimeUp(allottedTimeUp);
 		this.profName = profName;
 		this.subjectName = subjectName;
 		this.meetingPersonName = meetingPersonName;
