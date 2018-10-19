@@ -228,6 +228,12 @@ public class Controller {
 			edb.deleteEvent(id);
 		}
 	}
+	
+	public void deleteContactEventsFromDatabase(String title, String userName) {
+		if(title != null && userName != null) {
+			edb.deleteContactEvents(title, userName);
+		}
+	}
 
 	/**
 	 * Updates the event with the corresponding ID in the database

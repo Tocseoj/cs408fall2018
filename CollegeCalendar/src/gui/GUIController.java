@@ -61,7 +61,7 @@ public class GUIController {
 
 	//
 	// Refresh the calendar view from CalendarViews interface
-	private void updatePane() {
+	public void updatePane() {
 		calendarPane.getChildren().remove(dynamicPane);
 		dynamicPane = calendarView.getCalendarView(date.getViewingDate());
 		calendarPane.getChildren().add(dynamicPane);
@@ -133,7 +133,16 @@ public class GUIController {
         controller.addEventToDatabase(e);
         if(e.getID() != "") {
         	eventList.add(e);
+        	calendarView.updateEvents();
+			updatePane();
         }
+	}
+	
+	public void deleteContactEventFromDbAndLocal(String title, String userName) {
+		controller.deleteContactEventsFromDatabase(title, userName);
+		eventList = controller.getAllEvents(username);
+		calendarView.updateEvents();
+		updatePane();
 	}
 
 	public LocalDate suggestDate(Duration duration) {
@@ -232,7 +241,6 @@ public class GUIController {
 		if(!date.equals(nowDate) || latestTime.isAfter(LocalTime.now())) {
 			return latestTime;
 		}
-		System.out.print("here");
 		return suggestTime(date.plusDays(1), duration);
 	}
 
@@ -244,7 +252,7 @@ public class GUIController {
 		int dayOfWeek = day.getDayOfWeek().getValue();
 		dayOfWeek = dayOfWeek == 7 ? 0 : dayOfWeek;
 		LocalDate start = day.minusDays(dayOfWeek);
-		LocalDate finish = day.plusDays(7 - dayOfWeek);
+		LocalDate finish = day.plusDays(6 - dayOfWeek);
 
 		return getEvents(start, finish, length);
 	}
@@ -264,7 +272,14 @@ public class GUIController {
 				System.out.println("Null Event Found!");
 			}
 			if ((event.getDate().isAfter(start) || event.getDate().isEqual(start)) && (event.getDate().isBefore(finish) || event.getDate().isEqual(finish))) {
-				returnList.get((int)start.until(event.getDate(), ChronoUnit.DAYS)).add(event);
+				try {
+					returnList.get((int)start.until(event.getDate(), ChronoUnit.DAYS)).add(event);
+				} catch (IndexOutOfBoundsException e) {
+					// WeeklyView was bugged, but now fixed
+					// However this will prevent crashes
+					// TODO
+					System.err.println((int)start.until(event.getDate(), ChronoUnit.DAYS) + " is not in length of returnList");
+				}
 			}
 			if (!event.getDate().isEqual(event.getEndRepeat())) {
 				if (event.getEndRepeat().isAfter(start) || event.getEndRepeat().isEqual(start)) {
@@ -358,9 +373,6 @@ public class GUIController {
 		for(ContactGO c: contactList) {
 			if(c.getContactName().equals(contactName) && c.getUserName().equals(userName)) {
 				String sid = c.getID();
-				System.out.println("removing");
-				System.out.println(c.getContactName());
-				System.out.println(c.getUserName());
 				contactList.remove(c);
 				return sid;
 			}

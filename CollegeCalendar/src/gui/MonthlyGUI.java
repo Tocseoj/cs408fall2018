@@ -34,7 +34,6 @@ public class MonthlyGUI implements CalendarViews {
 	
 	@Override
 	public void updateEvents() {
-		// TODO Auto-generated method stub
 		viewingEvents = guiController.getMonthEvents(guiController.getViewingDate());
 	}
 
