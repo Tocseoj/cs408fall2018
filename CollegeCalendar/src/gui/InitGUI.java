@@ -96,7 +96,7 @@ public class InitGUI extends Application {
 		
 		addEventButton.setOnAction(this::addEventButton);
 		addContactButton.setOnAction(this::addContactButton);
-		changeAccountButton.setOnAction(this::changeAccount);
+//		changeAccountButton.setOnAction(this::changeAccount);
 		
 		/*
 		 * 		Initialize Standard Scene and Stage
