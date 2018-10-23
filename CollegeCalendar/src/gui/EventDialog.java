@@ -273,22 +273,22 @@ public class EventDialog {
 				}
 
 				// call helper method to add the current event to the database
-				addEvent(EventType.valueOf(comboBox.getValue()), 
-						test_id, 
-						title.getText(), 
-						datePicker.getValue(), 
-						time.getText(), 
-						duration.getText(), 
-						priority.getText(), 
-						rpt, 
-						edrpt, 
-						no, 
-						is_completed, 
-						allottedTimeUp, 
-						constantReminder,
-						profNameField.getText(),
-						subjectField.getText(),
-						meetingPersonField.getText());
+//				addEvent(EventType.valueOf(comboBox.getValue()), 
+//						test_id, 
+//						title.getText(), 
+//						datePicker.getValue(), 
+//						time.getText(), 
+//						duration.getText(), 
+//						priority.getText(), 
+//						rpt, 
+//						edrpt, 
+//						no, 
+//						is_completed, 
+//						allottedTimeUp, 
+//						constantReminder,
+//						profNameField.getText(),
+//						subjectField.getText(),
+//						meetingPersonField.getText());
 
 //				if(!eventToBeAdded.getID().equals("")) {
 					
