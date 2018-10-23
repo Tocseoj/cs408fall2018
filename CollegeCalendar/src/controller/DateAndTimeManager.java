@@ -52,6 +52,7 @@ public class DateAndTimeManager {
 	
 	public LocalDate getViewingDate() {
 		return viewingDate;
+//		return currentDate;
 	}
 	
 	public LocalTime getViewingTime() {
