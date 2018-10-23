@@ -84,6 +84,14 @@ public class EventDialog {
 					int index = containerPane.getChildren().indexOf(self);
 					containerPane.getChildren().add(index + 1, completed);
 					containerPane.getChildren().add(index + 1, completedL);
+					
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+					
 					dateL.setText("Due Date");
 				}
 				else if (self.getValue().equals("MEETING")) {
