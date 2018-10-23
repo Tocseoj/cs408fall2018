@@ -352,7 +352,7 @@ public class GUIController {
 	public void todayButton() {
 		date.setViewingDate(DateAndTimeManager.getCurrentDate());
 		calendarView.updateEvents();
-		updatePane();
+//		updatePane();
 	}
 
 	// Called when press "Add Event" button
