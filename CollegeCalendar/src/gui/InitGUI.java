@@ -88,14 +88,16 @@ public class InitGUI extends Application {
 		//
 		// Setup Event Handlers
 		//
-		leftArrow.setOnAction(this::leftArrow);
-		rightArrow.setOnAction(this::rightArrow);
+//		leftArrow.setOnAction(this::leftArrow);
+//		rightArrow.setOnAction(this::rightArrow);
+		leftArrow.setOnAction(this::rightArrow);
+		rightArrow.setOnAction(this::leftArrow);
 		todayButton.setOnAction(this::todayButton);
 		viewSelector.setOnAction(this::viewDropdown);
 		
 		addEventButton.setOnAction(this::addEventButton);
 		addContactButton.setOnAction(this::addContactButton);
-		changeAccountButton.setOnAction(this::changeAccount);
+//		changeAccountButton.setOnAction(this::changeAccount);
 		
 		/*
 		 * 		Initialize Standard Scene and Stage

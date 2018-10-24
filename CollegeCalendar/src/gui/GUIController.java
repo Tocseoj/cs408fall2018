@@ -66,6 +66,7 @@ public class GUIController {
 	public void updatePane() {
 		calendarPane.getChildren().remove(dynamicPane);
 		dynamicPane = calendarView.getCalendarView(date.getViewingDate());
+//		dynamicPane = calendarView.getCalendarView(date.getCurrentDate());
 		calendarPane.getChildren().add(dynamicPane);
 	}
 
@@ -320,7 +321,8 @@ public class GUIController {
 			if (calendarView instanceof MonthlyGUI) {
 				return;
 			}
-			calendarView = new MonthlyGUI(this);
+//			calendarView = new MonthlyGUI(this);
+			calendarView = new WeeklyGUI(this);
 			updatePane();
 		}
 		else if (viewName.equals("Weekly View")) {
@@ -360,7 +362,7 @@ public class GUIController {
 	public void todayButton() {
 		date.setViewingDate(DateAndTimeManager.getCurrentDate());
 		calendarView.updateEvents();
-		updatePane();
+//		updatePane();
 	}
 
 	// Called when press "Add Event" button
@@ -385,6 +387,7 @@ public class GUIController {
 				return sid;
 			}
 		}
+		System.out.println("no contact with that name could be found");
 		return null;
 	}
 

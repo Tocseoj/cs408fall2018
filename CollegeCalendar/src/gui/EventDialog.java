@@ -85,13 +85,6 @@ public class EventDialog {
 					containerPane.getChildren().add(index + 1, completed);
 					containerPane.getChildren().add(index + 1, completedL);
 
-					containerPane.getChildren().remove(subjectLabel);
-					containerPane.getChildren().remove(subjectField);
-					containerPane.getChildren().remove(profNameLabel);
-					containerPane.getChildren().remove(profNameField);
-					containerPane.getChildren().remove(meetingPersonLabel);
-					containerPane.getChildren().remove(meetingPersonField);
-
 					dateL.setText("Due Date");
 				}
 				else if (self.getValue().equals("MEETING")) {
@@ -278,22 +271,22 @@ public class EventDialog {
 				}
 
 				// call helper method to add the current event to the database
-				addEvent(EventType.valueOf(comboBox.getValue()), 
-						test_id, 
-						title.getText(), 
-						datePicker.getValue(), 
-						time.getText(), 
-						duration.getText(), 
-						priority.getText(), 
-						rpt, 
-						edrpt, 
-						no, 
-						is_completed, 
-						allottedTimeUp, 
-						constantReminder,
-						profNameField.getText(),
-						subjectField.getText(),
-						meetingPersonField.getText());
+//				addEvent(EventType.valueOf(comboBox.getValue()), 
+//						test_id, 
+//						title.getText(), 
+//						datePicker.getValue(), 
+//						time.getText(), 
+//						duration.getText(), 
+//						priority.getText(), 
+//						rpt, 
+//						edrpt, 
+//						no, 
+//						is_completed, 
+//						allottedTimeUp, 
+//						constantReminder,
+//						profNameField.getText(),
+//						subjectField.getText(),
+//						meetingPersonField.getText());
 
 				//				if(!eventToBeAdded.getID().equals("")) {
 
