@@ -38,7 +38,6 @@ public class ContactDialog {
 		submit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				addContact(guiController.getUsername(), title.getText());
-				dialog.close();
 			}
 		});
 		containerPane.getChildren().add(submit);

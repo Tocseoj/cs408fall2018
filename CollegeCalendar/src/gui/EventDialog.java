@@ -26,13 +26,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class EventDialog {
-	
+
 	private GUIController guiController;
 
 	public EventDialog(Stage primaryStage, EventGO editEvent, GUIController guiController) {
 
 		this.guiController = guiController;
-		
+
 		// Setup Dialog
 		final Stage dialog = new Stage();
 		dialog.initModality(Modality.APPLICATION_MODAL);
@@ -60,16 +60,16 @@ public class EventDialog {
 		// preset fields for homework events
 		Label completedL = new Label("Homework Completed?");
 		CheckBox completed = new CheckBox();
-		
+
 		// preset fields for Class events
 		Label profNameLabel = new Label("Professor Name");
 		TextField profNameField = new TextField();
-		
+
 		// preset fields for Exam events
 		Label subjectLabel = new Label("Subject");
 		TextField subjectField = new TextField();
-		
-		
+
+
 		// preset fields for Meeting events
 		Label meetingPersonLabel = new Label("Who is the meeting with?");
 		TextField meetingPersonField = new TextField();
@@ -84,21 +84,21 @@ public class EventDialog {
 					int index = containerPane.getChildren().indexOf(self);
 					containerPane.getChildren().add(index + 1, completed);
 					containerPane.getChildren().add(index + 1, completedL);
-					
+
 					containerPane.getChildren().remove(subjectLabel);
 					containerPane.getChildren().remove(subjectField);
 					containerPane.getChildren().remove(profNameLabel);
 					containerPane.getChildren().remove(profNameField);
 					containerPane.getChildren().remove(meetingPersonLabel);
 					containerPane.getChildren().remove(meetingPersonField);
-					
+
 					dateL.setText("Due Date");
 				}
 				else if (self.getValue().equals("MEETING")) {
 					int index = containerPane.getChildren().indexOf(self);
 					containerPane.getChildren().add(index + 1, meetingPersonLabel);
 					containerPane.getChildren().add(index + 2, meetingPersonField);
-					
+
 
 					containerPane.getChildren().remove(subjectLabel);
 					containerPane.getChildren().remove(subjectField);
@@ -106,14 +106,14 @@ public class EventDialog {
 					containerPane.getChildren().remove(profNameField);
 					containerPane.getChildren().remove(completedL);
 					containerPane.getChildren().remove(completed);
-					
+
 					dateL.setText("Meeting Date");
 				}
 				else if (self.getValue().equals("CLASS")) {
 					int index = containerPane.getChildren().indexOf(self);
 					containerPane.getChildren().add(index + 1, profNameLabel);
 					containerPane.getChildren().add(index + 2, profNameField);
-					
+
 					containerPane.getChildren().remove(meetingPersonLabel);
 					containerPane.getChildren().remove(meetingPersonField);
 					containerPane.getChildren().remove(subjectLabel);
@@ -126,7 +126,7 @@ public class EventDialog {
 					int index = containerPane.getChildren().indexOf(self);
 					containerPane.getChildren().add(index + 1, subjectLabel);
 					containerPane.getChildren().add(index + 2, subjectField);
-					
+
 					containerPane.getChildren().remove(meetingPersonLabel);
 					containerPane.getChildren().remove(meetingPersonField);
 
@@ -201,8 +201,8 @@ public class EventDialog {
 				}
 			}
 		});
-		
-		
+
+
 
 		//        containerPane.getChildren().add(endRepeatL);
 		//        containerPane.getChildren().add(endRepeat);
@@ -228,15 +228,15 @@ public class EventDialog {
 		containerPane.getChildren().add(notify);
 		containerPane.getChildren().add(new Label("Repeat"));
 		containerPane.getChildren().add(repeat);
-		
+
 		CheckBox NotifyWhenEventOver = new CheckBox();
 		containerPane.getChildren().add(new Label("NotifyWhenEventOver"));
 		containerPane.getChildren().add(NotifyWhenEventOver);
-		
+
 		CheckBox ConstantReminderDuringEvent = new CheckBox();
 		containerPane.getChildren().add(new Label("ConstantReminderDuringEvent"));
 		containerPane.getChildren().add(ConstantReminderDuringEvent);
-		
+
 		Button submit = new Button("Add Event");
 		submit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
@@ -260,7 +260,7 @@ public class EventDialog {
 						//	    				System.out.println((i) + ": " + c.isSelected());
 					}
 				}
-				
+
 				//Gus added notification Vars
 				Boolean allottedTimeUp = NotifyWhenEventOver.isSelected();
 				Boolean constantReminder = ConstantReminderDuringEvent.isSelected();
@@ -268,13 +268,13 @@ public class EventDialog {
 				String test_id = "";
 				if (editEvent != null) {
 					test_id = editEvent.getID();
-					
-//					guiController.removeEventFromView(editEvent);
-					
-//					System.out.println(test_id);
-//					//							events.remove(editEvent); TODO
-//					controller.updateEventInDatabase(editEvent);
-//					//							removeEvent(editEvent);
+
+					//					guiController.removeEventFromView(editEvent);
+
+					//					System.out.println(test_id);
+					//					//							events.remove(editEvent); TODO
+					//					controller.updateEventInDatabase(editEvent);
+					//					//							removeEvent(editEvent);
 				}
 
 				// call helper method to add the current event to the database
@@ -295,11 +295,11 @@ public class EventDialog {
 						subjectField.getText(),
 						meetingPersonField.getText());
 
-//				if(!eventToBeAdded.getID().equals("")) {
-					
-//				guiController.addEventToView(eventToBeAdded);
-					//							events.add(eventToBeAdded); TODO
-//				}
+				//				if(!eventToBeAdded.getID().equals("")) {
+
+				//				guiController.addEventToView(eventToBeAdded);
+				//							events.add(eventToBeAdded); TODO
+				//				}
 
 				//						redrawCalendarView(); TODO
 
@@ -307,41 +307,29 @@ public class EventDialog {
 			}
 		});
 		containerPane.getChildren().add(submit);
-		
+
 		Button suggest = new Button("Suggest");
 		suggest.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
-				Duration pduration = Duration.ofMinutes(0);
-				if (!duration.getText().equals("")) {
+				Duration pduration = Duration.ofMinutes(Long.parseLong(duration.getText()));
+				int ppriority = 0;
+				if (!priority.getText().equals("")) {
 					try {
-						pduration = Duration.ofMinutes(Long.parseLong(duration.getText()));
-					}
-					catch (Exception ex) {
-						System.out.println("Duration Invalid");
+						ppriority = Integer.parseInt(priority.getText());
+					} catch (Exception ex) {
+						System.err.println("Priority invalid");
 					}
 				}
-				if(pduration.equals(Duration.ofMinutes(0))) {
-					duration.setText("Needs Duration");
+				if(ppriority > 3) {
+					LocalDate suggestedDate = LocalDate.now().plusDays(1);
+					datePicker.setValue(suggestedDate);
+					LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
+					time.setText(suggestedTime.toString());
 				}else {
-					int ppriority = 0;
-					if (!priority.getText().equals("")) {
-						try {
-							ppriority = Integer.parseInt(priority.getText());
-						} catch (Exception ex) {
-							System.err.println("Priority invalid");
-						}
-					}
-					if(ppriority > 3) {
-						LocalDate suggestedDate = LocalDate.now().plusDays(1);
-						datePicker.setValue(suggestedDate);
-						LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
-						time.setText(suggestedTime.toString());
-					}else {
-						LocalDate suggestedDate = guiController.suggestDate(pduration);
-						datePicker.setValue(suggestedDate);
-						LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
-						time.setText(suggestedTime.toString());
-					}
+					LocalDate suggestedDate = guiController.suggestDate(pduration);
+					datePicker.setValue(suggestedDate);
+					LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
+					time.setText(suggestedTime.toString());
 				}
 			}
 		});
@@ -475,17 +463,17 @@ public class EventDialog {
 			Button delete = new Button("Delete Event");
 			delete.setOnAction(new EventHandler<ActionEvent>() {
 				@Override public void handle(ActionEvent e) {
-					
+
 					if (editEvent != null) {
-//						guiController.removeEventFromView(editEvent);
-//						System.out.println("BALEETED!");
+						//						guiController.removeEventFromView(editEvent);
+						//						System.out.println("BALEETED!");
 						guiController.deleteEvent(editEvent);
 					}
 					//							events.remove(editEvent);
 					//							removeEvent(editEvent);
 					//							redrawCalendarView();
 					dialog.close();
-					
+
 				}
 			});
 			containerPane.getChildren().add(delete);
@@ -566,11 +554,11 @@ public class EventDialog {
 		}
 
 		EventGO e = new EventGO(type, id, title, date, ptime, pduration, ppriority, repeatDays, endRepeat, 
-								poffset, completed, guiController.getUsername(), allottedTimeUp, constantReminder,
-								profName, subjectName, meetingPersonName);
+				poffset, completed, guiController.getUsername(), allottedTimeUp, constantReminder,
+				profName, subjectName, meetingPersonName);
 
 		if (id != "") {
-//			controller.updateEventInDatabase(e);
+			//			controller.updateEventInDatabase(e);
 			guiController.updateEvent(e);
 		} else {
 			guiController.addEvent(e);

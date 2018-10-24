@@ -52,7 +52,7 @@ public class EventDBO {
 		ObjectId oid = new ObjectId();
 		Document newClass = new Document("eventType", type)
 				.append("title", title)
-				.append("date", date.toString())
+				.append("date", date)
 				.append("time", time.toString())
 				.append("duration", duration.toString())
 				.append("priority", priority)

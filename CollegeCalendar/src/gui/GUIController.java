@@ -141,7 +141,6 @@ public class GUIController {
         if(e.getID() != "") {
         	eventList.add(e);
         	calendarView.updateEvents();
-			updatePane();
         }
 	}
 	
@@ -149,6 +148,7 @@ public class GUIController {
 		for(EventGO e : eventList) {
 			if(e.getTitle().equals(title) && e.getUserName().equals(userName)) {
 				controller.deleteEventFromDatabase(e.getID());
+				break;
 			}
 		}
 		eventList = controller.getAllEvents(username);
@@ -164,7 +164,6 @@ public class GUIController {
 		ArrayList<EventGO> eventsInDay;
 		LocalDate result = start;
 		do {
-			plannedHours = 0;
 			result = start;
 			eventsInDay = getEvents(start, finish, 1).get(0);
 			for(EventGO event : eventsInDay) {
@@ -217,9 +216,7 @@ public class GUIController {
 		}
 		LocalTime earliestTime = earliest.getTime().minus(duration);
 		if(earliestTime.getHour() >= 8) {
-			if(!date.equals(nowDate) || earliestTime.isAfter(LocalTime.now())) {
 				return earliestTime;
-			}
 		}
 		if(eventsInDay.size() > 1) {
 			for(EventGO event : eventsInDay) {
