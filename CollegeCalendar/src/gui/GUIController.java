@@ -49,7 +49,9 @@ public class GUIController {
 		controller = new Controller();
 		eventList = controller.getAllEvents(username);
 		contactList = controller.getAllContacts(username);
-
+		
+		checkAndAddContactEvents();
+		
 		calendarView = new MonthlyGUI(this);
 
 		popUpController = new PopUpController();
@@ -71,14 +73,19 @@ public class GUIController {
 	public void checkAndAddContactEvents() {
 		for(ContactGO cgo : contactList) {
 			boolean check = true;
-			for(EventGO ego : eventList) {
-				String compare = "Contact " + cgo.getContactName();
-				if(ego.getTitle().equals(compare)) {
-					check = false;
+			LocalDate start = LocalDate.now();
+			LocalDate finish = start.plusDays(15);
+			ArrayList<ArrayList<EventGO>> all = getEvents(start, finish, 15);
+			for(ArrayList<EventGO> al : all) {
+				for(EventGO e : al) {
+					String compare = "Contact " + cgo.getContactName();
+					if(e.getTitle().equals(compare)) {
+						check = false;
+					}
 				}
 			}
 			if(check) {
-				//TODO: add event to contact
+				addContactEvent(cgo);
 			}else {
 				check = true;
 			}
@@ -135,12 +142,16 @@ public class GUIController {
         if(e.getID() != "") {
         	eventList.add(e);
         	calendarView.updateEvents();
-			updatePane();
         }
 	}
 	
 	public void deleteContactEventFromDbAndLocal(String title, String userName) {
-		controller.deleteContactEventsFromDatabase(title, userName);
+		for(EventGO e : eventList) {
+			if(e.getTitle().equals(title) && e.getUserName().equals(userName)) {
+				controller.deleteEventFromDatabase(e.getID());
+				break;
+			}
+		}
 		eventList = controller.getAllEvents(username);
 		calendarView.updateEvents();
 		updatePane();
@@ -154,7 +165,6 @@ public class GUIController {
 		ArrayList<EventGO> eventsInDay;
 		LocalDate result = start;
 		do {
-			plannedHours = 0;
 			result = start;
 			eventsInDay = getEvents(start, finish, 1).get(0);
 			for(EventGO event : eventsInDay) {
@@ -207,9 +217,7 @@ public class GUIController {
 		}
 		LocalTime earliestTime = earliest.getTime().minus(duration);
 		if(earliestTime.getHour() >= 8) {
-			if(!date.equals(nowDate) || earliestTime.isAfter(LocalTime.now())) {
 				return earliestTime;
-			}
 		}
 		if(eventsInDay.size() > 1) {
 			for(EventGO event : eventsInDay) {

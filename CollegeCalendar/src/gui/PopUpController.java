@@ -21,6 +21,8 @@ public class PopUpController {
 		popUpStage.setTitle("Event Completion");
 		String message = "Event: "+e.getTitle()+" has ended!";
 		
+		System.out.print("\0007");
+	    System.out.flush();
 		JOptionPane.showMessageDialog(popUpStage, message);
 	}
 	
@@ -30,7 +32,9 @@ public class PopUpController {
 	public void remindUser(EventGO e) {
 		popUpStage.setTitle("Event Reminder");
 		String message = "Event: "+e.getTitle()+" is going on right now!";
-	
+		
+		System.out.print("\0007");
+	    System.out.flush();
 		JOptionPane.showMessageDialog(popUpStage, message);
 	}
 	
@@ -42,6 +46,8 @@ public class PopUpController {
 		String message = "Event: "+e.getTitle()+" starts in (or less than) "
 				+e.getNotificationOffset().toMinutes() + " minutes!";
 		
+		System.out.print("\0007");
+	    System.out.flush();
 		JOptionPane.showMessageDialog(popUpStage, message);
 	}
 }

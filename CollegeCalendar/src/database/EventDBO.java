@@ -52,7 +52,7 @@ public class EventDBO {
 		ObjectId oid = new ObjectId();
 		Document newClass = new Document("eventType", type)
 				.append("title", title)
-				.append("date", date.toString())
+				.append("date", date)
 				.append("time", time.toString())
 				.append("duration", duration.toString())
 				.append("priority", priority)
@@ -175,26 +175,6 @@ public class EventDBO {
 		}
 		else {
 			System.out.println("invalid id for deletion");
-		}
-	}
-	
-	public void deleteContactEvents(String title, String userName) {
-		MongoCollection<Document> collection = database.getCollection("contacts");
-		System.out.println("Finding: " + title + " and " + userName);
-		Document findQuery = new Document();
-		findQuery.append("title", title);
-		findQuery.append("userName", userName);
-		MongoCursor<Document> dbObj = collection.find(findQuery).iterator();
-		System.out.println(dbObj);
-		Document doc;
-		if(dbObj != null) {
-			System.out.println("not null");
-			while(dbObj.hasNext()) {
-				System.out.println("not empty");
-				doc  = dbObj.next();
-				System.out.println(doc);
-				collection.deleteOne(doc);
-			}
 		}
 	}
 }
