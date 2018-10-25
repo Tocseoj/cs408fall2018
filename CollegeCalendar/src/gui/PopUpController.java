@@ -10,7 +10,7 @@ public class PopUpController {
 	
 	public PopUpController() {
 		popUpStage = new JDialog();
-		popUpStage.setAlwaysOnTop(true);
+		popUpStage.setAlwaysOnTop(false);
 		popUpStage.setModalityType(null);
 	}
 	
@@ -21,8 +21,6 @@ public class PopUpController {
 		popUpStage.setTitle("Event Completion");
 		String message = "Event: "+e.getTitle()+" has ended!";
 		
-		System.out.print("\0007");
-	    System.out.flush();
 		JOptionPane.showMessageDialog(popUpStage, message);
 	}
 	
@@ -43,7 +41,7 @@ public class PopUpController {
 	 */
 	public void notifyUpcomingEvent(EventGO e) {
 		popUpStage.setTitle("Event Notification");
-		String message = "Event: "+e.getTitle()+" starts in (or less than) "
+		String message = "Event: "+e.getTitle()+" starts in "
 				+e.getNotificationOffset().toMinutes() + " minutes!";
 		
 		System.out.print("\0007");

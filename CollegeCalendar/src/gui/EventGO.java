@@ -79,7 +79,7 @@ public class EventGO {
 		this.completed = false;
 		this.userName = userName;
 		this.setConstantReminder(false);
-		this.setAllottedTimeUp(false);
+		this.setAllottedTimeUp(false);	
 		this.profName = "";
 		this.subjectName = "";
 		this.meetingPersonName = "";

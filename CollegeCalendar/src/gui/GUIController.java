@@ -415,7 +415,6 @@ public class GUIController {
 		LocalTime tmp = null;
 		LocalDateTime eventCheck = null;
 		
-		int lastRemind = -1;
 		int size = eventList.size();
 		for (int i = 0; i < size; i++) 
 		{
@@ -428,9 +427,7 @@ public class GUIController {
 					.compareTo(currTime) <= 0) {
 				if (Boolean.TRUE.equals(eventList.get(i).getAllottedTimeUp())) {
 					popUpController.eventCompleted(eventList.get(i));
-					/* Update in database */
-					eventList.get(i).setCompleted(true);
-					eventList.get(i).setAllottedTimeUp(false);
+					
 					try {
 						controller.updateEventInDatabase(eventList.get(i));
 					} catch (NullPointerException e) {
@@ -444,9 +441,8 @@ public class GUIController {
 			int ret, min = currTime.getMinute();
 			if ((ret = currTime.compareTo(eventCheck)) >= 0) {
 				if (Boolean.TRUE.equals(eventList.get(i).getConstantReminder())) {
-					if (lastRemind != min && (min == 00 || min == 15 || min == 30 || min == 45)) {
+					if (min == 00 || min == 15 || min == 30 || min == 45) {
 						popUpController.remindUser(eventList.get(i));
-						lastRemind = min;
 					}
 				}
 				continue;
@@ -459,11 +455,6 @@ public class GUIController {
 						.compareTo(currTime) <= 0) {
 					popUpController.notifyUpcomingEvent(eventList.get(i));
 					eventList.get(i).setNotificationOffset(Duration.ofMinutes(-1));
-					try {
-						controller.updateEventInDatabase(eventList.get(i));
-					} catch (NullPointerException e) {
-						continue;
-					}
 				}
 			}
 		}
