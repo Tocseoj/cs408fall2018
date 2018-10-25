@@ -1,0 +1,11 @@
+.start {
+	-fx-background-color: 	#b3d7f3;
+}
+.end {
+	-fx-background-color: 	#b3d7f3;
+}
+
+.today {
+	-fx-background-color: 	#C28E0E;
+	-fx-text-fill: 			#ffffff;
+}

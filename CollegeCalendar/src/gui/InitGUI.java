@@ -85,6 +85,8 @@ public class InitGUI extends Application {
 		Region sideBarPadding	= new Region();				// Fills extra space
 		Button changeAccountButton 							// Let's you select your username
 								= new Button("Change Account");
+		Button changeSettingsButton
+								= new Button("Change Settings");
 		
 		//
 		// Setup Event Handlers
@@ -96,6 +98,7 @@ public class InitGUI extends Application {
 		
 		addEventButton.setOnAction(this::addEventButton);
 		addContactButton.setOnAction(this::addContactButton);
+		changeSettingsButton.setOnAction(this::changeSettings);
 		changeAccountButton.setOnAction(this::changeAccount);
 		
 		/*
@@ -111,7 +114,7 @@ public class InitGUI extends Application {
 		//
 		// Add elements to Scene
 		//
-		actionList.getChildren().addAll(addEventButton, addContactButton, sideBarPadding, changeAccountButton);
+		actionList.getChildren().addAll(addEventButton, addContactButton, sideBarPadding, changeSettingsButton, changeAccountButton);
 		
 		container2.getChildren().addAll(calendarPane, actionList);
 		topBarContainer.getChildren().addAll(leftArrow, rightArrow, todayButton, topBarPadding, viewSelector);
@@ -126,7 +129,7 @@ public class InitGUI extends Application {
 //		calendarPane.setBackground(new Background(new BackgroundFill(Color.SLATEGRAY, CornerRadii.EMPTY, Insets.EMPTY))); //TODO
 
 		Scene scene = new Scene(root, sceneWidth, sceneHeight, backgroundColor);
-//		scene.getStylesheets().add("gui/joe-gui.css"); TODO: Add styling
+		scene.getStylesheets().add("gui/init-gui.css"); //TODO: Add styling
 
 		primaryStage.setTitle("College Calendar");
 		primaryStage.setScene(scene);
@@ -171,5 +174,8 @@ public class InitGUI extends Application {
 	}
 	private void changeAccount(ActionEvent event) {
 		guiController.showUsernamePopup();
+	}
+	private void changeSettings(ActionEvent event) {
+		guiController.changeSettings();
 	}
 }

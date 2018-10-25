@@ -28,6 +28,9 @@ public class GUIController {
 	private DateAndTimeManager date;
 	private String username;
 	private Pane dynamicPane;
+	
+	private LocalDate startDate;
+	private LocalDate endDate;
 
 	private StackPane calendarPane;
 
@@ -95,8 +98,23 @@ public class GUIController {
 
 	// GUI Controller updates data in database and edits it in view
 	// EventGO event will have id set
-	public void updateEvent(EventGO event) {
+	public void updateEvent(EventGO event, EventGO old) {
+		System.out.println(event.getEndRepeat().toString());
+		for (int i = 0; i < 7; i++) {
+			if (event.getRepeatDays()[i]) {
+				System.out.print("√ ");
+			} else {
+				System.out.print("X ");
+			}
+		}
+		System.out.println();
+		
 		controller.updateEventInDatabase(event);
+		
+		int index = eventList.indexOf(old);
+		eventList.remove(index);
+		eventList.add(index, event);
+		
 		calendarView.updateEvents();
 		updatePane();
 	}
@@ -282,11 +300,16 @@ public class GUIController {
 				}
 			}
 			if (!event.getDate().isEqual(event.getEndRepeat())) {
+				
+				if (event.getTitle().equals("Test")) {
+					System.out.println("Found Repeating");
+				}
+				
 				if (event.getEndRepeat().isAfter(start) || event.getEndRepeat().isEqual(start)) {
 					for (int i = 0; i < length; i++) {
 						LocalDate day = start.plusDays(i);
 						int dayOfWeek = day.getDayOfWeek().getValue();
-						dayOfWeek = dayOfWeek == 7 ? 0 : dayOfWeek;
+						dayOfWeek = (dayOfWeek == 7) ? 0 : dayOfWeek;
 						if (event.getRepeatDays()[dayOfWeek]) {
 							if (day.isAfter(event.getDate()) && (day.isBefore(event.getEndRepeat()) || day.isEqual(event.getEndRepeat()))) {
 								returnList.get(i).add(event);
@@ -359,6 +382,10 @@ public class GUIController {
 	// creates an empty EventDialog
 	public void addEventButton() {
 		new EventDialog(primaryStage, null, this);
+	}
+	
+	public void changeSettings() {
+		new SettingsDialog(primaryStage, this);
 	}
 	
 	public void addContactButton() {
@@ -481,5 +508,22 @@ public class GUIController {
 	// GUI Controller manages time so this provides access to the viewed date
 	public LocalDate getViewingDate() {
 		return date.getViewingDate();
+	}
+	public LocalDate getCurrentDate() {
+		return DateAndTimeManager.getCurrentDate();
+	}
+	public void setStartDate(LocalDate start) {
+		startDate = start;
+		System.out.println(startDate);
+	}
+	public void setEndDate(LocalDate end) {
+		endDate = end;
+		System.out.println(endDate);
+	}
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+	public LocalDate getEndDate() {
+		return endDate;
 	}
 }

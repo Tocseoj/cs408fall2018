@@ -285,7 +285,8 @@ public class EventDialog {
 						constantReminder,
 						profNameField.getText(),
 						subjectField.getText(),
-						meetingPersonField.getText());
+						meetingPersonField.getText(),
+						editEvent);
 
 //				if(!eventToBeAdded.getID().equals("")) {
 					
@@ -512,7 +513,8 @@ public class EventDialog {
 			Boolean constantReminder,
 			String profName,
 			String subjectName,
-			String meetingPersonName) {		
+			String meetingPersonName,
+			EventGO editEvent) {		
 
 		LocalTime ptime = LocalTime.now();
 		if (!time.equals("")) {
@@ -561,9 +563,9 @@ public class EventDialog {
 								poffset, completed, guiController.getUsername(), allottedTimeUp, constantReminder,
 								profName, subjectName, meetingPersonName);
 
-		if (id != "") {
+		if (id != "" && editEvent != null) {
 //			controller.updateEventInDatabase(e);
-			guiController.updateEvent(e);
+			guiController.updateEvent(e, editEvent);
 		} else {
 			guiController.addEvent(e);
 		}

@@ -91,9 +91,17 @@ public class MonthlyGUI implements CalendarViews {
 //				day.setClip(rect);
 				
 				Button dayButton = new Button(dayOfMonth + "");
-				dayButton.setUserData(date.withDayOfMonth(1).plusDays(dayOfMonth - 1));
+				LocalDate localDateDay = date.withDayOfMonth(1).plusDays(dayOfMonth - 1);
+				dayButton.setUserData(localDateDay);
 				dayButton.setOnAction(this::dayButton);
 				
+				if (localDateDay.equals(guiController.getCurrentDate())) {
+					day.getStyleClass().add("today");
+				} else if (localDateDay.equals(guiController.getStartDate())) {
+					day.getStyleClass().add("start");
+				} else if (localDateDay.equals(guiController.getEndDate())) {
+					day.getStyleClass().add("end");
+				}
 				dayBlocks[c][r] = day;
 				
 				ArrayList<EventGO> eventList = new ArrayList<>();
