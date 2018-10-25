@@ -108,13 +108,14 @@ public class EventDBO {
 				.append("notificationOffset", notificationOffset.toString())
 				.append("completed", completed);
 		
-		if (profName.length() != 0) {
+		if (profName != null && profName.length() != 0) {
 			updatedHomework.append("profName", profName);
+			System.out.println(profName);
 		}
-		else if (subjectName.length() != 0) {
+		else if (subjectName != null && subjectName.length() != 0) {
 			updatedHomework.append("subjectName", subjectName);
 		}
-		else if (meetingPersonName.length() != 0) {
+		else if (meetingPersonName != null && meetingPersonName.length() != 0) {
 			updatedHomework.append("meetingPersonName", meetingPersonName);
 		}
 		collection.updateOne(eq("_id", id), new Document("$set", updatedHomework));

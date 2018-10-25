@@ -293,7 +293,8 @@ public class EventDialog {
 						constantReminder,
 						profNameField.getText(),
 						subjectField.getText(),
-						meetingPersonField.getText());
+						meetingPersonField.getText(),
+						editEvent);
 
 //				if(!eventToBeAdded.getID().equals("")) {
 					
@@ -348,6 +349,13 @@ public class EventDialog {
 		containerPane.getChildren().add(suggest);
 		if (editEvent != null) {
 			comboBox.setValue(editEvent.getType().toString());
+			
+			System.out.println("Edit Event");
+			System.out.println(editEvent.getProfName());
+			System.out.println(editEvent.getMeetingPersonName());
+			meetingPersonField.setText(editEvent.getMeetingPersonName());
+			profNameField.setText(editEvent.getProfName());
+			
 			title.setText(editEvent.getTitle());
 			datePicker.setValue(editEvent.getDate());
 			time.setText(editEvent.getTime().toString());
@@ -403,6 +411,9 @@ public class EventDialog {
 					int index = containerPane.getChildren().indexOf(self);
 					containerPane.getChildren().add(index + 1, completed);
 					containerPane.getChildren().add(index + 1, completedL);
+					
+					completed.setSelected(editEvent.getCompleted());
+					
 					dateL.setText("Due Date");
 				} else {
 					containerPane.getChildren().remove(completedL);
@@ -520,8 +531,13 @@ public class EventDialog {
 			Boolean constantReminder,
 			String profName,
 			String subjectName,
-			String meetingPersonName) {		
+			String meetingPersonName,
+			EventGO old) {		
 
+		if (meetingPersonName == null) {
+			meetingPersonName = "";
+		}
+		
 		LocalTime ptime = LocalTime.now();
 		if (!time.equals("")) {
 			try {
@@ -571,7 +587,7 @@ public class EventDialog {
 
 		if (id != "") {
 //			controller.updateEventInDatabase(e);
-			guiController.updateEvent(e);
+			guiController.updateEvent(e, old);
 		} else {
 			guiController.addEvent(e);
 		}

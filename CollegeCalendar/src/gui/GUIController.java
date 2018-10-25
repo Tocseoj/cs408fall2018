@@ -102,8 +102,11 @@ public class GUIController {
 
 	// GUI Controller updates data in database and edits it in view
 	// EventGO event will have id set
-	public void updateEvent(EventGO event) {
+	public void updateEvent(EventGO event, EventGO old) {
 		controller.updateEventInDatabase(event);
+		int index = eventList.indexOf(old);
+		eventList.remove(index);
+		eventList.add(index, event);
 		calendarView.updateEvents();
 		updatePane();
 	}
