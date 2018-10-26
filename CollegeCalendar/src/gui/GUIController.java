@@ -297,7 +297,7 @@ public class GUIController {
 						int dayOfWeek = day.getDayOfWeek().getValue();
 						dayOfWeek = dayOfWeek == 7 ? 0 : dayOfWeek;
 						if (event.getRepeatDays()[dayOfWeek]) {
-							if (day.isAfter(event.getDate()) && (day.isBefore(event.getEndRepeat()) || day.isEqual(event.getEndRepeat()))) {
+							if ((day.isAfter(event.getDate()) || day.isEqual(event.getDate())) && (day.isBefore(event.getEndRepeat()) || day.isEqual(event.getEndRepeat()))) {
 								returnList.get(i).add(event);
 							}
 						}
