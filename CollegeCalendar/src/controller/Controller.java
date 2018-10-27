@@ -50,6 +50,7 @@ public class Controller {
 	 * @return EventGO
 	 */
 	public static EventGO convertDocToEventGO(Document doc){
+		System.out.println(doc);
 		ObjectId oid = doc.getObjectId("_id");
 		int i = doc.getInteger("eventType");
 		EventType type = EventType.valueOf(i);
@@ -181,6 +182,7 @@ public class Controller {
 		int type = e.getType().ordinal();
 		String title = e.getTitle();
 		LocalDate date = e.getDate();
+		System.out.println("Date in Controller is " + date.toString());
 		LocalTime time = e.getTime();
 		Duration duration = e.getDuration();
 		int priority = e.getPriority();

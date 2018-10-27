@@ -50,9 +50,10 @@ public class EventDBO {
 		}
 		MongoCollection<Document> collection = database.getCollection("events");
 		ObjectId oid = new ObjectId();
+		System.out.println("Date in EDB is " + date.toString());
 		Document newClass = new Document("eventType", type)
 				.append("title", title)
-				.append("date", date)
+				.append("date", date.toString())
 				.append("time", time.toString())
 				.append("duration", duration.toString())
 				.append("priority", priority)
