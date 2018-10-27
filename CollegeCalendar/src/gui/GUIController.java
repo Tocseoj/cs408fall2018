@@ -135,7 +135,11 @@ public class GUIController {
         LocalDate randDate = LocalDate.now().plusDays(rand);
         Duration d = Duration.ofMinutes(15);
         LocalDate date = suggestDateForContact(d,randDate);
+        System.out.println(date);
+        System.out.println(date);
         LocalTime time = suggestTime(date, d);
+//        System.out.println("SUH DUDE");
+//        System.out.println(time);
         String title = "Contact " + c.getContactName();
         EventGO e = new EventGO(title, username, d, date, time);
         controller.addEventToDatabase(e);
