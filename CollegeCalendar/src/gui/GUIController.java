@@ -85,7 +85,7 @@ public class GUIController {
 			}
 			if(check) {
 				addContactEvent(cgo);
-			}else {
+			} else {
 				check = true;
 			}
 		}
@@ -120,11 +120,13 @@ public class GUIController {
 	// Helper method to get all events in same month of specified day
 	public ArrayList<ArrayList<EventGO>> getMonthEvents(LocalDate day) {
 
-		int length = day.lengthOfMonth();
-		LocalDate start = day.withDayOfMonth(1);
-		LocalDate finish = day.withDayOfMonth(length);
-
-		return getEvents(start, finish, length);
+		return controller.getEventsOnMonth(username, day);
+		
+//		int length = day.lengthOfMonth();
+//		LocalDate start = day.withDayOfMonth(1);
+//		LocalDate finish = day.withDayOfMonth(length);
+//
+//		return getEvents(start, finish, length);
 
 	}
 	
@@ -284,38 +286,38 @@ public class GUIController {
 
 
 		for (int i = 0; i < length; i++) {	
-			returnList.add(new ArrayList<EventGO>());	
+			returnList.add(controller.getEventsOnDay(username, start.plusDays(i)));
 		}
 
-		for (EventGO event : eventList) {
-			if (event.getID().equals("")) {
-				System.out.println("Null Event Found!");
-			}
-			if ((event.getDate().isAfter(start) || event.getDate().isEqual(start)) && (event.getDate().isBefore(finish) || event.getDate().isEqual(finish))) {
-				try {
-					returnList.get((int)start.until(event.getDate(), ChronoUnit.DAYS)).add(event);
-				} catch (IndexOutOfBoundsException e) {
-					// WeeklyView was bugged, but now fixed
-					// However this will prevent crashes
-					// TODO
-					System.err.println((int)start.until(event.getDate(), ChronoUnit.DAYS) + " is not in length of returnList");
-				}
-			}
-			if (!event.getDate().isEqual(event.getEndRepeat())) {
-				if (event.getEndRepeat().isAfter(start) || event.getEndRepeat().isEqual(start)) {
-					for (int i = 0; i < length; i++) {
-						LocalDate day = start.plusDays(i);
-						int dayOfWeek = day.getDayOfWeek().getValue();
-						dayOfWeek = dayOfWeek == 7 ? 0 : dayOfWeek;
-						if (event.getRepeatDays()[dayOfWeek]) {
-							if (day.isAfter(event.getDate()) && (day.isBefore(event.getEndRepeat()) || day.isEqual(event.getEndRepeat()))) {
-								returnList.get(i).add(event);
-							}
-						}
-					}
-				}
-			}
-		}
+//		for (EventGO event : eventList) {
+//			if (event.getID().equals("")) {
+//				System.out.println("Null Event Found!");
+//			}
+//			if ((event.getDate().isAfter(start) || event.getDate().isEqual(start)) && (event.getDate().isBefore(finish) || event.getDate().isEqual(finish))) {
+//				try {
+//					returnList.get((int)start.until(event.getDate(), ChronoUnit.DAYS)).add(event);
+//				} catch (IndexOutOfBoundsException e) {
+//					// WeeklyView was bugged, but now fixed
+//					// However this will prevent crashes
+//					// TODO
+//					System.err.println((int)start.until(event.getDate(), ChronoUnit.DAYS) + " is not in length of returnList");
+//				}
+//			}
+//			if (!event.getDate().isEqual(event.getEndRepeat())) {
+//				if (event.getEndRepeat().isAfter(start) || event.getEndRepeat().isEqual(start)) {
+//					for (int i = 0; i < length; i++) {
+//						LocalDate day = start.plusDays(i);
+//						int dayOfWeek = day.getDayOfWeek().getValue();
+//						dayOfWeek = dayOfWeek == 7 ? 0 : dayOfWeek;
+//						if (event.getRepeatDays()[dayOfWeek]) {
+//							if (day.isAfter(event.getDate()) && (day.isBefore(event.getEndRepeat()) || day.isEqual(event.getEndRepeat()))) {
+//								returnList.get(i).add(event);
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
 
 		return returnList;
 	}

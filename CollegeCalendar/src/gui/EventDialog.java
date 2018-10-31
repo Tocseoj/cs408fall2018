@@ -347,6 +347,15 @@ public class EventDialog {
 		});
 		containerPane.getChildren().add(suggest);
 		if (editEvent != null) {
+			
+			completed.setSelected(editEvent.getCompleted());
+			meetingPersonField.setText(editEvent.getMeetingPersonName());
+			profNameField.setText(editEvent.getProfName());
+			subjectField.setText(editEvent.getSubjectName());
+			
+			NotifyWhenEventOver.setSelected(editEvent.getAllottedTimeUp());
+			ConstantReminderDuringEvent.setSelected(editEvent.getConstantReminder());
+			
 			comboBox.setValue(editEvent.getType().toString());
 			title.setText(editEvent.getTitle());
 			datePicker.setValue(editEvent.getDate());
