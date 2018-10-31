@@ -66,7 +66,19 @@ public class Controller {
 		String id = oid.toString();
 		Boolean allottedTimeUp = doc.getBoolean("allottedTimeUp");
 		Boolean constantReminder = doc.getBoolean("constantReminder");
-		return new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, user, allottedTimeUp, constantReminder);
+		String profName = "";
+		if (doc.containsKey("profName")) {
+			profName = doc.getString("profName");
+		}
+		String subjectName = "";
+		if (doc.containsKey("subjectName")) {
+			subjectName = doc.getString("subjectName");
+		}
+		String meetingPersonName = "";
+		if (doc.containsKey("meetingPersonName")) {
+			meetingPersonName = doc.getString("meetingPersonName");
+		}
+		return new EventGO(type, id, title, date, time, duration, priority, repeatDays, endRepeat, notificationOffset, completed, user, allottedTimeUp, constantReminder, profName, subjectName, meetingPersonName);
 	}
 
 	/**
