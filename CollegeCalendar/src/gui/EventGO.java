@@ -43,6 +43,9 @@ public class EventGO {
 		this.userName = userName;
 		this.setConstantReminder(false);
 		this.setAllottedTimeUp(false);
+		this.profName = "";
+		this.subjectName = "";
+		this.meetingPersonName = "";
 	}
 
 	public EventGO(String id, String title, String userName) {
@@ -60,6 +63,9 @@ public class EventGO {
 		this.userName = userName;
 		this.setConstantReminder(false);
 		this.setAllottedTimeUp(false);
+		this.profName = "";
+		this.subjectName = "";
+		this.meetingPersonName = "";
 	}
 	
 	public EventGO(String title, String userName, Duration duration, LocalDate date, LocalTime time) {
