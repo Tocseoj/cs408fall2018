@@ -147,7 +147,7 @@ public class InitGUI extends Application {
 	 * Shut down PopUp thread along with main JavaFX thread
 	 */
 	public void stop() throws Exception {
-		popUp.timerExit();
+		//popUp.timerExit();
 	}
 	
 	private void leftArrow(ActionEvent event) {
