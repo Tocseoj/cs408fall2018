@@ -195,7 +195,7 @@ public class GUIController {
 		}while(plannedHours > maxHours);
 		return result;
 	}
-
+	
 	public LocalTime suggestTime(LocalDate date, Duration duration) {
 		LocalDate nowDate = LocalDate.now();
 		ArrayList<EventGO> eventsInDay = getEvents(date, date, 1).get(0);
@@ -249,6 +249,15 @@ public class GUIController {
 			}
 		}
 		LocalTime latestTime = latest.getTime().plus(latest.getDuration());
+		if(latestTime.isBefore(LocalTime.now())) {
+			LocalTime noOtherEvents = LocalTime.parse("08:00");
+			while(noOtherEvents.isBefore(LocalTime.parse("21:00"))) {
+				if(!date.equals(nowDate) || noOtherEvents.isAfter(LocalTime.now())) {
+					return noOtherEvents;
+				}
+				noOtherEvents = noOtherEvents.plusHours(1);
+			}
+		}
 		if(!date.equals(nowDate) || latestTime.isAfter(LocalTime.now())) {
 			return latestTime;
 		}
