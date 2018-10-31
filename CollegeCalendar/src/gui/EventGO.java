@@ -106,6 +106,9 @@ public class EventGO {
 		this.userName = userName;
 		this.setConstantReminder(constantReminder);
 		this.setAllottedTimeUp(allottedTimeUp);
+		this.profName = "";
+		this.subjectName = "";
+		this.meetingPersonName = "";
 	}
 	
 	/*
@@ -136,6 +139,9 @@ public class EventGO {
 	
 	
 	public String getID() {
+		if (id == null) {
+			return "";	
+		}
 		return id;
 	}
 	
@@ -144,22 +150,37 @@ public class EventGO {
 	}
 	
 	public String getTitle() {
+		if (title == null) {
+			return "";	
+		}
 		return title;
 	}
 	
 	public LocalDate getDate() {
+		if (date == null) {
+			return LocalDate.now();	
+		}
 		return date;
 	}
 	
 	public LocalTime getTime() {
+		if (time == null) {
+			return LocalTime.now();	
+		}
 		return time;
 	}
 	
 	public Duration getDuration() {
+		if (duration == null) {
+			return Duration.ZERO;	
+		}
 		return duration;
 	}
 	
 	public Boolean getCompleted() {
+		if (completed == null) {
+			return false;	
+		}
 		return completed;
 	}
 	public void setCompleted(Boolean val) {
@@ -175,6 +196,9 @@ public class EventGO {
 	}
 
 	public Duration getNotificationOffset() {
+		if (notificationOffset == null) {
+			return Duration.ZERO;	
+		}
 		return notificationOffset;
 	}
 
@@ -183,6 +207,9 @@ public class EventGO {
 	}
 
 	public LocalDate getEndRepeat() {
+		if (endRepeat == null) {
+			return LocalDate.now();	
+		}
 		return endRepeat;
 	}
 
@@ -191,6 +218,9 @@ public class EventGO {
 	}
 
 	public EventType getType() {
+		if (type == null) {
+			return EventType.GENERIC;	
+		}
 		return type;
 	}
 
@@ -199,6 +229,9 @@ public class EventGO {
 	}
 	
 	public Boolean[] getRepeatDays() {
+		if (repeatDays == null) {
+			return new Boolean[7];	
+		}
 		return repeatDays;
 	}
 
@@ -207,6 +240,9 @@ public class EventGO {
 	}
 
 	public String getUserName() {
+		if (userName == null) {
+			return "";	
+		}
 		return userName;
 	}
 
@@ -215,7 +251,11 @@ public class EventGO {
 	}
 
 	public Boolean getAllottedTimeUp() {
+		if (allottedTimeUp == null) {
+			return false;	
+		}
 		return allottedTimeUp;
+		
 	}
 
 	public void setAllottedTimeUp(Boolean allottedTimeUp) {
@@ -223,6 +263,9 @@ public class EventGO {
 	}
 
 	public Boolean getConstantReminder() {
+		if (constantReminder == null) {
+			return false;	
+		}
 		return constantReminder;
 	}
 
@@ -235,6 +278,9 @@ public class EventGO {
 	 * Only specified in the Meeting preset.
 	 */
 	public String getMeetingPersonName() {
+		if (meetingPersonName == null) {
+			return "";	
+		}
 		return meetingPersonName;
 	}
 
@@ -247,6 +293,9 @@ public class EventGO {
 	 * Only specified in the Exam preset.
 	 */
 	public String getSubjectName() {
+		if (subjectName == null) {
+			return "";	
+		}
 		return subjectName;
 	}
 
@@ -259,6 +308,9 @@ public class EventGO {
 	 * Only specified in the class preset
 	 */
 	public String getProfName() {
+		if (profName == null) {
+			return "";	
+		}
 		return profName;
 	}
 

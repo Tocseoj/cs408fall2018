@@ -120,13 +120,13 @@ public class GUIController {
 	// Helper method to get all events in same month of specified day
 	public ArrayList<ArrayList<EventGO>> getMonthEvents(LocalDate day) {
 
-		return controller.getEventsOnMonth(username, day);
+//		return controller.getEventsOnMonth(username, day);
 		
-//		int length = day.lengthOfMonth();
-//		LocalDate start = day.withDayOfMonth(1);
-//		LocalDate finish = day.withDayOfMonth(length);
-//
-//		return getEvents(start, finish, length);
+		int length = day.lengthOfMonth();
+		LocalDate start = day.withDayOfMonth(1);
+		LocalDate finish = day.withDayOfMonth(length);
+
+		return getEvents(start, finish, length);
 
 	}
 	
@@ -282,42 +282,47 @@ public class GUIController {
 	//
 	// Get events between two dates with provided length between the dates
 	public ArrayList<ArrayList<EventGO>> getEvents(LocalDate start, LocalDate finish, int length) {
+		
+		System.out.println("Starting Query");
+		eventList = controller.getAllEvents(username);
+		System.out.println("Ending Query");
+		
 		ArrayList<ArrayList<EventGO>> returnList = new ArrayList<>();
 
-
 		for (int i = 0; i < length; i++) {	
-			returnList.add(controller.getEventsOnDay(username, start.plusDays(i)));
+			returnList.add(new ArrayList<EventGO>());
+//			returnList.add(controller.getEventsOnDay(username, start.plusDays(i)));
 		}
 
-//		for (EventGO event : eventList) {
-//			if (event.getID().equals("")) {
-//				System.out.println("Null Event Found!");
-//			}
-//			if ((event.getDate().isAfter(start) || event.getDate().isEqual(start)) && (event.getDate().isBefore(finish) || event.getDate().isEqual(finish))) {
-//				try {
-//					returnList.get((int)start.until(event.getDate(), ChronoUnit.DAYS)).add(event);
-//				} catch (IndexOutOfBoundsException e) {
-//					// WeeklyView was bugged, but now fixed
-//					// However this will prevent crashes
-//					// TODO
-//					System.err.println((int)start.until(event.getDate(), ChronoUnit.DAYS) + " is not in length of returnList");
-//				}
-//			}
-//			if (!event.getDate().isEqual(event.getEndRepeat())) {
-//				if (event.getEndRepeat().isAfter(start) || event.getEndRepeat().isEqual(start)) {
-//					for (int i = 0; i < length; i++) {
-//						LocalDate day = start.plusDays(i);
-//						int dayOfWeek = day.getDayOfWeek().getValue();
-//						dayOfWeek = dayOfWeek == 7 ? 0 : dayOfWeek;
-//						if (event.getRepeatDays()[dayOfWeek]) {
-//							if (day.isAfter(event.getDate()) && (day.isBefore(event.getEndRepeat()) || day.isEqual(event.getEndRepeat()))) {
-//								returnList.get(i).add(event);
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
+		for (EventGO event : eventList) {
+			if (event.getID().equals("")) {
+				System.out.println("Null Event Found!");
+			}
+			if ((event.getDate().isAfter(start) || event.getDate().isEqual(start)) && (event.getDate().isBefore(finish) || event.getDate().isEqual(finish))) {
+				try {
+					returnList.get((int)start.until(event.getDate(), ChronoUnit.DAYS)).add(event);
+				} catch (IndexOutOfBoundsException e) {
+					// WeeklyView was bugged, but now fixed
+					// However this will prevent crashes
+					// TODO
+					System.err.println((int)start.until(event.getDate(), ChronoUnit.DAYS) + " is not in length of returnList");
+				}
+			}
+			if (!event.getDate().isEqual(event.getEndRepeat())) {
+				if (event.getEndRepeat().isAfter(start) || event.getEndRepeat().isEqual(start)) {
+					for (int i = 0; i < length; i++) {
+						LocalDate day = start.plusDays(i);
+						int dayOfWeek = day.getDayOfWeek().getValue();
+						dayOfWeek = dayOfWeek == 7 ? 0 : dayOfWeek;
+						if (event.getRepeatDays()[dayOfWeek]) {
+							if (day.isAfter(event.getDate()) && (day.isBefore(event.getEndRepeat()) || day.isEqual(event.getEndRepeat()))) {
+								returnList.get(i).add(event);
+							}
+						}
+					}
+				}
+			}
+		}
 
 		return returnList;
 	}

@@ -378,7 +378,6 @@ public class EventDialog {
 			Boolean is_checked = false;
 			for (int i = 0; i < editEvent.getRepeatDays().length; i++) {
 				if (editEvent.getRepeatDays()[i]) {
-					System.out.println("TRUE");
 					is_checked = true;
 					break;
 				}
