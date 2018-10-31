@@ -146,6 +146,7 @@ public class InitGUI extends Application {
 	 */
 	public void stop() throws Exception {
 		popUp.timerExit();
+		System.out.println("Exiting");
 	}
 	
 	private void leftArrow(ActionEvent event) {

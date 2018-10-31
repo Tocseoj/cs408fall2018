@@ -283,9 +283,9 @@ public class GUIController {
 	// Get events between two dates with provided length between the dates
 	public ArrayList<ArrayList<EventGO>> getEvents(LocalDate start, LocalDate finish, int length) {
 		
-		System.out.println("Starting Query");
+//		System.out.println("Starting Query");
 		eventList = controller.getAllEvents(username);
-		System.out.println("Ending Query");
+//		System.out.println("Ending Query");
 		
 		ArrayList<ArrayList<EventGO>> returnList = new ArrayList<>();
 
