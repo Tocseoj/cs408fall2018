@@ -45,7 +45,7 @@ public class UsernameDialog {
 				}
 				Stage dialog = (Stage)dialogContainer.getScene().getWindow();	
 				if (username != null) {
-					dialog.close();
+//					dialog.close();
 					
 					// update Username
 					guiController.setUsername(username);
