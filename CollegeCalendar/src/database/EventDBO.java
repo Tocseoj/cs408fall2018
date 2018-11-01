@@ -107,7 +107,9 @@ public class EventDBO {
 				.append("repeatDays", Arrays.toString(repeatDays))
 				.append("endRepeat", endRepeat.toString())
 				.append("notificationOffset", notificationOffset.toString())
-				.append("completed", completed);
+				.append("completed", completed)
+				.append("allottedTimeUp", allottedTimeUp)
+				.append("constantReminder", constantReminder);
 		
 		if (profName.length() != 0) {
 			updatedHomework.append("profName", profName);

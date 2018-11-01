@@ -100,6 +100,9 @@ public class EventGO {
 		this.userName = userName;
 		this.setConstantReminder(constantReminder);
 		this.setAllottedTimeUp(allottedTimeUp);
+		this.profName = "";
+		this.subjectName = "";
+		this.meetingPersonName = "";
 	}
 	
 	/*
