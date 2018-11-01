@@ -335,6 +335,7 @@ public class EventDialog {
 				}else {
 					LocalDate suggestedDate = guiController.suggestDate(pduration);
 					datePicker.setValue(suggestedDate);
+					
 					LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
 					time.setText(suggestedTime.toString());
 				}
