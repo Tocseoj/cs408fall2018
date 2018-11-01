@@ -22,7 +22,6 @@ public class InitGUI extends Application {
 	
 	
 	PopUpTimerSetup 	popUp;
-	public static boolean		killThread = false;
 	
 	public static void main(String[] args) {
 		
@@ -147,7 +146,6 @@ public class InitGUI extends Application {
 	 */
 	public void stop() throws Exception {
 		System.out.println("Exiting");
-		killThread = true;
 		popUp.timerExit();
 	}
 	
