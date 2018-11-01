@@ -64,9 +64,12 @@ public class MonthlyGUI implements CalendarViews {
 		calendarGrid.getColumnConstraints().addAll(columnList);
 				
 		int dayOfFirst = date.withDayOfMonth(1).getDayOfWeek().getValue();
+		dayOfFirst = dayOfFirst == 7 ? 0 : dayOfFirst;
 		int rowCount = (int)(Math.ceil((date.lengthOfMonth() + dayOfFirst) / 7.0));
 		
-		dayOfFirst = dayOfFirst == 7 ? 0 : dayOfFirst;
+		if (date.getMonthValue() % 2 == 0) {
+			rowCount--;
+		}
 
 		for (int r = 0; r < rowCount; r++) {
 			RowConstraints rc = new RowConstraints();
