@@ -470,7 +470,8 @@ public class GUIController {
 			/* Handle already completed events */
 			if (eventCheck.plusMinutes(eventList.get(i).getDuration().toMinutes())
 					.compareTo(currTime) <= 0) {
-				if (Boolean.TRUE.equals(eventList.get(i).getAllottedTimeUp())) {
+				if (Boolean.TRUE.equals(eventList.get(i).getAllottedTimeUp())
+						&& Boolean.FALSE.equals(eventList.get(i).getCompleted())) {
 					popUpController.eventCompleted(eventList.get(i));
 					/* Update in database */
 					eventList.get(i).setCompleted(true);
@@ -502,7 +503,7 @@ public class GUIController {
 						.getNotificationOffset().toMinutes())
 						.compareTo(currTime) <= 0) {
 					popUpController.notifyUpcomingEvent(eventList.get(i));
-					eventList.get(i).setNotificationOffset(Duration.ofMinutes(-1));
+					eventList.get(i).setNotificationOffset(Duration.ZERO);
 					try {
 						controller.updateEventInDatabase(eventList.get(i));
 					} catch (NullPointerException e) {
