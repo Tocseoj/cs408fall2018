@@ -51,7 +51,17 @@ public class WeeklyGUI implements CalendarViews {
 				e.setUserData(event);
 				e.setOnAction(this::viewEventPopup);
 				
-				day.getChildren().add(e);
+				boolean added = false;
+				for (int j = 0; j < day.getChildren().size(); j++) {
+					if (event.getTime().isBefore(((EventGO)(day.getChildren().get(j).getUserData())).getTime())) {
+						day.getChildren().add(j, e);
+						added = true;
+						break;
+					}
+				}
+				if (!added) {
+					day.getChildren().add(e);
+				}
 			}
 			
 			VBox dayContainer = new VBox();
