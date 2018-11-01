@@ -85,7 +85,7 @@ public class GUIController {
 			}
 			if(check) {
 				addContactEvent(cgo);
-			}else {
+			} else {
 				check = true;
 			}
 		}
@@ -120,6 +120,8 @@ public class GUIController {
 	// Helper method to get all events in same month of specified day
 	public ArrayList<ArrayList<EventGO>> getMonthEvents(LocalDate day) {
 
+//		return controller.getEventsOnMonth(username, day);
+		
 		int length = day.lengthOfMonth();
 		LocalDate start = day.withDayOfMonth(1);
 		LocalDate finish = day.withDayOfMonth(length);
@@ -309,11 +311,16 @@ public class GUIController {
 	//
 	// Get events between two dates with provided length between the dates
 	public ArrayList<ArrayList<EventGO>> getEvents(LocalDate start, LocalDate finish, int length) {
+		
+//		System.out.println("Starting Query");
+		eventList = controller.getAllEvents(username);
+//		System.out.println("Ending Query");
+		
 		ArrayList<ArrayList<EventGO>> returnList = new ArrayList<>();
 
-
 		for (int i = 0; i < length; i++) {	
-			returnList.add(new ArrayList<EventGO>());	
+			returnList.add(new ArrayList<EventGO>());
+//			returnList.add(controller.getEventsOnDay(username, start.plusDays(i)));
 		}
 
 		for (EventGO event : eventList) {
