@@ -195,12 +195,6 @@ public class GUIController {
 			for(EventGO event : eventsInDay) {
 				plannedHours = plannedHours + event.getDuration().toHours();
 			}
-			if(start == LocalDate.now()) {
-				int timeLeftInDay = LocalTime.now().minus(LocalTime.parse("21:00").getHour(), ChronoUnit.HOURS).getHour();
-				if(maxHours > timeLeftInDay) {
-					maxHours = timeLeftInDay;
-				}
-			}
 			start = start.plusDays(1);
 			finish = start;
 		}while(plannedHours > maxHours);
@@ -234,6 +228,7 @@ public class GUIController {
 			LocalTime noOtherEvents = LocalTime.parse("08:00");
 			while(noOtherEvents.isBefore(LocalTime.parse("21:00"))) {
 				if(!date.equals(nowDate) || noOtherEvents.isAfter(LocalTime.now())) {
+					System.out.println("nother events chose earliest time");
 					return noOtherEvents;
 				}
 				noOtherEvents = noOtherEvents.plusHours(1);
@@ -249,6 +244,7 @@ public class GUIController {
 		LocalTime earliestTime = earliest.getTime().minus(duration);
 		if(earliestTime.getHour() >= 8) {
 			if(!date.equals(nowDate) || earliestTime.isAfter(LocalTime.now())) {
+				System.out.println("earliest time was choses");
 				return earliestTime;
 			}
 		}
@@ -268,6 +264,7 @@ public class GUIController {
 
 				if(endOfEvent.until(closest.getTime(), ChronoUnit.MINUTES) >= duration.toMinutes()) {
 					if(!date.equals(nowDate) || endOfEvent.isAfter(LocalTime.now())) {
+						System.out.println("end of event chosen");
 						return endOfEvent;
 					}
 				}
@@ -284,12 +281,14 @@ public class GUIController {
 			LocalTime noOtherEvents = LocalTime.parse("08:00");
 			while(noOtherEvents.isBefore(LocalTime.parse("21:00"))) {
 				if(!date.equals(nowDate) || noOtherEvents.isAfter(LocalTime.now())) {
+					System.out.println("nother events chose latest time");
 					return noOtherEvents;
 				}
 				noOtherEvents = noOtherEvents.plusHours(1);
 			}
 		}
 		if(!date.equals(nowDate) || latestTime.isAfter(LocalTime.now())) {
+			System.out.println("latest time");
 			return latestTime;
 		}
 		return suggestTime(date.plusDays(1), duration);

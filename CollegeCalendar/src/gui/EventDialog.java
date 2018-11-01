@@ -320,7 +320,7 @@ public class EventDialog {
 						System.out.println("Duration Invalid");
 					}
 				}
-				if(pduration.equals(Duration.ofMinutes(0))) {
+				if(pduration.toMinutes() <= 0) {
 					duration.setText("Needs Duration");
 				}else {
 					int ppriority = 0;
@@ -332,7 +332,7 @@ public class EventDialog {
 						}
 					}
 					if(ppriority > 3) {
-						LocalDate suggestedDate = guiController.suggestDate(pduration);
+						LocalDate suggestedDate = guiController.suggestHighPriorityDate(pduration);
 						datePicker.setValue(suggestedDate);
 						LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
 						time.setText(suggestedTime.toString());
