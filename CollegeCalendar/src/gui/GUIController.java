@@ -32,7 +32,7 @@ public class GUIController {
 	private StackPane calendarPane;
 
 	private static PopUpController	popUpController;
-	
+
 	private Controller controller;
 	private ArrayList<EventGO> eventList;
 	private ArrayList<ContactGO> contactList;
@@ -49,9 +49,9 @@ public class GUIController {
 		controller = new Controller();
 		eventList = controller.getAllEvents(username);
 		contactList = controller.getAllContacts(username);
-		
+
 		checkAndAddContactEvents();
-		
+
 		calendarView = new MonthlyGUI(this);
 
 		popUpController = new PopUpController();
@@ -127,24 +127,24 @@ public class GUIController {
 		return getEvents(start, finish, length);
 
 	}
-	
+
 	public void addContactEvent(ContactGO c) {
 		Random random = new Random();
-        int rand = random.nextInt(14 + 1);
-        LocalDate randDate = LocalDate.now().plusDays(rand);
-        Duration d = Duration.ofMinutes(15);
-        LocalDate date = suggestDateForContact(d,randDate);
-        LocalTime time = suggestTime(date, d);
-        String title = "Contact " + c.getContactName();
-        EventGO e = new EventGO(title, username, d, date, time);
-        controller.addEventToDatabase(e);
-        if(e.getID() != "") {
-        	eventList.add(e);
-        	calendarView.updateEvents();
+		int rand = random.nextInt(14 + 1);
+		LocalDate randDate = LocalDate.now().plusDays(rand);
+		Duration d = Duration.ofMinutes(15);
+		LocalDate date = suggestDateForContact(d,randDate);
+		LocalTime time = suggestTime(date, d);
+		String title = "Contact " + c.getContactName();
+		EventGO e = new EventGO(title, username, d, date, time);
+		controller.addEventToDatabase(e);
+		if(e.getID() != "") {
+			eventList.add(e);
+			calendarView.updateEvents();
 			updatePane();
-        }
+		}
 	}
-	
+
 	public void deleteContactEventFromDbAndLocal(String title, String userName) {
 		for(EventGO e : eventList) {
 			if(e.getTitle().equals(title) && e.getUserName().equals(userName)) {
@@ -156,26 +156,55 @@ public class GUIController {
 		updatePane();
 	}
 
-	public LocalDate suggestDate(Duration duration) {
+	public LocalDate suggestHighPriorityDate(Duration duration) {
 		LocalDate start = LocalDate.now();
 		LocalDate finish = start;
-		long plannedHours = 0;
-		long maxHours = 8 - duration.toHours();
+		long plannedHours;
+		long maxHours;
 		ArrayList<EventGO> eventsInDay;
-		LocalDate result = start;
+		LocalDate result;
 		do {
 			plannedHours = 0;
+			maxHours = 11 - duration.toHours();
 			result = start;
 			eventsInDay = getEvents(start, finish, 1).get(0);
 			for(EventGO event : eventsInDay) {
 				plannedHours = plannedHours + event.getDuration().toHours();
+			}
+			
+			start = start.plusDays(1);
+			finish = start;
+		}while(plannedHours > maxHours);
+		return result;
+	}
+
+	public LocalDate suggestDate(Duration duration) {
+		LocalDate start = LocalDate.now();
+		LocalDate finish = start;
+		long plannedHours;
+		long maxHours;
+		ArrayList<EventGO> eventsInDay;
+		LocalDate result;
+		do {
+			plannedHours = 0;
+			maxHours = 8 - duration.toHours();
+			result = start;
+			eventsInDay = getEvents(start, finish, 1).get(0);
+			for(EventGO event : eventsInDay) {
+				plannedHours = plannedHours + event.getDuration().toHours();
+			}
+			if(start == LocalDate.now()) {
+				int timeLeftInDay = LocalTime.now().minus(LocalTime.parse("21:00").getHour(), ChronoUnit.HOURS).getHour();
+				if(maxHours > timeLeftInDay) {
+					maxHours = timeLeftInDay;
+				}
 			}
 			start = start.plusDays(1);
 			finish = start;
 		}while(plannedHours > maxHours);
 		return result;
 	}
-	
+
 	public LocalDate suggestDateForContact(Duration duration, LocalDate date) {
 		LocalDate start = date;
 		LocalDate finish = start;
@@ -195,7 +224,7 @@ public class GUIController {
 		}while(plannedHours > maxHours);
 		return result;
 	}
-	
+
 	public LocalTime suggestTime(LocalDate date, Duration duration) {
 		LocalDate nowDate = LocalDate.now();
 		ArrayList<EventGO> eventsInDay = getEvents(date, date, 1).get(0);
@@ -380,15 +409,15 @@ public class GUIController {
 	public void addEventButton() {
 		new EventDialog(primaryStage, null, this);
 	}
-	
+
 	public void addContactButton() {
 		new ContactDialog(primaryStage, null, this);
 	}
-	
+
 	public void addToContactList(ContactGO cgo) {
 		contactList.add(cgo);
 	}
-	
+
 	public String removeFromContactList(String userName, String contactName) {
 		for(ContactGO c: contactList) {
 			if(c.getContactName().equals(contactName) && c.getUserName().equals(userName)) {
@@ -414,7 +443,7 @@ public class GUIController {
 	public void showEventPopup(EventGO event) {
 		new EventDialog(primaryStage, event, this);
 	}
-	
+
 	/*
 	 * PopUp checker for all events. Handles prior events,
 	 * current reminders and completed events
@@ -423,7 +452,7 @@ public class GUIController {
 		LocalDateTime currTime = date.getCurrentDateTime();
 		LocalTime tmp = null;
 		LocalDateTime eventCheck = null;
-		
+
 		int lastRemind = -1;
 		int size = eventList.size();
 		for (int i = 0; i < size; i++) 
@@ -431,7 +460,7 @@ public class GUIController {
 			/* Prep comparison object for checks */
 			tmp = eventList.get(i).getTime();
 			eventCheck = eventList.get(i).getDate().atTime(tmp);
-			
+
 			/* Handle already completed events */
 			if (eventCheck.plusMinutes(eventList.get(i).getDuration().toMinutes())
 					.compareTo(currTime) <= 0) {
@@ -448,7 +477,7 @@ public class GUIController {
 				}
 				continue;
 			}
-			
+
 			/* Handle current events */
 			int ret, min = currTime.getMinute();
 			if ((ret = currTime.compareTo(eventCheck)) >= 0) {
@@ -460,7 +489,7 @@ public class GUIController {
 				}
 				continue;
 			}
-			
+
 			/* Handle prior events */
 			if (!eventList.get(i).getNotificationOffset().isNegative()) {
 				if (eventCheck.minusMinutes(eventList.get(i)

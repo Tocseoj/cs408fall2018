@@ -332,7 +332,7 @@ public class EventDialog {
 						}
 					}
 					if(ppriority > 3) {
-						LocalDate suggestedDate = LocalDate.now().plusDays(1);
+						LocalDate suggestedDate = guiController.suggestDate(pduration);
 						datePicker.setValue(suggestedDate);
 						LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
 						time.setText(suggestedTime.toString());
