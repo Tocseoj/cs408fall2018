@@ -20,8 +20,9 @@ public class InitGUI extends Application {
 	private static Color			backgroundColor;
 	private static GUIController	guiController;
 	
-	//private static AnimationTimer	popUp;
+	
 	PopUpTimerSetup 	popUp;
+	public static boolean		killThread = false;
 	
 	public static void main(String[] args) {
 		
@@ -145,8 +146,9 @@ public class InitGUI extends Application {
 	 * Shut down PopUp thread along with main JavaFX thread
 	 */
 	public void stop() throws Exception {
-		popUp.timerExit();
 		System.out.println("Exiting");
+		killThread = true;
+		popUp.timerExit();
 	}
 	
 	private void leftArrow(ActionEvent event) {
