@@ -1,6 +1,8 @@
 package gui;
 
 
+import java.awt.Toolkit;
+
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
@@ -21,6 +23,7 @@ public class PopUpController {
 		popUpStage.setTitle("Event Completion");
 		String message = "Event: "+e.getTitle()+" has ended!";
 		
+		Toolkit.getDefaultToolkit().beep();
 		JOptionPane.showMessageDialog(popUpStage, message);
 	}
 	
@@ -30,7 +33,8 @@ public class PopUpController {
 	public void remindUser(EventGO e) {
 		popUpStage.setTitle("Event Reminder");
 		String message = "Event: "+e.getTitle()+" is going on right now!";
-	
+		
+		Toolkit.getDefaultToolkit().beep();
 		JOptionPane.showMessageDialog(popUpStage, message);
 	}
 	
@@ -42,6 +46,7 @@ public class PopUpController {
 		String message = "Event: "+e.getTitle()+" starts in (or less than) "
 				+e.getNotificationOffset().toMinutes() + " minutes!";
 		
+		Toolkit.getDefaultToolkit().beep();
 		JOptionPane.showMessageDialog(popUpStage, message);
 	}
 }

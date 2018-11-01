@@ -84,6 +84,14 @@ public class EventDialog {
 					int index = containerPane.getChildren().indexOf(self);
 					containerPane.getChildren().add(index + 1, completed);
 					containerPane.getChildren().add(index + 1, completedL);
+					
+					containerPane.getChildren().remove(subjectLabel);
+					containerPane.getChildren().remove(subjectField);
+					containerPane.getChildren().remove(profNameLabel);
+					containerPane.getChildren().remove(profNameField);
+					containerPane.getChildren().remove(meetingPersonLabel);
+					containerPane.getChildren().remove(meetingPersonField);
+					
 					dateL.setText("Due Date");
 				}
 				else if (self.getValue().equals("MEETING")) {
@@ -324,7 +332,7 @@ public class EventDialog {
 						}
 					}
 					if(ppriority > 3) {
-						LocalDate suggestedDate = LocalDate.now().plusDays(1);
+						LocalDate suggestedDate = guiController.suggestDate(pduration);
 						datePicker.setValue(suggestedDate);
 						LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
 						time.setText(suggestedTime.toString());
@@ -339,6 +347,15 @@ public class EventDialog {
 		});
 		containerPane.getChildren().add(suggest);
 		if (editEvent != null) {
+			
+			completed.setSelected(editEvent.getCompleted());
+			meetingPersonField.setText(editEvent.getMeetingPersonName());
+			profNameField.setText(editEvent.getProfName());
+			subjectField.setText(editEvent.getSubjectName());
+			
+			NotifyWhenEventOver.setSelected(editEvent.getAllottedTimeUp());
+			ConstantReminderDuringEvent.setSelected(editEvent.getConstantReminder());
+			
 			comboBox.setValue(editEvent.getType().toString());
 			title.setText(editEvent.getTitle());
 			datePicker.setValue(editEvent.getDate());
@@ -361,7 +378,6 @@ public class EventDialog {
 			Boolean is_checked = false;
 			for (int i = 0; i < editEvent.getRepeatDays().length; i++) {
 				if (editEvent.getRepeatDays()[i]) {
-					System.out.println("TRUE");
 					is_checked = true;
 					break;
 				}

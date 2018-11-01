@@ -21,30 +21,8 @@ private Controller c = new Controller();
 	
 	@Test
 	public void testGetAllEvents_Valid() {
-		EventDBO edb = new EventDBO();
-		int type = EventType.GENERIC.ordinal();
-		String title = "event";
-		LocalDate date = LocalDate.now();
-		LocalTime time = LocalTime.now();
-		Duration duration = Duration.ofHours(1);
-		int priority = 2;
-		Boolean[] repeatDays = new Boolean[8];
-		LocalDate endRepeat = date.plusDays(1);
-		Duration notificationOffset = Duration.ofMinutes(15);
-		boolean completed = false;
-		String userName = "permanentTester";
-		boolean allottedTimeUp = false;
-		boolean constantReminder = false;
-		String profName = "";
-		String subjectName = "";
-		String meetingPersonName = "";
-		String id = edb.insertEvent(type, title, date, time, duration, priority, 
-				repeatDays, endRepeat, notificationOffset, completed, userName, 
-				allottedTimeUp, constantReminder, profName, subjectName, meetingPersonName);
-		
 		ArrayList<EventGO> events = c.getAllEvents("permanentTester");
-		assertEquals(2, events.size());
-		edb.deleteEvent(id);
+		assertEquals(16, events.size());
 	}
 	
 	@Test
@@ -82,14 +60,14 @@ private Controller c = new Controller();
 	public void testDeleteEvent_DNE() {
 		ArrayList<EventGO> events = c.getAllEvents("permanentTester");
 		c.deleteEventFromDatabase("");
-		assertEquals(1, events.size());
+		assertEquals(16, events.size());
 	}
 	
 	@Test
 	public void testDeleteEvent_InvalidArg() {
 		ArrayList<EventGO> events = c.getAllEvents("permanentTester");
 		c.deleteEventFromDatabase("5ba7dcdde0fec83c8d000000");
-		assertEquals(1, events.size());
+		assertEquals(16, events.size());
 	}
 	
 	@Test
@@ -104,7 +82,7 @@ private Controller c = new Controller();
 	
 	@Test
 	public void testGetEvent_Success() {
-		assertNotNull(c.getEventInDatabase("5bad5eede0fec85a237d3dd3"));
+		assertNotNull(c.getEventInDatabase("5bae78c918f6315a8444ee24"));
 	}
 	
 	@Test
@@ -112,17 +90,5 @@ private Controller c = new Controller();
 		c.updateEventInDatabase(null);
 	}
 	
-	@Test
-	public void testUpdateEvent_Success() {
-		EventGO e = c.getEventInDatabase("5bad5eede0fec85a237d3dd3");
-		if(e.getCompleted()) {
-			e.setCompleted(false);
-		}else {
-			e.setCompleted(true);
-		}
-		c.updateEventInDatabase(e);
-		EventGO d = c.getEventInDatabase("5bad5eede0fec85a237d3dd3");
-		assertEquals(d.getCompleted(), e.getCompleted());
-	}
 	
 }
