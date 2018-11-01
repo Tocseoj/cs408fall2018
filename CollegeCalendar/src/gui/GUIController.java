@@ -1,5 +1,6 @@
 package gui;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -305,7 +306,9 @@ public class GUIController {
 						dayOfWeek = dayOfWeek == 7 ? 0 : dayOfWeek;
 						if (event.getRepeatDays()[dayOfWeek]) {
 							if ((day.isAfter(event.getDate()) || day.isEqual(event.getDate())) && (day.isBefore(event.getEndRepeat()) || day.isEqual(event.getEndRepeat()))) {
-								returnList.get(i).add(event);
+								if (day.getDayOfWeek() != DayOfWeek.SATURDAY) {
+									returnList.get(i).add(event);
+								}
 							}
 						}
 					}

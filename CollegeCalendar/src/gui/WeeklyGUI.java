@@ -42,6 +42,11 @@ public class WeeklyGUI implements CalendarViews {
 			Button dayButton = new Button(dayOfMonth.getDayOfMonth() + "");
 			dayButton.setUserData(dayOfMonth);
 			dayButton.setOnAction(this::dayButton);
+		
+//			dayButton.setText(dayButton.getText());
+			dayButton.setOnAction(null);
+			
+			
 			
 			ArrayList<EventGO> eventList = viewingEvents.get(i);
 			
@@ -52,8 +57,8 @@ public class WeeklyGUI implements CalendarViews {
 				e.setOnAction(this::viewEventPopup);
 				
 				boolean added = false;
-				for (int j = 0; j < day.getChildren().size(); j += 2) {
-					if (event.getTime().isBefore(((EventGO)(day.getChildren().get(j).getUserData())).getTime())) {
+				for (int j = 0; j < day.getChildren().size(); j++) {
+					if (event.getTime().isAfter(((EventGO)(day.getChildren().get(j).getUserData())).getTime())) {
 						day.getChildren().add(j, e);
 						added = true;
 						break;
