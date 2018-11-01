@@ -28,8 +28,12 @@ import javafx.stage.Stage;
 public class EventDialog {
 
 	private GUIController guiController;
+	
+	private int eventSubmitted = 0;
 
 	public EventDialog(Stage primaryStage, EventGO editEvent, GUIController guiController) {
+		
+		
 
 		this.guiController = guiController;
 
@@ -271,22 +275,32 @@ public class EventDialog {
 				}
 
 				// call helper method to add the current event to the database
-//				addEvent(EventType.valueOf(comboBox.getValue()), 
-//						test_id, 
-//						title.getText(), 
-//						datePicker.getValue(), 
-//						time.getText(), 
-//						duration.getText(), 
-//						priority.getText(), 
-//						rpt, 
-//						edrpt, 
-//						no, 
-//						is_completed, 
-//						allottedTimeUp, 
-//						constantReminder,
-//						profNameField.getText(),
-//						subjectField.getText(),
-//						meetingPersonField.getText());
+				
+				
+				if (eventSubmitted > 0) {
+					addEvent(EventType.valueOf(comboBox.getValue()), 
+							test_id, 
+							title.getText(), 
+							datePicker.getValue(), 
+							time.getText(), 
+							duration.getText(), 
+							priority.getText(), 
+							rpt, 
+							edrpt, 
+							no, 
+							is_completed, 
+							allottedTimeUp, 
+							constantReminder,
+							profNameField.getText(),
+							subjectField.getText(),
+							meetingPersonField.getText());
+					
+					dialog.close();
+				}
+				
+				eventSubmitted++;
+				
+				
 
 				//				if(!eventToBeAdded.getID().equals("")) {
 
@@ -296,7 +310,7 @@ public class EventDialog {
 
 				//						redrawCalendarView(); TODO
 
-				dialog.close();
+				
 			}
 		});
 		containerPane.getChildren().add(submit);
@@ -321,6 +335,7 @@ public class EventDialog {
 				}else {
 					LocalDate suggestedDate = guiController.suggestDate(pduration);
 					datePicker.setValue(suggestedDate);
+					
 					LocalTime suggestedTime = guiController.suggestTime(suggestedDate, pduration);
 					time.setText(suggestedTime.toString());
 				}
