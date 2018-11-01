@@ -504,7 +504,7 @@ public class GUIController {
 						.getNotificationOffset().toMinutes())
 						.compareTo(currTime) <= 0) {
 					popUpController.notifyUpcomingEvent(eventList.get(i));
-					eventList.get(i).setNotificationOffset(Duration.ofMinutes(-1));
+					eventList.get(i).setNotificationOffset(Duration.ZERO);
 					try {
 						controller.updateEventInDatabase(eventList.get(i));
 					} catch (NullPointerException e) {
