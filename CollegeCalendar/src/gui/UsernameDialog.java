@@ -21,7 +21,7 @@ public class UsernameDialog {
 		Label inputLabel = new Label("Enter your username.");
 		TextField inputField = new TextField();
 		// DEBUG
-		inputField.setText("tester");
+		inputField.setText("default");
 		Button submitButton = new Button("Submit");
 		
 		//
