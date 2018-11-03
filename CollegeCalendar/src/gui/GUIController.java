@@ -43,7 +43,7 @@ public class GUIController {
 		this.primaryStage = primaryStage;
 		this.calendarPane = calendarPane;
 
-		username = "tester";
+		username = "default";
 
 		date = new DateAndTimeManager();
 
